@@ -18,7 +18,10 @@ the big ones.**
 1. **Expedition** — planner UI + region / depth / bait / method vocab.
    Workbook: `translation-batch-01-expedition.csv` (60 rows, extracted
    from `game-data.js` + Expedition tab chrome in v2.5.11) — **draft
-   Québec French filled in 2026-10-21, awaiting Avery's corrections.**
+   Québec French filled in 2026-10-21, then revised 2026-10-21 with
+   all of Mira's PR #1 suggestions applied on Avery's word.**
+   Shared glossary: `translation-glossary.md` (created from Batch 1 +
+   Mira's review; reuse its forms in later batches).
    Note: this vocab also feeds the Research filters, so settling it
    first de-risks the later Research batch.
 2. **Collection**
