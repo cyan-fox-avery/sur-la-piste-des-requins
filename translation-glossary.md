@@ -45,6 +45,9 @@ the same concept in a later batch without flagging it.
 | wild archive | archives sauvages | Tab heading "Archives sauvages"; tab label "Archives" |
 | trimmed from original | extrait de la vidéo originale | Archive credit-line note; verified — trimmed assets are video excerpts with clip boundaries |
 | new photo badge | nouveau média | Badge wording; 'nouvelle photo' only if photo-only, trigger unconfirmed, so broader form chosen |
+| achievements | succès | Tab label + heading |
+| Master Shark Tagger | Maître du marquage des requins | Matches the French certificate title |
+| collection book | carnet de collection | Achievement descriptions use 'carnet de collection' to match the Batch 2 heading (Mira's heading-noun consistency point); 'livre' is not used for the collection book in French |
 
 ## Implementation guardrails (Mira, PR #1 review)
 
