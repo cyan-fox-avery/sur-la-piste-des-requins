@@ -1,0 +1,53 @@
+category,key,english,quebec_french,notes
+ui,tab-collection,Collection,Collection,
+ui,collection-heading,Official collection book,Livre de collection officiel,
+ui,collection-count,{n} of {total} species tagged,{n} espèces marquées sur {total},Counts are dynamic; keep placeholders.
+ui,collection-intro,Tap a shark to open its full card — there's more in the book than in the field notes.,Touche un requin pour ouvrir sa fiche complète — il y a plus dans le livre que dans les notes de terrain.,
+ui,field-sightings-heading,👁️ Field sightings,👁️ Observations sur le terrain,
+ui,field-sightings-intro,"Sharks you watched but didn't tag — spotted, not caught. Pure field notes.","Des requins que tu as observés sans les marquer — aperçus, pas capturés. Que des notes de terrain.",
+ui,empty-collection,"No sharks tagged yet.<br>Do your research, then get out there. 🦈","Aucun requin marqué pour l'instant.<br>Fais tes recherches, puis pars sur le terrain. 🦈",
+ui,empty-sightings,No sightings yet.<br>Watch a shark without tagging it and it'll be logged here. 👁️,Aucune observation pour l'instant.<br>Observe un requin sans le marquer et ce sera noté ici. 👁️,
+ui,show-more-sightings,👁️ Show more sightings ({n} more),👁️ Afficher plus d'observations ({n} de plus),
+ui,derpy-claim,🎁 Claim your derpy award,🎁 Réclamer ton prix derpy,
+ui,derpy-claim-aria,Claim your derpy shark award,Réclamer ton prix de requins derpy,
+ui,derpy-mode,🦈 Derpy mode: {state},🦈 Mode derpy : {state},state = ON/OFF in code; see next rows for French states.
+ui,derpy-mode-on,ON,activé,
+ui,derpy-mode-off,OFF,désactivé,
+ui,derpy-toggle-aria,Toggle derpy shark art mode,Activer ou désactiver le mode derpy,
+detail,close,Close,Fermer,Also used for tracking overlay close.
+detail,close-details-aria,Close details,Fermer les détails,
+detail,open-details-aria,Open details for {name} {species},Ouvrir les détails de {name} {species},name = nickname or research ID; species = common name (Research batch).
+detail,insights-complete-title,All insights discovered — 100% complete,Tous les aperçus découverts — 100 % complété,"Title/aria suffix; 'aperçus' per glossary note, Avery to confirm."
+detail,rename,✏️ Rename,✏️ Renommer,
+detail,add-nickname,✏️ Add nickname,✏️ Ajouter un surnom,
+detail,nickname-placeholder,Name your shark…,Nomme ton requin…,
+detail,save,Save,Enregistrer,
+detail,cancel,Cancel,Annuler,
+detail,iucn-label,IUCN: {status},UICN : {status},"In French the body is UICN, not IUCN. Status itself translated in Research batch."
+detail,female,♀ female,♀ femelle,
+detail,male,♂ male,♂ mâle,
+detail,tagged-at,📍 Tagged at {location},📍 Marqué à {location},"location = region label (Batch 1, localized)."
+detail,track-on,📍 Tracking on map ✓,📍 Suivi sur la carte ✓,
+detail,track-off,📍 Track this shark,📍 Suivre ce requin,
+detail,resightings-heading,🔁 Re-sightings ({total}),🔁 Réobservations ({total}),
+detail,show-all,Show all ({total}),Afficher tout ({total}),
+detail,show-fewer,Show fewer,Afficher moins,
+detail,field-notes-heading,📓 Field notes from watching ({n}),📓 Notes de terrain tirées de l'observation ({n}),
+detail,insights-heading,🔬 Tag-along insights ({shown}/{total}),🔬 Aperçus du marquage ({shown}/{total}),"Insights content itself = hook/bonus/secret facts; those fields live in Research batch, not here."
+detail,conservation-label,🌊 Conservation:,🌊 Conservation :,Conservation text itself lives in Research batch.
+track,track-heading,📍 Tracking {title},📍 Suivi de {title},title = nickname or research ID.
+track,travelled,travelled,parcourus,Stat label under km total.
+track,at-liberty,at liberty,en liberté,Stat label under days total.
+track,locations,locations,lieux,Stat label under point count.
+track,tagged-here,tagged here,marqué ici,First point label on track graph.
+track,last-ping,last ping,dernier signal,Last point label on track graph.
+track,last-ping-line,Last ping: {label} · day {day},Dernier signal : {label} · jour {day},
+track,day-label,Day {day},Jour {day},Track stop prefix.
+track,hypothetical-note,"Hypothetical movement scenario — this route illustrates plausible long-range movement for a migratory species, not a reconstruction of this individual's tracked journey.","Scénario de déplacement hypothétique — cet itinéraire illustre un déplacement plausible à longue distance pour une espèce migratrice, pas une reconstitution du trajet de cet individu.",
+track,archival-note,Illustrative habitat-based movement scenario. These plotted positions are not actual detections of this individual.,Scénario de déplacement illustratif fondé sur l'habitat. Ces positions ne sont pas des détections réelles de cet individu.,
+track,archival-sawshark-note,(Pop-up satellite archival tags have been deployed on common sawsharks off Tasmania — Burke et al. 2020.),(Des balises satellites archivées émergentes ont été déployées sur des requins-scies communs au large de la Tasmanie — Burke et al. 2020.),Appended to archival note for sawshark only.
+track,kind-satellite,"Illustrative track — inspired by satellite telemetry. Note: pop-up archival tags transmit stored data after detachment, not live pings. 🛰️","Itinéraire illustratif — inspiré de la télémétrie par satellite. Note : les balises archivées émergentes transmettent les données enregistrées après leur détachement, pas des signaux en direct. 🛰️",
+track,kind-archival,"Illustrative habitat-based scenario — this species has never carried a tracking tag. Drawn from capture records and published depth ranges, not an individual's movements.","Scénario illustratif fondé sur l'habitat — cette espèce n'a jamais porté de balise de suivi. Tiré des dossiers de capture et des profondeurs publiées, pas des déplacements d'un individu.",
+track,kind-resightings,"Illustrative track — built from reef survey re-sightings, not a satellite tag. This shark barely leaves its reef flat.","Itinéraire illustratif — construit à partir de réobservations lors de relevés sur les récifs, pas d'une balise satellite. Ce requin quitte à peine son platier.",
+track,kind-acoustic,Illustrative track based on acoustic-tag detections from reef receiver arrays.,Itinéraire illustratif fondé sur des détections de balises acoustiques provenant de réseaux de récepteurs sur les récifs.,
+track,close-tracking-aria,Close tracking,Fermer le suivi,
