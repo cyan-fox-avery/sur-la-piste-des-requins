@@ -39,6 +39,8 @@ the same concept in a later batch without flagging it.
 | currents (map toggle) | courants | |
 | tag site | lieu de marquage | Hollow pin on the map |
 | re-sighted (count) | réobservé | e.g. "Réobservé 3×" |
+| logbook | journal de bord | Tab label; heading "Journal des expéditions" |
+| repeat this plan | reprendre ce plan | Restores a logged trip's plan into the planner |
 
 ## Implementation guardrails (Mira, PR #1 review)
 
