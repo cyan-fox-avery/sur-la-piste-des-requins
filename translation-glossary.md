@@ -39,6 +39,9 @@ the same concept in a later batch without flagging it.
 | currents (map toggle) | courants | |
 | tag site | lieu de marquage | Hollow pin on the map |
 | re-sighted (count) | réobservé | e.g. "Réobservé 3×" |
+| logbook | journal de bord | Tab label; heading "Journal des expéditions" |
+| repeat this plan | reprendre ce plan | Restores a logged trip's plan into the planner |
+| legacy lure (no lure) | aucun attractant | Old scent-lure dimension, separate from bait (Batch 1 'attractant'); other legacy lure display values (chum / seal / krill) still TBD in the narrative/legacy pass |
 
 ## Implementation guardrails (Mira, PR #1 review)
 
