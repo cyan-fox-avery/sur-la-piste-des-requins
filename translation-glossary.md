@@ -43,7 +43,8 @@ the same concept in a later batch without flagging it.
 | repeat this plan | reprendre ce plan | Restores a logged trip's plan into the planner |
 | legacy lure (no lure) | aucun attractant | Old scent-lure dimension, separate from bait (Batch 1 'attractant'); other legacy lure display values (chum / seal / krill) still TBD in the narrative/legacy pass |
 | wild archive | archives sauvages | Tab heading "Archives sauvages"; tab label "Archives" |
-| trimmed from original | extrait de l'original | Archive credit-line note |
+| trimmed from original | extrait de la vidéo originale | Archive credit-line note; verified — trimmed assets are video excerpts with clip boundaries |
+| new photo badge | nouveau média | Badge wording; 'nouvelle photo' only if photo-only, trigger unconfirmed, so broader form chosen |
 
 ## Implementation guardrails (Mira, PR #1 review)
 
