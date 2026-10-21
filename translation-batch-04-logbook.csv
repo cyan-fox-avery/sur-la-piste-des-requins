@@ -1,7 +1,7 @@
 category,key,english,quebec_french,notes
 ui,tab-logbook,Logbook,Journal de bord,Tab label; 'journal de bord' is the natural Québec term for a logbook.
 ui,logbook-heading,Expedition logbook,Journal des expéditions,
-ui,logbook-intro,"A scientist's notebook — every trip, plan and outcome. Compare your attempts; the pattern is the answer.","Un carnet de scientifique — chaque sortie, chaque plan et chaque résultat. Compare tes tentatives; le motif est la réponse.",
+ui,logbook-intro,"A scientist's notebook — every trip, plan and outcome. Compare your attempts; the pattern is the answer.","Un carnet de scientifique — chaque sortie, chaque plan et chaque résultat. Compare tes expéditions : c'est en repérant les tendances que tu trouveras la réponse.","Mira 2026-10-21: 'le motif' sounded decorative; chosen form preserves infer-it-yourself, not a direct recipe. Alternative: 'Compare tes sorties : les indices se cachent dans ce qui se répète.'"
 filter,filter-outcome,Outcome,Résultat,Filter label.
 filter,filter-outcome-all,All trips,Toutes les sorties,
 filter,filter-outcome-tagged,Successful tags,Marquages réussis,
@@ -14,12 +14,12 @@ filter,filter-region-all,All regions,Toutes les régions,
 filter,filter-species,Species,Espèce,"Options are species names — Research batch, not here."
 filter,filter-species-all,All species,Toutes les espèces,
 filter,filter-date,Date,Date,
-filter,filter-date-all,All time,Toutes les périodes,
+filter,filter-date-all,All time,Tout l'historique,"Mira 2026-10-21: more idiomatic than 'Toutes les périodes' for an expedition journal. Optional, not a blocker."
 filter,filter-date-7d,Last 7 days,7 derniers jours,
 filter,filter-date-30d,Last 30 days,30 derniers jours,
-filter,filter-date-1y,Last year,Dernière année,
-filter,filter-clear,Clear,Effacer,Shown only when a filter is active.
-entry,empty-no-expeditions,"No expeditions logged yet.<br>Every trip lands here — plan, encounters, outcome. 📓","Aucune expédition consignée pour l'instant.<br>Chaque sortie atterrit ici — plan, rencontres, résultat. 📓",<br> kept as markup.
+filter,filter-date-1y,Last year,365 derniers jours,"Mira 2026-10-21: code uses a rolling 365-day window (verified, script.js), not the previous calendar year. Alternative: 'Derniers 12 mois'."
+filter,filter-clear,Clear,Réinitialiser les filtres,Mira 2026-10-21: bare 'Effacer' sounded like deleting history; this button only resets filter selections. Mira's preference.
+entry,empty-no-expeditions,"No expeditions logged yet.<br>Every trip lands here — plan, encounters, outcome. 📓","Aucune expédition consignée pour l'instant.<br>Chaque expédition est consignée ici : plan, rencontres et résultat. 📓",Mira 2026-10-21: 'Chaque sortie atterrit ici' was a calque of 'lands here'. First sentence already good.
 entry,empty-no-match,No trips match those filters.<br>Try clearing something — the ocean is bigger than it looks.,Aucune sortie ne correspond à ces filtres.<br>Essaie d'en effacer un — l'océan est plus grand qu'il n'y paraît.,
 entry,result-tagged,(tagged),(marqué),Encounter result shown in parentheses after the species name.
 entry,result-resighted,(resighted),(réobservé),
@@ -27,7 +27,7 @@ entry,result-followed,(followed),(suivi),
 entry,result-watched,(watched),(observé),
 entry,no-sharks-today,No sharks today.,Aucun requin aujourd'hui.,Shown when a trip had no encounters.
 entry,no-method-chosen,No method chosen,Aucune méthode choisie,For trips where Method was left unpicked (v0.9.1+).
-entry,no-lure,No lure,Aucun appât,Legacy pre-v0.9.0 entries only.
+entry,no-lure,No lure,Aucun attractant,"Mira 2026-10-21: 'Aucun appât' was misleading — LEGACY_LURES is the old scent-lure dimension, separate from BAITS; a trip could have bait and still show No lure. Consistent with Batch 1 glossary 'attractant'. Other legacy lure values (chum/seal/krill) still need French display text for old saves — see plan's narrative/legacy obligation."
 entry,repeat-plan,🔁 Repeat this plan,🔁 Reprendre ce plan,"Restores the trip's region, depth, bait and method into the planner."
 entry,show-older,📓 Show older trips ({n} more),📓 Afficher les sorties plus anciennes ({n} de plus),Latest 30 trips shown first (v1.8.4); button reveals more.
-note,scope,—,—,"NOT in this batch: plan vocabulary (region/depth/bait/method — Batch 1, reused in each entry's plan line); species names + research IDs (Research); nickname display rule (species-only unless research ID matches — a logic rule, not a string); conditions + field notes + pin hints (dynamic expedition narrative text, generated per trip — not fixed UI strings, flagged for a later narrative pass if needed). Dates are formatted at build time and must be localized there."
+note,scope,—,—,"UPDATED 2026-10-21 (Mira): narrative/legacy pass is REQUIRED, not 'if needed' — see TRANSLATION-PLAN.md 'Build integration obligations'. Saved conditions/field notes/pin hints + legacy lure display strings must be translated before a French build, or saved pages will mix English and French."
