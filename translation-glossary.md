@@ -35,6 +35,10 @@ the same concept in a later batch without flagging it.
 | PSAT (pop-up satellite archival tag) | balises d’archivage détachables | Explanatory form: they record data, detach, float to the surface, then transmit by satellite. Do NOT use "balises satellites archivées émergentes" |
 | common sawshark (Pristiophorus cirratus) | requin-scie à long nez | FAO French name (FishBase), verified against Tag Along sharks-data.js. Flagged for Research batch to prevent drift; do not translate "common" literally |
 | last ping (track) | dernier point du trajet | Neutral form for illustrative tracks; "dernier signal" only when a signal really exists |
+| tracking map | carte de suivi | |
+| currents (map toggle) | courants | |
+| tag site | lieu de marquage | Hollow pin on the map |
+| re-sighted (count) | réobservé | e.g. "Réobservé 3×" |
 
 ## Implementation guardrails (Mira, PR #1 review)
 
