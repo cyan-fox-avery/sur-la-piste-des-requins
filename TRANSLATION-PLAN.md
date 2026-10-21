@@ -24,9 +24,11 @@ the big ones.**
    Mira's review; reuse its forms in later batches).
    Note: this vocab also feeds the Research filters, so settling it
    first de-risks the later Research batch.
-2. **Collection — DRAFTED 2026-10-21, not yet in a PR**
+2. **Collection — in PR #2, under review (2026-10-21)**
    Workbook: `translation-batch-02-collection.csv` (52 rows, draft
-   Québec French filled, awaiting Avery's corrections).
+   Québec French filled, then revised 2026-10-21 with all of Mira's
+   PR #2 suggestions applied on Avery's word, including the
+   Avery-approved “requins zinzins” decision).
    Scope: Collection tab chrome, detail-card labels, Field sightings,
    derpy shelf, and the tracking overlay (shared with Map — do not
    re-translate it in the Map batch). NOT in this batch: per-shark
