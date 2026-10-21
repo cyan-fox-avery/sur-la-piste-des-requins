@@ -53,7 +53,15 @@ the big ones.**
    Dynamic per-trip narrative (conditions, field notes, pin
    hints) is NOT fixed UI text — flagged for a later narrative
    pass if needed.
-5. **Archive**
+5. **Archive — in PR #5, under review (2026-10-21)**
+   Workbook: `translation-batch-05-archive.csv` (20 rows, draft
+   Québec French filled, awaiting Avery's corrections).
+   Scope: Archive tab chrome, heading + intro, search, sort
+   chips, entry lines, credit-line wording. NOT in this batch:
+   per-asset captions/credits/license notes in archive-data.js
+   — a separate media-data pass, flagged in the workbook so the
+   Archive does not ship with English captions under French
+   chrome. Species names + IUCN status names stay for Research.
 6. **Achievements + global chrome** (header, tab labels, win ceremony,
    footer/reset — certificate already has its French version)
 7. **Research — LAST (big one)** — field-guide UI + all 50 sharks'
@@ -127,3 +135,27 @@ optional polish, and they are not solved by the workbooks alone:
    v2.7.1). Before building French, diff the English source strings
    against every workbook so strings added or changed between batches
    do not go untranslated.
+
+## Archive build obligations + media-data pass (TRACKED REQUIRED pre-release gate, from Mira's Batch 5 review, 2026-10-21)
+- **Search/sort on localized names:** Archive search and A–Z sort
+  must operate on the localized French common names (still
+  supporting Latin scientific names), with fr-CA collation
+  (`localeCompare(..., 'fr-CA')` / `Intl.Collator('fr-CA')`); IUCN
+  and newest/oldest tiebreaks use the same displayed French names.
+  Do NOT translate species IDs or IUCN severity keys. The
+  `taggedAt`-based date sort stays.
+- **Saved date/location:** format the Archive date from `taggedAt`
+  with `fr-CA` and display the Batch 1 region label from `region`,
+  with a sensible fallback for legacy records lacking those fields.
+  Do not relabel stored English text as French.
+- **Media-data pass (REQUIRED, not optional):** translate
+  archive-data.js captions, credits' natural-language notes and
+  license notes, in ALL their roles — visible figcaption, image
+  alt text, and cropped-detail aria labels — not just visible
+  display. Preserve photographer/creator names, source links,
+  exact license identifiers and clickable license URLs; translate
+  natural-language notes (including any CC BY-NC noncommercial
+  policy notice) without weakening meaning or dropping
+  attribution; retain the PD/CC0 "Crédit" vs "©" distinction.
+  This pass is a pre-release gate: the Archive must not ship with
+  English captions under French chrome.
