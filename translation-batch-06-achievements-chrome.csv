@@ -14,21 +14,21 @@ chrome,ach-unlocked-close,Sweet!,Génial !,Unlock overlay button.
 chrome,ach-locked-name,???,???,Locked achievements show ??? instead of the name; breadcrumb clue shows instead.
 chrome,trophy-aria,Open your Master Shark Tagger certificate,Ouvrir ton certificat de Maître du marquage des requins,Trophy shelf button aria-label.
 chrome,trophy-title,Master Shark Tagger,Maître du marquage des requins,"Matches the French certificate title, already made."
-chrome,trophy-sub,Official certificate — tap to view,Certificat officiel — touche pour voir,Touche vs Sélectionne: mirrors Map intro discussion; Avery to confirm if Sélectionne is preferred throughout.
-chrome,cert-write-name,Write your name on the line — that's what makes it yours.,Écris ton nom sur la ligne — c'est ce qui le rend tien.,Certificate signing moment; the certificate IMAGE itself is already French and is not part of this batch.
-chrome,cert-awarded,Awarded with salt on it. 🦈,Décerné avec du sel dessus. 🦈,Certificate caption pun (salt water).
+chrome,trophy-sub,Official certificate — tap to view,Certificat officiel — sélectionne-le pour l'ouvrir,"Mira: sélectionner covers touch + mouse, per Batches 2/3."
+chrome,cert-write-name,Write your name on the line — that's what makes it yours.,Écris ton nom sur la ligne. Ce certificat est à toi.,Mira pick: warmer first option.
+chrome,cert-awarded,Awarded with salt on it. 🦈,Décerné avec une pincée de sel marin. 🦈,Mira: avoids the spilled-table-salt calque; seawater joke kept.
 chrome,cert-bigger,🔍 Make it bigger,🔍 Agrandir,Toggle; aria-pressed reflects state.
 chrome,cert-smaller,🔍 Make it smaller,🔍 Réduire,Toggle off-state.
 chrome,cert-save-share,📥 Save / share certificate,📥 Enregistrer / partager le certificat,
 chrome,cert-name-aria,Your name on the certificate,Ton nom sur le certificat,Name input aria-label.
 chrome,cert-img-alt,Master Shark Tagger certificate — Tag Along Field Program,Certificat de Maître du marquage des requins — Programme de terrain Sur la piste des requins,Alt text for the French certificate image in the French build.
 chrome,continue,Continue,Continuer,Win-ceremony / finale button.
-chrome,finale-caption,{n} sharks. {n} releases. All still swimming.,{n} requins. {n} relâches. Tous encore en train de nager.,Map finale final caption.
+chrome,finale-caption,{n} sharks. {n} releases. All still swimming.,{n} requins. {n} remis en liberté. Tous nagent encore.,Mira pick: shorter second option; 'relâches' rejected as wrong noun for releasing tagged animals.
 chrome,finale-world-map-aria,World map of all tagged sharks,Carte du monde de tous les requins marqués,Finale map aria-label.
 chrome,ack-eyebrow,ACKNOWLEDGEMENTS,REMERCIEMENTS,Win beat 4 eyebrow.
 chrome,ack-for-sarah,For Sarah,Pour Sarah,
 chrome,ack-sarah-line,who finished Rockhound at 1:26 AM and loves sharks. 🦈,qui a terminé Rockhound à 1 h 26 du matin et qui adore les requins. 🦈,Real Sarah reference; time format fr-CA.
-chrome,ack-archive-complete,"🖼️ Your Wild Archive is complete — every species you tagged, face to face with the real animal.","🖼️ Tes archives sauvages sont complètes — chaque espèce que tu as marquée, face à face avec le vrai animal.",
+chrome,ack-archive-complete,"🖼️ Your Wild Archive is complete — every species you tagged, face to face with the real animal.",🖼️ Tes Archives sauvages sont complètes : découvre en images les véritables espèces que tu as marquées dans le jeu.,Mira: harmonized with Batch 5 species-vs-individual wording.
 chrome,region-unlock-head,🗺️ New waters surveyed,🗺️ Nouvelles eaux explorées,Region unlock overlay heading.
 chrome,region-unlock-institute,The institute trusts you with farther waters now — and Sarah texted you about it. 📱,L'institut te confie maintenant des eaux plus lointaines — et Sarah t'a texté à ce sujet. 📱,Region names themselves are Batch 1 labels.
 chrome,region-unlock-back,Back to the water,Retour à l'eau,
@@ -44,7 +44,7 @@ chrome,reset-confirm,"Yes, erase everything","Oui, tout effacer",
 chrome,reset-cancel,Cancel,Annuler,
 chrome,whatsnew-close,Let's go diving 🤿,Allons plonger 🤿,"What's New overlay button; the What's New CONTENT itself (version history text) is excluded — flagged for a separate pass if needed, since it changes every release."
 chrome,build-tag-title,Build version,Version de l'application,build-tag title attribute.
-ach,first-tag-name,"Tag, You're It","Tag, c'est toi !",
+ach,first-tag-name,"Tag, You're It",C'est toi qui marques !,Mira pick: keeps the children's-game phrase; 'Premier marquage !' was the clarity fallback.
 ach,first-tag-breadcrumb,the book has to start somewhere,le livre doit bien commencer quelque part,
 ach,first-tag-desc,Tagged your first shark. The collection book is officially open.,Marqué ton premier requin. Le carnet de collection est officiellement ouvert.,Uses 'carnet de collection' to match the Batch 2 Collection heading (Mira's heading-noun consistency point).
 ach,old-friend-name,Old Friend,Vieil ami,
@@ -55,7 +55,7 @@ ach,nervous-breadcrumb,tag the most anxious-looking shark,marquer le requin qui 
 ach,nervous-desc,"Tagged a thresher shark. It looks perpetually nervous, and honestly, same.","Marqué un requin-renard. Il a l'air perpétuellement nerveux, et honnêtement, moi aussi.",
 ach,garbage-day-name,Garbage Day,Jour des poubelles,
 ach,garbage-day-breadcrumb,one shark's trash...,les déchets de l'un...,
-ach,garbage-day-desc,Tagged a tiger shark. It'll eat anything. Anything.,Marqué un requin-tigre. Il mange n'importe quoi. N'importe quoi.,
+ach,garbage-day-desc,Tagged a tiger shark. It'll eat anything. Anything.,"Marqué un requin-tigre. Côté menu, il n'est vraiment pas difficile.",Mira: keeps the joke without enshrining 'eats anything' as zoological fact; English original flagged for check separately.
 ach,walks-name,It Walks!,Il marche !,
 ach,walks-breadcrumb,it doesn't swim everywhere,il ne nage pas partout,
 ach,walks-desc,"Tagged an epaulette shark. Yes, it walks. On its fins. Sharks do that.","Marqué un requin-épaulette. Oui, il marche. Sur ses nageoires. Les requins font ça.",
@@ -65,7 +65,7 @@ ach,first-name-desc,"Gave every tagged shark a nickname. They're individuals, af
 ach,best-cousin-name,Best Cousin Ever,Le meilleur cousin du monde,Avery to check gender-neutral form — draft uses masculine 'cousin'.
 ach,best-cousin-breadcrumb,name one after someone who matters,donner à l'un le nom de quelqu'un qui compte,Avery to check gender-neutral form — draft uses masculine 'cousin'.
 ach,best-cousin-desc,Named a shark Sarah. She noticed. She's still talking about it.,Nommé un requin Sarah. Elle l'a remarqué. Elle en parle encore.,Avery to check gender-neutral form — draft uses masculine 'cousin'.
-ach,ocean-hopper-name,Ocean Hopper?,Sauteur d'océans ?,
+ach,ocean-hopper-name,Ocean Hopper?,D'un océan à l'autre,"Mira: natural, gender-neutral."
 ach,ocean-hopper-breadcrumb,the whole ocean is waiting,tout l'océan t'attend,
 ach,ocean-hopper-desc,Ran expeditions in every region. The whole ocean is your office now.,Mené des expéditions dans chaque région. Tout l'océan est ton bureau maintenant.,
 ach,full-buffet-name,Full Buffet,Buffet complet,
@@ -74,37 +74,37 @@ ach,full-buffet-desc,Used every bait type. The sharks appreciate the variety. Pr
 ach,every-one-counts-name,Every One Counts,Chacun compte,
 ach,every-one-counts-breadcrumb,a rare encounter,une rencontre rare,
 ach,every-one-counts-desc,Tagged an Endangered or Critically Endangered species. This data matters.,Marqué une espèce en danger ou en danger critique d'extinction. Ces données comptent.,
-ach,sea-legs-name,Sea Legs,Pied marin,
+ach,sea-legs-name,Sea Legs,Le pied marin,Mira: established expression.
 ach,sea-legs-breadcrumb,ten trips out,dix sorties en mer,
-ach,sea-legs-desc,Completed 10 expeditions. You're not a landlubber anymore.,Terminé 10 expéditions. Tu n'es plus un terrien.,
-ach,full-fathom-name,Full Fathom,Pleine brasse,
+ach,sea-legs-desc,Completed 10 expeditions. You're not a landlubber anymore.,Terminé 10 expéditions. Tu as maintenant le pied marin !,"Mira: 'terrien' read as extraterrestrial, not landlubber."
+ach,full-fathom-name,Full Fathom,Des hauts-fonds aux abysses,Mira pick: first option.
 ach,full-fathom-breadcrumb,from sunlight to midnight,de la lumière du soleil à minuit,
 ach,full-fathom-desc,"Tagged sharks in all four depth zones, from the sunlit surface to the deep dark.","Marqué des requins dans les quatre zones de profondeur, de la surface ensoleillée aux ténèbres profondes.",
-ach,finished-name,Fin-ished!,Fin-i !,
+ach,finished-name,Fin-ished!,Mission accomplie !,Mira pick: no forced fin pun in French.
 ach,finished-breadcrumb,finish what you started,finis ce que tu as commencé,
-ach,finished-desc,"Tagged the full roster. Every shark, every region. The collection book is complete.","Marqué tout l'effectif. Chaque requin, chaque région. Le carnet de collection est complet.",Uses 'carnet de collection' to match the Batch 2 Collection heading (Mira's heading-noun consistency point).
+ach,finished-desc,"Tagged the full roster. Every shark, every region. The collection book is complete.","Marqué toutes les espèces de requins. Chaque requin, chaque région. Le carnet de collection est complet.",Mira: 'effectif' sounded like a staff roster; roster size not hardcoded.
 ach,pen-pal-name,Pen Pal,Correspondants,
 ach,pen-pal-breadcrumb,keep bumping into the same shark,retrouver toujours le même requin,
 ach,pen-pal-desc,Re-sighted the same individual shark three times. You two are basically colleagues now.,Réobservé trois fois le même requin. Vous êtes pratiquement collègues maintenant.,
-ach,off-map-name,Off the Map,Hors carte,
+ach,off-map-name,Off the Map,Au-delà de la carte,Mira: more natural than 'Hors carte'.
 ach,off-map-breadcrumb,beyond the known map,au-delà de la carte connue,
 ach,off-map-desc,Tagged your first shark in waters that had to be earned — the Galápagos or South Africa.,Marqué ton premier requin dans des eaux qu'il a fallu mériter — les Galápagos ou l'Afrique du Sud.,
 ach,every-shade-name,Every Shade,Toutes les nuances,IUCN → UICN in French (Batch 2).
 ach,every-shade-breadcrumb,from least concern to critically endangered,de préoccupation mineure à danger critique,IUCN → UICN in French (Batch 2).
-ach,every-shade-desc,"Tagged sharks spanning every IUCN conservation status. The full spectrum, from secure to critical.","Marqué des requins couvrant tous les statuts de conservation de l'UICN. Tout le spectre, du plus sûr au plus critique.",IUCN → UICN in French (Batch 2).
+ach,every-shade-desc,"Tagged sharks spanning every IUCN conservation status. The full spectrum, from secure to critical.","Marqué des requins couvrant tous les statuts de conservation de l'UICN, de préoccupation mineure à en danger critique.",Mira: official UICN wording; full check in Research batch.
 ach,bruce-name,You Named Him WHAT?,Tu l'as appelé COMMENT ?,HIDDEN until unlocked — breadcrumb is the clue only; do NOT reveal the requirement in French either. Description shows only after unlock.
 ach,bruce-breadcrumb,name a shark the most popular shark name,donner à un requin le nom de requin le plus populaire,HIDDEN until unlocked — breadcrumb is the clue only; do NOT reveal the requirement in French either. Description shows only after unlock.
-ach,bruce-desc,Named a shark Bruce and discovered how deep the rabbit hole goes.,Nommé un requin Bruce et découvert à quel point le terrier est profond.,HIDDEN until unlocked — breadcrumb is the clue only; do NOT reveal the requirement in French either. Description shows only after unlock.
+ach,bruce-desc,Named a shark Bruce and discovered how deep the rabbit hole goes.,Nommé un requin Bruce et découvert jusqu'où cette histoire pouvait aller.,Mira: idiomatic; hidden requirement still unrevealed in breadcrumb.
 ach,white-whale-name,Deep-Sea Unicorn,Licorne des abysses,
 ach,white-whale-breadcrumb,the rarest shark in the sea,le requin le plus rare de la mer,
-ach,white-whale-desc,Tagged a megamouth shark. Only around 300 have ever been documented. This is the big one.,Marqué un requin grande-gueule. Seulement environ 300 ont jamais été documentés. C'est le gros lot.,
-ach,whaaaaale-name,WHAAAAAAALE,BALEIIIIINE,
+ach,white-whale-desc,Tagged a megamouth shark. Only around 300 have ever been documented. This is the big one.,Marqué un requin grande-gueule. On n'en a documenté qu'environ 300. C'est le gros lot.,Mira: natural syntax; count is time-sensitive — do not freeze a precise count indefinitely.
+ach,whaaaaale-name,WHAAAAAAALE,REQUIN-BALEIIIIINE !,"Mira pick: clarifies it is a shark, not a whale."
 ach,whaaaaale-breadcrumb,the biggest fish in the sea,le plus gros poisson de la mer,
 ach,whaaaaale-desc,"Tagged a whale shark. The biggest fish in the ocean — and every spot pattern is unique, like a fingerprint.","Marqué un requin-baleine. Le plus gros poisson de l'océan — et chaque motif de taches est unique, comme une empreinte digitale.",
 ach,dedicated-name,Dedicated,Dévoué,
 ach,dedicated-breadcrumb,learn everything there is to learn,tout apprendre de ce qu'il y a à apprendre,
-ach,dedicated-desc,Unlocked every extra fact obtainable by following sharks. You didn't just tag them — you got to know them.,Débloqué chaque fait supplémentaire obtenable en suivant des requins. Tu ne les as pas seulement marqués — tu as appris à les connaître.,
-ach,certified-nerd-name,Certified Shark Nerd,Nerd des requins certifié,
+ach,dedicated-desc,Unlocked every extra fact obtainable by following sharks. You didn't just tag them — you got to know them.,Découvert toutes les informations supplémentaires accessibles en observant et en suivant les requins. Tu ne les as pas seulement marqués — tu as appris à les connaître.,"Mira: matches Batch 2 découvertes terminology, avoids clunky calque."
+ach,certified-nerd-name,Certified Shark Nerd,Incollable sur les requins,Mira pick: intentional badge-style phrase over literal 'Nerd des requins certifié'.
 ach,certified-nerd-breadcrumb,finish everything else first,finis tout le reste d'abord,
 ach,certified-nerd-desc,Completed every other visible achievement. Officially a certified shark nerd — wear it proudly.,Terminé tous les autres succès visibles. Officiellement un nerd des requins certifié — porte-le fièrement.,
 note,scope,—,—,"NOT in this batch: win-ceremony Sarah dialogue (beats 2 + 5, derpy award thread) — Sarah batch (Batch 8); welcome-tour slide texts — separate tour pass, pending the English tour finalizing (tour is still in QA in English); What's New version-history content — changes every release, flagged for a separate pass if needed; Research tab content — Batch 7; Phone/Sarah content — Batch 8. Certificate IMAGE is already French and is not part of this batch; only its surrounding UI chrome is here."
