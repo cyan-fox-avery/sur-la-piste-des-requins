@@ -43,7 +43,16 @@ the big ones.**
    overlay and Batch 1 region labels — do not re-translate those
    here. NOT in this batch: species names (Research) or Collection
    detail labels (Batch 2).
-4. **Logbook**
+4. **Logbook — in PR #4, under review (2026-10-21)**
+   Workbook: `translation-batch-04-logbook.csv` (32 rows, draft
+   Québec French filled, awaiting Avery's corrections).
+   Scope: Logbook tab, heading + intro, outcome/region/species/
+   date filters, empty states, encounter-result labels, Repeat
+   this plan, Show older trips. Reuses Batch 1 plan vocabulary
+   in entry plan lines; species names stay for Research.
+   Dynamic per-trip narrative (conditions, field notes, pin
+   hints) is NOT fixed UI text — flagged for a later narrative
+   pass if needed.
 5. **Archive**
 6. **Achievements + global chrome** (header, tab labels, win ceremony,
    footer/reset — certificate already has its French version)
