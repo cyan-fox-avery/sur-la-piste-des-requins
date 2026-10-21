@@ -1,0 +1,21 @@
+category,key,english,quebec_french,notes
+ui,tab-archive,Archive,Archives,Tab label.
+ui,archive-heading,Wild Archive,Archives sauvages,
+ui,archive-intro,"You know these sharks now. Here they really are — real photographs and footage of the animals you tagged and released, hand-picked for this archive. A few entries also include credited historical or scientific illustrations.","Tu connais ces requins maintenant. Les voici vraiment — de vraies photographies et vidéos des animaux que tu as marqués et relâchés, choisies à la main pour ces archives. Quelques fiches incluent aussi des illustrations historiques ou scientifiques créditées.",
+ui,archive-search-placeholder,Search your tagged sharks…,Rechercher parmi tes requins marqués…,
+ui,archive-search-aria,Search your tagged sharks,Rechercher parmi tes requins marqués,
+ui,sort-group-aria,Sort archive,Trier les archives,
+ui,sort-name,Name A–Z,Nom A–Z,
+ui,sort-newest,Newest first,Plus récents d'abord,"Sort uses taggedAt timestamp, not the display date string (same safeguard as Logbook)."
+ui,sort-oldest,Oldest first,Plus anciens d'abord,
+ui,sort-iucn,IUCN status,Statut UICN,"Uses Batch 2 UICN, not IUCN, in French."
+ui,new-photo-badge,new photo,nouvelle photo,aria-label on the tab badge.
+entry,your-shark,Your shark,Ton requin,Followed by nickname (if any) + research ID + tagged date/location.
+entry,tagged-line,— tagged {date} at {location},— marqué le {date} à {location},Date must be formatted fr-CA from the stored timestamp at build time (see Logbook obligation); location = Batch 1 region label.
+entry,close-details-aria,Close {name} details,Fermer les détails de {name},
+entry,iucn-title,IUCN Red List: {status},Liste rouge de l'UICN : {status},Badge title; status names themselves are in the Research batch.
+entry,media-coming-soon,📸 Wild media coming soon — being curated.,📸 Médias sauvages bientôt disponibles — en cours de sélection.,Shown when an entry has no assets yet.
+credit,credit-pd,Credit,Crédit,Used instead of © for public-domain / CC0 assets.
+credit,trimmed-note,trimmed from original,extrait de l'original,Appended after the license in the credit line.
+credit,source-wikimedia,Wikimedia Commons,Wikimedia Commons,"Proper name, kept as-is; default source label."
+note,scope,—,—,"NOT in this batch: per-asset captions, credits, license notes and labels in archive-data.js (curated media data, one set per species/asset — not fixed UI chrome). Translating those is a separate media-data pass, flagged here so the Archive does not ship with English captions under French chrome. Species common/Latin names and IUCN status names stay for Research; IUCN badge abbreviations stay as-is in this batch."
