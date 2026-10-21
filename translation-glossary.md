@@ -23,6 +23,12 @@ the same concept in a later batch without flagging it.
 | shearwaters | puffins | French puffins ARE shearwaters; English puffin = macareux — do NOT "correct" to macareux |
 | twilight depths (game: 100–400 m) | zone crépusculaire | Good French; do NOT imply exact formal oceanographic boundaries — game ranges stay intact |
 | breach (verb) | bondir hors de l'eau | e.g. baleines à bosse bondissent hors de l'eau |
+| collection book | livre de collection | |
+| nickname | surnom | Player-given name for a tagged shark |
+| re-sighting | réobservation | |
+| IUCN (body) | UICN | In French, IUCN → UICN; status words themselves are translated in the Research batch |
+| tracking (a shark) | suivi | e.g. "Suivre ce requin", "Suivi sur la carte" |
+| tag-along insights | aperçus du marquage | Draft form in Batch 2 — Avery to confirm; insight content lives in Research batch |
 
 ## Implementation guardrails (Mira, PR #1 review)
 
