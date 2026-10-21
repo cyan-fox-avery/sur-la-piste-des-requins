@@ -53,7 +53,15 @@ the big ones.**
    Dynamic per-trip narrative (conditions, field notes, pin
    hints) is NOT fixed UI text — flagged for a later narrative
    pass if needed.
-5. **Archive**
+5. **Archive — in PR #5, under review (2026-10-21)**
+   Workbook: `translation-batch-05-archive.csv` (20 rows, draft
+   Québec French filled, awaiting Avery's corrections).
+   Scope: Archive tab chrome, heading + intro, search, sort
+   chips, entry lines, credit-line wording. NOT in this batch:
+   per-asset captions/credits/license notes in archive-data.js
+   — a separate media-data pass, flagged in the workbook so the
+   Archive does not ship with English captions under French
+   chrome. Species names + IUCN status names stay for Research.
 6. **Achievements + global chrome** (header, tab labels, win ceremony,
    footer/reset — certificate already has its French version)
 7. **Research — LAST (big one)** — field-guide UI + all 50 sharks'
