@@ -24,7 +24,15 @@ the big ones.**
    Mira's review; reuse its forms in later batches).
    Note: this vocab also feeds the Research filters, so settling it
    first de-risks the later Research batch.
-2. **Collection**
+2. **Collection — DRAFTED 2026-10-21, not yet in a PR**
+   Workbook: `translation-batch-02-collection.csv` (52 rows, draft
+   Québec French filled, awaiting Avery's corrections).
+   Scope: Collection tab chrome, detail-card labels, Field sightings,
+   derpy shelf, and the tracking overlay (shared with Map — do not
+   re-translate it in the Map batch). NOT in this batch: per-shark
+   data (common names, research, hook, bonus, conservation, insights
+   — those live in the Research batch) and Sarah-voice fields
+   (cheer, opener — those live in the Sarah batch last).
 3. **Map**
 4. **Logbook**
 5. **Archive**
