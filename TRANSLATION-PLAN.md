@@ -94,3 +94,36 @@ and reviewed — not when a draft exists. No batch ships into a build
 on its own; batches accumulate until Avery says the French edition
 build itself is authorized. (Translation work starting does not
 by itself authorize a French build or a hub link.)
+
+## Build integration obligations (from Mira's Batch 4 review, 2026-10-21)
+These must be satisfied before a French build ships — they are not
+optional polish, and they are not solved by the workbooks alone:
+
+1. **Dates (Logbook):** trips store a preformatted English date string
+   plus a numeric `ts`. The French build must format dates from `ts`
+   with `fr-CA` at render time, with a sensible fallback for legacy
+   records lacking `ts`. Do not print the stored English string.
+2. **Encounter-result enum:** saved `result` values are English keys
+   (`tagged` / `resighted` / `followed` / `watched`). The build needs
+   an explicit enum-to-localized-label lookup (marqué / réobservé /
+   suivi / observé). Do NOT translate the persisted keys.
+3. **Narrative + legacy pass (REQUIRED):** `SEA_CONDITIONS`,
+   `FIELD_NOTES`, `PIN_HINTS`, generated `pinHintForTrip()` strings
+   and `LEGACY_LURES` display strings can be saved with a trip, so
+   translating only fixed UI strings would leave saved pages mixing
+   English and French. Scope: climate-specific conditions, field
+   notes, pin hints (preserve their observational, non-spoiler role
+   and regional accuracy), and legacy lure display text (chum / seal
+   / krill, plus the no-lure label already in Batch 4).
+4. **Date-filter behaviour:** filters use timestamps, not display
+   strings; entries without `ts` are excluded when time filtering is
+   active. The French UI must not accidentally change this.
+5. **Nickname safeguard:** only a positively research-ID-matched
+   individual earns a displayed nickname; nicknames themselves stay
+   the player's own text; all other display values use the approved
+   localized vocab.
+6. **Source-version delta check:** batches were extracted from
+   different English versions (Batches 1–3 from v2.5.11, Batch 4 from
+   v2.7.1). Before building French, diff the English source strings
+   against every workbook so strings added or changed between batches
+   do not go untranslated.
