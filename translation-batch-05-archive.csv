@@ -1,7 +1,7 @@
 category,key,english,quebec_french,notes
 ui,tab-archive,Archive,Archives,Tab label.
 ui,archive-heading,Wild Archive,Archives sauvages,
-ui,archive-intro,"You know these sharks now. Here they really are — real photographs and footage of the animals you tagged and released, hand-picked for this archive. A few entries also include credited historical or scientific illustrations.","Tu connais ces requins maintenant. Les voici vraiment — de vraies photographies et vidéos des animaux que tu as marqués et relâchés, choisies à la main pour ces archives. Quelques fiches incluent aussi des illustrations historiques ou scientifiques créditées.",
+ui,archive-intro,"You know these sharks now. Here they really are — real photographs and footage of the animals you tagged and released, hand-picked for this archive. A few entries also include credited historical or scientific illustrations.","Tu connais maintenant ces requins dans le jeu. Découvre-les dans la vraie vie grâce à des photos et des vidéos soigneusement sélectionnées de leurs espèces. Certaines fiches présentent aussi des illustrations historiques ou scientifiques, avec leurs sources.","Mira 2026-10-21 (IMPORTANT, species-vs-individual honesty): draft implied photos were of the player's very individual; Archive shows the same SPECIES, generally not the tagged individual. English original has the same misreading — flagged for the English game too."
 ui,archive-search-placeholder,Search your tagged sharks…,Rechercher parmi tes requins marqués…,
 ui,archive-search-aria,Search your tagged sharks,Rechercher parmi tes requins marqués,
 ui,sort-group-aria,Sort archive,Trier les archives,
@@ -9,13 +9,13 @@ ui,sort-name,Name A–Z,Nom A–Z,
 ui,sort-newest,Newest first,Plus récents d'abord,"Sort uses taggedAt timestamp, not the display date string (same safeguard as Logbook)."
 ui,sort-oldest,Oldest first,Plus anciens d'abord,
 ui,sort-iucn,IUCN status,Statut UICN,"Uses Batch 2 UICN, not IUCN, in French."
-ui,new-photo-badge,new photo,nouvelle photo,aria-label on the tab badge.
+ui,new-photo-badge,new photo,nouveau média,"Mira 2026-10-21: 'nouvelle photo' only if the badge is photo-only; its trigger was not confirmed photo-only, so the broader 'nouveau média' is safer. Alternatives: 'nouveau contenu'."
 entry,your-shark,Your shark,Ton requin,Followed by nickname (if any) + research ID + tagged date/location.
-entry,tagged-line,— tagged {date} at {location},— marqué le {date} à {location},Date must be formatted fr-CA from the stored timestamp at build time (see Logbook obligation); location = Batch 1 region label.
+entry,tagged-line,— tagged {date} at {location},— marqué le {date} · lieu de marquage : {location},Mira 2026-10-21: 'marqué le {date} à {location}' is ungrammatical with regions like Mer des Caraïbes / Eaux arctiques. Location-neutral form. Date from taggedAt fr-CA + region label from region key at build time (see plan obligations).
 entry,close-details-aria,Close {name} details,Fermer les détails de {name},
 entry,iucn-title,IUCN Red List: {status},Liste rouge de l'UICN : {status},Badge title; status names themselves are in the Research batch.
-entry,media-coming-soon,📸 Wild media coming soon — being curated.,📸 Médias sauvages bientôt disponibles — en cours de sélection.,Shown when an entry has no assets yet.
+entry,media-coming-soon,📸 Wild media coming soon — being curated.,📸 Images à venir — sélection en cours.,"Mira 2026-10-21: 'Médias sauvages bientôt disponibles' sounded like the media were feral; 'Images' covers photos, videos AND illustrations, which the Archive includes."
 credit,credit-pd,Credit,Crédit,Used instead of © for public-domain / CC0 assets.
-credit,trimmed-note,trimmed from original,extrait de l'original,Appended after the license in the credit line.
+credit,trimmed-note,trimmed from original,extrait de la vidéo originale,"Mira 2026-10-21: 'extrait de l'original' was vague; verified — the trimmed:true assets are videos with clip boundaries (lemon, whitetip), so the video wording is accurate. Preserve that a selected segment is shown."
 credit,source-wikimedia,Wikimedia Commons,Wikimedia Commons,"Proper name, kept as-is; default source label."
-note,scope,—,—,"NOT in this batch: per-asset captions, credits, license notes and labels in archive-data.js (curated media data, one set per species/asset — not fixed UI chrome). Translating those is a separate media-data pass, flagged here so the Archive does not ship with English captions under French chrome. Species common/Latin names and IUCN status names stay for Research; IUCN badge abbreviations stay as-is in this batch."
+note,scope,—,—,"UPDATED 2026-10-21 (Mira): media-data pass is a TRACKED REQUIRED pre-release gate, not an optional note — see TRANSLATION-PLAN.md 'Build integration obligations' (Archive items). Captions must be localized in figcaption + alt + aria roles, with creator names, source links, license IDs/URLs and the PD/CC0 distinction preserved."
