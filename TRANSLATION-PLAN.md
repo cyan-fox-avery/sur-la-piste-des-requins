@@ -35,7 +35,14 @@ the big ones.**
    data (common names, research, hook, bonus, conservation, insights
    — those live in the Research batch) and Sarah-voice fields
    (cheer, opener — those live in the Sarah batch last).
-3. **Map**
+3. **Map — in PR #3, under review (2026-10-21)**
+   Workbook: `translation-batch-03-map.csv` (23 rows, draft Québec
+   French filled, awaiting Avery's corrections).
+   Scope: Map tab chrome, toolbar, empty state, credit + honesty
+   note, marker titles, and marker popup. Reuses Batch 2 tracking
+   overlay and Batch 1 region labels — do not re-translate those
+   here. NOT in this batch: species names (Research) or Collection
+   detail labels (Batch 2).
 4. **Logbook**
 5. **Archive**
 6. **Achievements + global chrome** (header, tab labels, win ceremony,
