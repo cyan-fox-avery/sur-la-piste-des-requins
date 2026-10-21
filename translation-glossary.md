@@ -23,6 +23,18 @@ the same concept in a later batch without flagging it.
 | shearwaters | puffins | French puffins ARE shearwaters; English puffin = macareux — do NOT "correct" to macareux |
 | twilight depths (game: 100–400 m) | zone crépusculaire | Good French; do NOT imply exact formal oceanographic boundaries — game ranges stay intact |
 | breach (verb) | bondir hors de l'eau | e.g. baleines à bosse bondissent hors de l'eau |
+| collection book | carnet de collection officiel | Chosen 2026-10-21 from Mira's options (carnet favored for a personal field book); supersedes draft 'livre de collection officiel' |
+| nickname | surnom | Player-given name for a tagged shark |
+| re-sighting | réobservation | |
+| IUCN (body) | UICN | In French, IUCN → UICN; status words themselves are translated in the Research batch |
+| tracking (a shark) | suivi | e.g. "Suivre ce requin", "Suivi sur la carte" |
+| tag-along insights | découvertes grâce au marquage | Chosen 2026-10-21 from Mira's options; short form 'découvertes' if space is tight. Supersedes draft 'aperçus du marquage' (sounded like visual glimpses). Completion: 'Toutes les découvertes obtenues — 100 %' |
+
+| derpy sharks | requins zinzins | Avery + Mira decision 2026-10-21, Avery-approved: affectionate/playful, more natural than derpy untranslated or loufoques |
+| derpy mode | mode zinzin | e.g. "Mode zinzin : activé / désactivé"; claim = "Réclamer ta récompense zinzin"; unlock = "Tu as débloqué les requins zinzins !" — keep réclamer (claiming) distinct from débloquer (initial unlock) |
+| PSAT (pop-up satellite archival tag) | balises d’archivage détachables | Explanatory form: they record data, detach, float to the surface, then transmit by satellite. Do NOT use "balises satellites archivées émergentes" |
+| common sawshark (Pristiophorus cirratus) | requin-scie à long nez | FAO French name (FishBase), verified against Tag Along sharks-data.js. Flagged for Research batch to prevent drift; do not translate "common" literally |
+| last ping (track) | dernier point du trajet | Neutral form for illustrative tracks; "dernier signal" only when a signal really exists |
 
 ## Implementation guardrails (Mira, PR #1 review)
 
