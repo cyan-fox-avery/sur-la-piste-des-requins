@@ -1,0 +1,61 @@
+category,key,english,quebec_french,notes
+ui,tab-expedition,Expedition,Expédition,
+ui,expedition-heading,Plan an expedition,Planifier une expédition,
+ui,expedition-intro,"Choose the water — region, depth, bait, and method. Your research is your targeting: the right combination brings the right sharks. No target species; the sea decides who shows up.","Choisis ta région — région, profondeur, appât et méthode. Tes recherches te montrent où chercher : la bonne combinaison attire les bons requins. Pas d'espèce ciblée; c'est la mer qui décide qui se présente.","Mira 2026-10-21: 'plan d'eau' felt odd for an ocean location; 'ciblage' polished out (Mira flagged it as technical/corporate, wording is Roman's draft for Avery to check). tu kept."
+ui,planner-region,Region,Région,
+ui,planner-depth,Depth,Profondeur,
+ui,planner-bait,Bait,Appât,
+ui,planner-method,Method,Méthode,
+ui,method-opt-label,Attractant,Attractant,
+ui,launch,🚀 Launch expedition,🚀 Lancer l'expédition,
+ui,quick-pace,⚡ Quick pace — shorter beats between log lines,⚡ Rythme rapide — des intervalles plus courts entre les lignes du journal,
+ui,unlock-10,🔒 {region} — unlocks at 10 tags,🔒 {region} — se débloque à 10 marquages,DO NOT TRANSLATE latin names; keep {region} placeholder
+ui,unlock-15,🔒 {region} — unlocks at 15 tags,🔒 {region} — se débloque à 15 marquages,DO NOT TRANSLATE latin names; keep {region} placeholder
+ui,unlock-25,🔒 {region} — unlocks at 25 tags,🔒 {region} — se débloque à 25 marquages,DO NOT TRANSLATE latin names; keep {region} placeholder
+ui,unlock-35,🔒 {region} — unlocks at 35 tags,🔒 {region} — se débloque à 35 marquages,DO NOT TRANSLATE latin names; keep {region} placeholder
+region,caribbean,Caribbean Sea,Mer des Caraïbes,
+region-note,caribbean,A green sea turtle glides past the reef.,Une tortue verte glisse le long du récif.,Mira 2026-10-21: natural standard French common name.
+region,north-carolina,"Outer Banks, North Carolina","Outer Banks, Caroline du Nord",
+region-note,north-carolina,"Below, the dark shapes of old wrecks rise from the sand — the Graveyard of the Atlantic.","En bas, les formes sombres de vieilles épaves émergent du sable — le cimetière de l'Atlantique.",
+region,philippines,Philippines,Philippines,
+region-note,philippines,A manta ray loops lazily overhead.,Une raie manta tourne paresseusement au-dessus de nous.,
+region,maldives,Maldives,Maldives,
+region-note,maldives,Dolphins click and whistle in the distance.,Des dauphins cliquent et sifflent au loin.,
+region,japan,"Sagami Bay, Japan","Baie de Sagami, Japon",
+region-note,japan,A lanternfish flickers in the dark.,Un poisson-lanterne scintille dans le noir.,
+region,open-atlantic,Open Atlantic,Atlantique ouvert,
+region-note,open-atlantic,Shearwaters wheel above the swells.,Des puffins tournent au-dessus des vagues.,Mira 2026-10-21 CONFIRMED: keep 'puffins' for shearwaters — French puffins ARE shearwaters; English puffin = macareux. Do NOT 'correct' to macareux.
+region,cornwall,"Cornwall, UK","Cornouailles, Royaume-Uni",
+region-note,cornwall,Gannets dive-bomb the water around the boat.,Des fous de Bassan plongent autour du bateau.,
+region,papua-new-guinea,Papua New Guinea,Papouasie-Nouvelle-Guinée,
+region-note,papua-new-guinea,"The reef flat stretches out, impossibly clear and shallow.","Le platier s'étend, incroyablement clair et peu profond.",
+region,galapagos,Galápagos Islands,Îles Galápagos,
+region-note,galapagos,Marine iguanas slip into the water nearby.,Des iguanes marins glissent dans l'eau tout près.,
+region,south-africa,South Africa,Afrique du Sud,
+region-note,south-africa,Cape fur seals bark on the rocks above.,Des otaries à fourrure du Cap aboient sur les rochers au-dessus.,
+region,east-australia,Eastern Australia,Est de l'Australie,
+region-note,east-australia,Humpbacks breach beyond the headland.,Des baleines à bosse bondissent hors de l'eau au-delà du cap.,Mira 2026-10-21: better captures a breach.
+region,california,California Coast,Côte de la Californie,
+region-note,california,Sea lions porpoise through the kelp beds.,Des lions de mer nagent en marsouinant dans les forêts de varech.,"Mira 2026-10-21: more evocative, natural phrasing for large kelp habitat."
+region,arctic,Arctic Waters,Eaux arctiques,
+region-note,arctic,"Icebergs drift past, impossibly blue at the waterline.","Des icebergs dérivent, incroyablement bleus à la ligne de flottaison.",
+depth,surface,Surface waters (0–30 m),Eaux de surface (0–30 m),
+depth,reef,Reef & shallows (30–100 m),Récifs et eaux peu profondes (30–100 m),
+depth,twilight,Twilight depths (100–400 m),Zone crépusculaire (100–400 m),Mira 2026-10-21: 'Zone crépusculaire' is good French; do NOT imply exact formal oceanographic boundaries — game's 100–400 m ranges stay intact.
+depth,deep,Deep dark (400–1000 m),Grands fonds obscurs (400–1000 m),
+bait,crustaceans,Crabs & lobster,Crabes et homards,
+bait,squid,Squid,Calmars,
+bait,schooling-fish,Schooling fish (mackerel),Poissons en bancs (maquereaux),
+bait,plankton,"Plankton bloom — no bait, follow the bloom","Floraison de plancton — pas d'appât, suis la floraison",
+bait,tuna,Tuna / large oily fish,Thon / gros poissons gras,
+bait,ray,Ray,Raie,
+bait,urchins,Urchins & shellfish,Oursins et coquillages,
+method,attract,Attract — scent in the water,Attirer — une odeur dans l'eau,"Mira 2026-10-21: 'Attractant' is fine as the general UI term; it relates to the specific mixture as general term → specific 'Mélange attractif à l'huile de poisson', so method/sublabel/options read as one set."
+method-sublabel,attract,Attractant,Attractant,See method/attract note: general 'Attractant' → specific mixture below.
+method-opt-attract,none,No attractant,Aucun attractant,
+method-opt-attract,chum,Fish-oil chum,Mélange attractif à l'huile de poisson,"Mira 2026-10-21: 'chum' in Québec French strongly suggests a boyfriend; test UI width, shorten if needed."
+method,aggregation,Find the aggregation,Repérer un rassemblement,Mira 2026-10-21: more idiomatic for searching for an animal gathering; use 'rassemblement' consistently for a shark gathering.
+method-sublabel,aggregation,Approach,Approche,
+method-opt-aggregation,boat,Boat survey of the bloom,Repérage en bateau des concentrations de plancton,Mira 2026-10-21: previous phrasing was awkward; this says what the player is actually doing.
+method-opt-aggregation,plane,Spotter-plane survey,Relevé en avion d'observation,
+method-opt-aggregation,network,Local sightings network,Réseau local d'observations,
