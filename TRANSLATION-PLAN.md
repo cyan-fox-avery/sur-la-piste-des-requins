@@ -74,8 +74,7 @@ the big ones.**
    win-ceremony Sarah dialogue (Batch 8), welcome-tour slides
    (separate tour pass, English tour still in QA), What's New
    version-history content, Research (Batch 7), Phone/Sarah
-   (Batch 8). (header, tab labels, win ceremony,
-   footer/reset — certificate already has its French version)
+   (Batch 8).
 7. **Research — LAST (big one)** — field-guide UI + all 50 sharks'
    common names, research notes, hooks, bonuses, conservation notes.
    Latin names do NOT change. Research-tab art is Latin-only, so it
