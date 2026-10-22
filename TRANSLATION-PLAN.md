@@ -62,8 +62,19 @@ the big ones.**
    — a separate media-data pass, flagged in the workbook so the
    Archive does not ship with English captions under French
    chrome. Species names + IUCN status names stay for Research.
-6. **Achievements + global chrome** (header, tab labels, win ceremony,
-   footer/reset — certificate already has its French version)
+6. **Achievements + global chrome — in PR #6, under review (2026-10-21)**
+   Workbook: `translation-batch-06-achievements-chrome.csv`
+   (109 rows, draft Québec French filled, awaiting Avery's
+   corrections). Scope: header + nav + remaining tab labels,
+   Achievements tab + unlock overlay + trophy shelf, certificate
+   UI chrome (image itself already French), win finale + ack +
+   region-unlock overlays, footer + reset overlay, all 21
+   achievements (name + breadcrumb clue + description, incl.
+   hidden Bruce + meta Certified Shark Nerd). NOT in this batch:
+   win-ceremony Sarah dialogue (Batch 8), welcome-tour slides
+   (separate tour pass, English tour still in QA), What's New
+   version-history content, Research (Batch 7), Phone/Sarah
+   (Batch 8).
 7. **Research — LAST (big one)** — field-guide UI + all 50 sharks'
    common names, research notes, hooks, bonuses, conservation notes.
    Latin names do NOT change. Research-tab art is Latin-only, so it
