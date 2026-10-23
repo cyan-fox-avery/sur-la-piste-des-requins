@@ -75,8 +75,19 @@ the big ones.**
    (separate tour pass, English tour still in QA), What's New
    version-history content, Research (Batch 7), Phone/Sarah
    (Batch 8).
-7. **Research — LAST (big one)** — field-guide UI + all 50 sharks'
-   common names, research notes, hooks, bonuses, conservation notes.
+7. **Research — LAST (big one) — DRAFTED 2026-10-23, not yet in a PR**
+   Workbook: `translation-batch-07-research.csv` (437 rows, draft
+   Québec French filled, awaiting Avery's corrections; source
+   English main v2.7.11-beta, final research text, zero 'Game plan:'
+   lines). Scope: Research chrome (35 rows) + per-shark name /
+   status / research / hook / bonus / conservation (50 sharks) +
+   101 Tag-along insights (SECRET_FACTS). NOT in this batch:
+   Sarah cheer/opener (Batch 8), nameIdeas nickname placeholders
+   (flagged separately), sketchCap (unused in UI). Latin names
+   do NOT change. 14 common names flagged 'to verify' in the
+   workbook notes; salmon-shark English source has mojibake
+   em-dashes (â) needing an English source fix, not a French
+   workaround.
    Latin names do NOT change. Research-tab art is Latin-only, so it
    needs no translation. Research images are selective, not all 50
    (see FRENCH-ASSETS-AUDIT.md).
