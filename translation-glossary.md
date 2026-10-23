@@ -59,3 +59,7 @@ the same concept in a later batch without flagging it.
   widths instead of cutting meaning to make a label fit.
 - No build, deployment, or Games Hub link is authorized by these
   workbooks.
+
+| IUCN status names | Préoccupation mineure / Quasi menacée / Vulnérable / En danger / En danger critique | Official UICN French status names (Batch 7); IUCN → UICN in French |
+| Field guide | Guide de terrain | Research tab heading (Batch 7) |
+| Tag-along insights | (heading in detail card — see Batch 7 chrome/notes) | Insight pool = SECRET_FACTS + hook + bonus, 201 total |
