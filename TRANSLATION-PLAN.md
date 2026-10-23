@@ -75,7 +75,7 @@ the big ones.**
    (separate tour pass, English tour still in QA), What's New
    version-history content, Research (Batch 7), Phone/Sarah
    (Batch 8).
-7. **Research — LAST (big one) — DRAFTED 2026-10-23, not yet in a PR**
+7. **Research — LAST (big one) — in PR #7, under review (2026-10-23)**
    Workbook: `translation-batch-07-research.csv` (437 rows, draft
    Québec French filled, awaiting Avery's corrections; source
    English main v2.7.11-beta, final research text, zero 'Game plan:'
