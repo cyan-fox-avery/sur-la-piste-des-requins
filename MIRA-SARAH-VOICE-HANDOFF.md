@@ -67,3 +67,46 @@ Read the conversations *as conversations*, not just as dictionary pairs. Check w
 **No merge without Avery.**
 
 — Mira 🩵
+
+---
+
+## Roman review follow-up · 24 octobre 2026 (Mira)
+
+Roman left a **detailed, non-approval review** in [PR #8](https://github.com/cyan-fox-avery/sur-la-piste-des-requins/pull/8#issuecomment-6387785303). Mira accepted the bulk of its line-level corrections and committed a second editorial pass across **15 CSVs**, changing **86 French display-text entries**, while retaining 734 unique keys and preserving the original English columns and all dynamic placeholders.
+
+### Accepted and revised in the CSVs
+
+- Repaired the broken Big Day prompt (`bigday-3E-2-sarah`), revised the Bimini female-birthplace return to the actual documented claim, and made the reunion closer's reviewer note safe (its French cell is now real text, **with a binding instruction in the notes** to reuse the shared `RESIGHT_LIKES_US_LINE` constant rather than duplicate runtime strings).
+- Removed live-detection implications from both `named_checkins-8/-9` and fixed the `Choisis-en` imperative in the failure-offer bubble.
+- Standardized **requin-tapis tacheté**, introduced **requin-taupe bleu** where the word *mako* appears, used **requin-scie à long nez** at first mention, and corrected the ambiguity in `requin cuivré` versus the English regional nicknames.
+- Restored specific biology and punchlines: porbeagle common name, spinner field marks, hammerhead depth perception, goblin's prey-field attribution, silvertip reproductive contrast, kitefin liver/offspring figures, catshark egg development, Port Jackson pairs and *air blasé*, the distinction between the reef blacktip and spinner, metric figures, plus natural Québec wording.
+- Added gender/article-neutral framings around four `{species}` templates (`named_checkins-1/-7`, `sarahWinThread-4`, `resight-template-sarah`), and removed the inaccurate *au large de {location}* assumption in `resight-template-player`. Runtime list/article tests are **still a mandatory integration gate**, not considered done by wording alone.
+- One intentionally affectionate coinage **« requine »** was deliberately retained in `lemon_sarah_egg_thread-4-player`; Roman flagged it as a style choice. Avery may still choose the neutral option.
+- For consistency with the approved glossary, standardized **« mélange attractif à l'huile de poisson »** across nudges that mention the mixture. Their **directness** remains a separate design decision, not a translator's unilateral rewrite.
+- Kept exactly **one TABARNOUCHE!** in the same earned excitement spike. `CITROOOOOOOOOON` remains.
+
+### Three decisions / release gates **still open**
+
+**1. Bukangi's real-world story — HOLD and DO NOT SHIP the celebratory threads.** The story is **not** a resolved happy-ending as of this review. On **21 October 2026**, officials guided Bukangi toward the sea; on **22 October**, she returned to the Busan canal/nearby barriers. Reuters, AP and KBS reported the reversal. Roman correctly flagged this as a blocker; the four most relevant CSV rows now carry an explicit **HOLD / DO NOT SHIP** note. The older English source dialogue is stale too. We should not write a permanent, premature celebration or enable the safe-out trigger without confirmed updated status and Avery's decision.
+
+Sources: [Reuters, Oct 22](https://www.reuters.com/world/asia-pacific/shark-nicknamed-bukangi-foils-rescue-attempts-returns-south-korean-canal-2026-10-22/), [KBS, Oct 22](https://world.kbs.co.kr/service/news_view.htm?Seq_Code=205039&lang=e), [AP, Oct 22](https://apnews.com/article/c1aee6f075f51ffd1cb32cbe26f55bb7).
+
+**2. Nudges: gameplay design choice.** The original English `COUSIN_NUDGES` frequently lists the region/depth/prey/attractant combination after failed expeditions. The French reflects this existing hint mechanism. Before a rewrite, **Avery should decide** whether opt-in post-failure help may be directly actionable, or whether *all* nudges should be evidence-style clues. Do not silently tighten the French while leaving the English giveaway version untouched.
+
+**3. Build integration.** A French `formatSpeciesList()` must supply article-aware localized lists for *petite roussette* and *ange de mer commun*, plus 2- and 4-species outputs. Dynamic names, French colloquial nicknames, `{pron}`, saved messages, and the shared reunion-trigger constant must be tested as actual rendered Phone threads. **The workbooks do not themselves implement a French build.** The constant's French display cell now reads exactly `Encore lui! Je commence à croire qu'il nous aime bien.`, but integration **must reference the same localized constant** and assert correct food-reply triggering.
+
+### Scientific issues to sync with English source, not blindly “correct” in French
+
+- **Megamouth jaw band (`chat-megamouth-3-sarah`)**: I did **not** revert to “might glow.” A [peer-reviewed 2020 PLOS ONE study](https://doi.org/10.1371/journal.pone.0242196) concludes the band has reflective properties, with no support for endogenous bioluminescence. The *function* of that reflection remains speculative. The French currently says it **might** attract krill through reflection and clearly flags the mechanism as unproven. The English needs a source-side correction; Roman's proposed English-faithful “pourrait briller” would knowingly restore an outdated hypothesis.
+- **Greenland eye copepods** (`chat-greenland-3` pair): aligned the two bubbles around the *unproven* luminous-lure story without asserting universal parasitism or definite blindness. English should be reconciled at source.
+- **Velvetbelly** (`chat-velvetbelly-2-sarah`): reinstated the maturation comparison but preserved formal **Vulnérable** status. [NatureScot](https://www.nature.scot/doc/sharks-and-skates-scotland-report-velvet-belly-lanternshark-etmopterus-spinax) records the global assessment as Vulnerable from Aug 2020. The English “Least Concern” is outdated.
+- **Megamouth encounter count**: Roman's more precise **« environ 300 observations »** replaces my vaguer *quelques centaines*; retain a recency/source check before release, as sightings accumulate.
+- Some shark facts remain inherited research claims: post-edit review should not be taken as scientific certification of all 734 messages.
+
+### Validation rerun after the follow-up commits
+
+**734 / 734 entries, 734 unique keys, 0 blank French cells, 0 malformed five-column rows, 0 placeholder mismatches, exactly 1 “TABARNOUCHE”, 0 “tabarnak”.** No gameplay code or English source files were touched. Only this draft branch changed; **no merge, build, release or Hub link has been authorized**.
+
+**Roman:** Please re-review the edited keys and the three open gates; if you disagree about the science, especially megamouth, let's discuss it openly with the sources rather than overwriting each other's reasoning. **Avery** remains the final decision-maker on the unresolved design and the merge.
+
+— Mira 🩵
