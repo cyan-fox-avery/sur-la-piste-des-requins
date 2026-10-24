@@ -5,7 +5,7 @@ Avery invited Mira to **write Sarah’s final translation batch herself**, rever
 
 ## What is drafted
 
-There are **734 distinct filled French rows** across 17 CSVs, with English source text, stable review keys, and notes. The spreadsheet-style `category,key,english,quebec_french,notes` format is retained.
+There are **727 distinct filled French rows** across 17 CSVs, with English source text, stable review keys, and notes. The spreadsheet-style `category,key,english,quebec_french,notes` format is retained.
 
 | Files | Rows | Source and scope |
 | --- | ---: | --- |
@@ -13,7 +13,7 @@ There are **734 distinct filled French rows** across 17 CSVs, with English sourc
 | `translation-batch-08b-sarah-nudges-01.csv` to `-02.csv` | 50 | 50 scientific/location/depth/bait hints from `COUSIN_NUDGES` |
 | `translation-batch-08c-sarah-cheers-openers-01.csv` to `-02.csv` | 100 | 50 species’ `cheer` and `opener` fields from `sharks-data.js` |
 | `translation-batch-08d-big-day-2.csv`, `-3.csv`, `-4.csv`, `-lemon.csv` | 122 | All 32 Big Day conversation variants, with speaker bubbles and placeholders |
-| `translation-batch-08e-special-threads.csv` | 60 | The Sarah-named-shark threads, lemon-Sarah Easter egg, Mary Lee, Nicole, Bukangi and follow-up, all 5 Bruce stages, Deep-Sea Unicorn, and **requins zinzins** reward |
+| `translation-batch-08e-special-threads.csv` | 53 | The Sarah-named-shark threads, lemon-Sarah Easter egg, Mary Lee, Nicole, all 5 Bruce stages, Deep-Sea Unicorn, and **requins zinzins** reward |
 | `translation-batch-08f-resighting-reactions.csv` | 28 | Reunion closers, 2nd/3rd/4th+ tiers, fallback, and the special `RESIGHT_LIKES_US_LINE` |
 | `translation-batch-08g-script-chats.csv` | 43 | 4 region-unlock threads, generic chats, 8 named-shark check-ins (3 branches per template) |
 | `translation-batch-08h-dynamic-phone-finale.csv` | 31 | Sarah’s full win thread, shorter win thread, first Archive introduction, failure support, and dynamic re-sighting templates |
@@ -56,7 +56,7 @@ The target is natural, affectionate **Québec French**, not French-from-France a
 
 ## Mechanical tests already run
 
-- The 17 CSV files contained **734 nonempty unique keys, zero missing French cells, and five columns per record**.
+- The 17 CSV files originally contained **734 nonempty unique keys, zero missing French cells, and five columns per record**.
 - A placeholder comparison found **one issue** in the dynamic pronoun reply; corrected to keep `{pron}` in French with an explicit grammatical mapping. Re-run the audit after all commits before approval.
 - The data source files were **not modified**. This is a translation draft for critical review and eventual integration, not a working game patch.
 
@@ -108,5 +108,31 @@ Sources: [Reuters, Oct 22](https://www.reuters.com/world/asia-pacific/shark-nick
 **734 / 734 entries, 734 unique keys, 0 blank French cells, 0 malformed five-column rows, 0 placeholder mismatches, exactly 1 “TABARNOUCHE”, 0 “tabarnak”.** No gameplay code or English source files were touched. Only this draft branch changed; **no merge, build, release or Hub link has been authorized**.
 
 **Roman:** Please re-review the edited keys and the three open gates; if you disagree about the science, especially megamouth, let's discuss it openly with the sources rather than overwriting each other's reasoning. **Avery** remains the final decision-maker on the unresolved design and the merge.
+
+— Mira 🩵
+
+---
+
+## Roman's second review and Mira's follow-up · 24 octobre 2026
+
+Roman's second review: [PR #8 comment](https://github.com/cyan-fox-avery/sur-la-piste-des-requins/pull/8#issuecomment-6388878000). He independently checked the earlier 86 changed translations, revalidated structural integrity, accepted the scientific conclusion on the megamouth's reflective jaw band, and found a handful of small outstanding wording items.
+
+### Current scope and Bukangi safeguard
+
+At Avery's **explicit request**, Roman **deleted all seven Bukangi rows** from the French CSV after the second review ([discussion](https://github.com/cyan-fox-avery/sur-la-piste-des-requins/pull/8#issuecomment-6388899171)). The current batch has **727** rather than 734 localizable entries: the 08e special-threads file has **53** instead of 60 lines, and all other counts are unchanged. **Do not reintroduce her messages** until there is confirmed news that Bukangi is safe and properly back in open sea, and Avery authorizes restoration. The separate English-source follow-up must follow the same standard. Earlier notes in this historical handoff referring to a Bukangi HOLD in four CSV rows are superseded by complete removal.
+
+### Latest French corrections (10 display rows; 7 CSV files)
+
+- Corrected five cumbersome `femelles requins…` species references in sand tiger, lemon, blue, scalloped hammerhead, and the Bimini Big Day exchange.
+- Clarified **mako** as the English/Māori name of the French **requin-taupe bleu**, without implying that Māori *mako* exclusively denotes that species.
+- Restored **« remis à l'eau »** in `bigday-2B-2-player`, consistent with conservation/welfare language elsewhere.
+- **Bruce chain stage 2** now says **« Bon, je repensais à {bruce}, ton requin de l'espèce {species} »**, rather than an article-sensitive `ton {species}`. Keep `{species}` as the **bare localized common name**, and add articles only where appropriate through separately tested French formatting. The dynamic French `{speciesList}` must be rendered as an article-aware list. Integration needs to test `petite roussette`, `ange de mer commun`, and Bruce nicknames, not just token presence.
+- **Greenland eye parasite prevalence:** replaced the vague “parfois” with a truthful regional distinction, based on Canada's [COSEWIC 2025 report](https://www.canada.ca/en/environment-climate-change/services/species-risk-public-registry/cosewic-assessments-status-reports/greenland-shark-2025.html). Eye-copepod occurrence was **>90%** in Eastern Canadian Arctic / waters around Greenland, versus **<10%** in St. Lawrence Estuary and northwestern Atlantic in surveyed populations. The French explains this qualitatively and keeps the luminous-bait hypothesis explicitly **unproven**; the player response matches the corrected Sarah line. The English over-generalization about near-universal infestation and blindness must be amended at source.
+
+### Still NOT a release approval
+
+**Open design / integration dependencies:** Avery's decision about direct post-failure nudges versus evidence-led clues (B26); French article-aware runtime list rendering / nickname preservation (B4); shared resighting constant and food-reply trigger (B6); saved Phone language, gender/unknown sex, and text overflow; full French build testing (P34). None is solved merely by well-formed CSV cells. Historical source-side biology follow-ups remain open for English `sarah-data.js`, especially Greenland parasites, velvetbelly status, and megamouth reflectivity.
+
+**Roman:** Please perform the short changed-line check on this follow-up and distinguish **French workbook readiness** from **app integration readiness**. No merge, release, or launch without Avery's explicit say-so.
 
 — Mira 🩵
