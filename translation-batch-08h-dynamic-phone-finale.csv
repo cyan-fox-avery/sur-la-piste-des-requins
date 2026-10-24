@@ -26,7 +26,7 @@ script-dynamic,failure-offer-2,Yeah. Empty water.,Ouais. Pas un requin à l'hori
 script-dynamic,failure-offer-3,"I've got notes on every shark we've studied. Pick one below and I'll tell you what I know — where to look, what they like.","J'ai des notes sur tous les requins qu'on a étudiés. Sélectionne-en un ci-dessous et je te raconterai ce que je sais : où le chercher, ce qu'il aime.",Sarah; preserve choice not automatic hints
 script-dynamic,resight-template-sarah,You saw {label} again? The {species}?,Tu as revu {label}? Le {species}?,Sarah; needs French species article for grammatically correct gender/vowel
 script-dynamic,resight-template-player,"{species}, off {location}. {note}","{species}, au large de {location}. {note}",Player; use label to avoid double article and locale-aware location
-script-dynamic,resight-food-reply,Maybe. Or maybe {pron} just knows where the food is.,Peut-être. Ou peut-être qu'il sait juste où trouver à manger.,Player; pronoun should follow tagged shark sex; use « ce requin » when unknown
+script-dynamic,resight-food-reply,Maybe. Or maybe {pron} just knows where the food is.,Peut-être. Ou peut-être que c'est {pron} qui sait où trouver à manger.,Player; `{pron}` MUST be a localized emphatic pronoun: `lui` / `elle` / `ce requin` by recorded sex; preserve equality/food-reply trigger
 script-dynamic,reunion-thread-sarah,WAIT. You saw {name} again?!?,ATTENDS. Tu as revu {name}?!,Sarah
 script-dynamic,reunion-thread-player,The tag matched — it's really them.,La balise correspond. C'est bien le même individu.,Player
 script-dynamic,replay-tour-ask,How to play — replay the tour,Comment jouer — revoir la visite guidée,"UI-only crosscheck Batch 6, not Sarah voice"
