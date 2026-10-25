@@ -5,7 +5,7 @@ Avery invited Mira to **write Sarah’s final translation batch herself**, rever
 
 ## What is drafted
 
-There are **727 distinct filled French rows** across 17 CSVs, with English source text, stable review keys, and notes. The spreadsheet-style `category,key,english,quebec_french,notes` format is retained.
+There are **728 distinct filled French rows** across 17 CSVs, with English source text, stable review keys, and notes. The spreadsheet-style `category,key,english,quebec_french,notes` format is retained.
 
 | Files | Rows | Source and scope |
 | --- | ---: | --- |
@@ -14,7 +14,7 @@ There are **727 distinct filled French rows** across 17 CSVs, with English sourc
 | `translation-batch-08c-sarah-cheers-openers-01.csv` to `-02.csv` | 100 | 50 species’ `cheer` and `opener` fields from `sharks-data.js` |
 | `translation-batch-08d-big-day-2.csv`, `-3.csv`, `-4.csv`, `-lemon.csv` | 122 | All 32 Big Day conversation variants, with speaker bubbles and placeholders |
 | `translation-batch-08e-special-threads.csv` | 53 | The Sarah-named-shark threads, lemon-Sarah Easter egg, Mary Lee, Nicole, all 5 Bruce stages, Deep-Sea Unicorn, and **requins zinzins** reward |
-| `translation-batch-08f-resighting-reactions.csv` | 28 | Reunion closers, 2nd/3rd/4th+ tiers, fallback, and the special `RESIGHT_LIKES_US_LINE` |
+| `translation-batch-08f-resighting-reactions.csv` | 29 | Reunion closers, 2nd/3rd/4th+ tiers, fallback, and the special `RESIGHT_LIKES_US_LINE` |
 | `translation-batch-08g-script-chats.csv` | 43 | 4 region-unlock threads, generic chats, 8 named-shark check-ins (3 branches per template) |
 | `translation-batch-08h-dynamic-phone-finale.csv` | 31 | Sarah’s full win thread, shorter win thread, first Archive introduction, failure support, and dynamic re-sighting templates |
 
@@ -119,7 +119,7 @@ Roman's second review: [PR #8 comment](https://github.com/cyan-fox-avery/sur-la-
 
 ### Current scope and Bukangi safeguard
 
-At Avery's **explicit request**, Roman **deleted all seven Bukangi rows** from the French CSV after the second review ([discussion](https://github.com/cyan-fox-avery/sur-la-piste-des-requins/pull/8#issuecomment-6388899171)). The current batch has **727** rather than 734 localizable entries: the 08e special-threads file has **53** instead of 60 lines, and all other counts are unchanged. **Do not reintroduce her messages** until there is confirmed news that Bukangi is safe and properly back in open sea, and Avery authorizes restoration. The separate English-source follow-up must follow the same standard. Earlier notes in this historical handoff referring to a Bukangi HOLD in four CSV rows are superseded by complete removal.
+At Avery's **explicit request**, Roman **deleted all seven Bukangi rows** from the French CSV after the second review ([discussion](https://github.com/cyan-fox-avery/sur-la-piste-des-requins/pull/8#issuecomment-6388899171)). The current batch has **728** rather than 734 localizable entries after Bukangi removal and addition of a female reunion line: the 08e special-threads file has **53** instead of 60 lines, and all other counts are unchanged. **Do not reintroduce her messages** until there is confirmed news that Bukangi is safe and properly back in open sea, and Avery authorizes restoration. The separate English-source follow-up must follow the same standard. Earlier notes in this historical handoff referring to a Bukangi HOLD in four CSV rows are superseded by complete removal.
 
 ### Latest French corrections (12 display rows; 7 CSV files)
 
@@ -131,8 +131,24 @@ At Avery's **explicit request**, Roman **deleted all seven Bukangi rows** from t
 
 ### Still NOT a release approval
 
-**Open design / integration dependencies:** Avery's decision about direct post-failure nudges versus evidence-led clues (B26); French article-aware runtime list rendering / nickname preservation (B4); shared resighting constant and food-reply trigger (B6); saved Phone language, gender/unknown sex, and text overflow; full French build testing (P34). None is solved merely by well-formed CSV cells. Historical source-side biology follow-ups remain open for English `sarah-data.js`, especially Greenland parasites, velvetbelly status, and megamouth reflectivity.
+**Open integration dependencies:** B26 is closed: Avery approved direct opt-in post-failure nudges (2026-10-25); French article-aware runtime list rendering / nickname preservation (B4); shared resighting constant and food-reply trigger (B6); saved Phone language, gender/unknown sex, and text overflow; full French build testing (P34). None is solved merely by well-formed CSV cells. Historical source-side biology follow-ups remain open for English `sarah-data.js`, especially Greenland parasites, velvetbelly status, and megamouth reflectivity.
 
 **Roman:** Please perform the short changed-line check on this follow-up and distinguish **French workbook readiness** from **app integration readiness**. No merge, release, or launch without Avery's explicit say-so.
+
+— Mira 🩵
+
+---
+
+## Roman's final spot-check and Mira's review — 25 October 2026
+
+Roman verified all twelve prior corrections in his PR #8 comment (https://github.com/cyan-fox-avery/sur-la-piste-des-requins/pull/8#issuecomment-6398441580). Avery decided that post-failure Sarah nudges may give direct, opt-in location/bait/attractant help (B26 closed). Research text remains evidence-only.
+
+Avery chose the natural standard line “C'est une bonne, celle-là. Elle le sait.” in the lemon-Sarah exchange, replacing the earlier coined feminine noun. Roman's change had an unquoted comma that broke five-column CSV parsing; Mira repaired quotation without changing the text.
+
+Roman added `resight_likes_us_line-female` for sharks whose recorded sex is female: “Encore elle! Je commence à croire qu'elle nous aime bien.” The existing male/unknown string remains “Encore lui! Je commence à croire qu'il nous aime bien.” Current workbook: **728 keys** across 17 CSV files, with **29** rows in 08f. The trigger for the optional food-reply must match BOTH shared strings; selection should keep the original ten closer slots and the no-consecutive-repeat safeguard, substituting female text into the single special slot rather than treating it as a new, independent random option.
+
+**Open gender audit:** many OTHER random reunion and 2nd/3rd/4th+ re-sighting lines in 08f still say “il”, “lui”, “revenu”, “habitué”, “mon vieil ami”, etc. The single new female line does not address those pools. Implement sex-aware paired texts or editorially neutral alternative wording for every gender-sensitive output before the actual French build ships. The chosen male/unknown special-closer convention must be preserved.
+
+**Release gates:** 728-row structural audit after edits; runtime French gender and article formats with petite roussette/ange de mer commun; localized species lists and `{pron}`; shared-closer constant matching; old saved Phone text; mobile render; source English science updates. No merge or deployment without Avery.
 
 — Mira 🩵
