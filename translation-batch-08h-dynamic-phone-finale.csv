@@ -1,0 +1,32 @@
+category,key,english,quebec_french,notes
+script-dynamic,winThread-1,You did it. You tagged all of them.,Tu as réussi. Tu les as tous marqués.,"Sarah, full-roster celebration"
+script-dynamic,winThread-2,{n} for {n}. Couldn't have done it without my research assistant.,{n} sur {n}. Je n'aurais pas pu y arriver sans mon assistante de recherche.,Player bubble; numeric {n} interpolated from roster
+script-dynamic,winThread-3,I'm going to tell everyone I know that my cousin is a real shark scientist. This is the best day.,Je vais dire à tout le monde que mon cousin est un véritable chercheur spécialiste des requins. C'est la plus belle journée.,Sarah
+script-dynamic,winThread-4,Best day of mine too. 🦈,Une des plus belles de ma vie aussi. 🦈,Player
+script-dynamic,sarahWinThread-1,Hey. Can we sit with this for a minute?,Hé. On peut prendre une minute pour savourer ça?,Sarah; emotional ending
+script-dynamic,sarahWinThread-2,Of course.,Bien sûr.,Player
+script-dynamic,sarahWinThread-3,"When you started, these were species on a list. Do you remember your first one?","Au début, ce n'étaient que des noms d'espèces sur une liste. Tu te souviens du premier?",Sarah
+script-dynamic,sarahWinThread-4,{firstName} — the {species}. I'll never forget.,"{firstName}, de l'espèce {species}. Je ne l'oublierai jamais.",Deliberately avoids fixed le/ce/ton before {species}; build must still render localized species and test ange de mer commun/petite roussette.
+script-dynamic,sarahWinThread-5,"And now you know {n} individual sharks. Not species — individuals. With names, and tracks, and lives they're still living right now.","Et maintenant, tu connais {n} requins comme des individus. Pas juste des espèces : des êtres avec un nom, des déplacements et une vie qui continue dans l'océan.",Sarah; avoid claiming modeled tracking is satellite facts
+script-dynamic,sarahWinThread-6,They're all still out there.,Ils nagent encore quelque part.,Player
+script-dynamic,sarahWinThread-7,"They are. You found every one, and then you let every one go. That's the whole thing, isn't it? That's the job.","Oui. Tu les as tous trouvés, et tu les as tous remis en liberté. C'est ça, le plus important, non? C'est notre travail.",Sarah; emphasize release
+script-dynamic,sarahWinThread-8,Best job in the world.,Le plus beau métier du monde.,Player
+script-dynamic,sarahWinThread-9,I'm so proud of you. Don't tell anyone I'm being sentimental — I have a reputation to maintain.,Je suis tellement fière de toi. Ne raconte à personne que je deviens sentimentale. J'ai une réputation à protéger.,Sarah
+script-dynamic,sarahWinThread-10,Your secret's safe with me. 🦈,"Promis, ton secret est bien gardé. 🦈",Player
+script-dynamic,archive-unlock-1,WAIT. I have something for you 📸,ATTENDS. J'ai quelque chose pour toi. 📸,Sarah
+script-dynamic,archive-unlock-2,"Every shark you tag, I'm going to find you a real photo of their species. The actual animal. Check the new 🖼️ Archive tab!","Pour chaque espèce de requin que tu marques, je vais te trouver une vraie photo d'un animal de cette espèce. Regarde le nouvel onglet 🖼️ Archives!",Sarah; distinguish species from tagged individual
+script-dynamic,archive-unlock-3,Real photos? Of the actual species?,De vraies photos? De véritables animaux de ces espèces?,Player
+script-dynamic,archive-unlock-4,The real deal! Your field-guide art is for ID work — the Archive is for meeting them. Every tag adds another face to the collection 🩵,De vraies photos! Les fiches du guide t'aident à identifier les requins; les Archives te montrent leurs espèces dans la vraie vie. Chaque nouveau marquage ajoute une rencontre à ton carnet. 🩵,"Use Field Guide entry terminology, not asset-specific sketch assumptions. Preserve real-species-vs-tagged-individual distinction."
+script-dynamic,failure-nudge-1,How's the shark hunting going?,"Comment ça va, tes sorties de recherche?",Sarah
+script-dynamic,failure-nudge-2,Honestly? Struck out a few times. The water's been empty.,"Pas fort, pour être honnête. Quelques sorties sans requin. La mer est vide.",Player
+script-dynamic,failure-nudge-fallback,You'll get the next one. I believe in you.,La prochaine rencontre viendra. J'ai confiance en toi.,Sarah; reused fallback
+script-dynamic,failure-nudge-4,"Huh. Okay, that's actually really helpful. Thanks.","Ah. OK, ça m'aide vraiment. Merci.",Player
+script-dynamic,failure-offer-1,Rough day out there?,Journée difficile sur l'eau?,Sarah
+script-dynamic,failure-offer-2,Yeah. Empty water.,Ouais. Pas un requin à l'horizon.,Player
+script-dynamic,failure-offer-3,"I've got notes on every shark we've studied. Pick one below and I'll tell you what I know — where to look, what they like.","J'ai des notes sur tous les requins qu'on a étudiés. Choisis-en un ci-dessous et je te raconterai ce que je sais : où le chercher, ce qu'il aime.",Sarah; preserve choice not automatic hints
+script-dynamic,resight-template-sarah,You saw {label} again? The {species}?,Tu as revu {label}? C'était bien un individu de l'espèce {species}?,Deliberately avoids fixed le/ce/ton before {species}; build must still render localized species and test ange de mer commun/petite roussette.
+script-dynamic,resight-template-player,"{species}, off {location}. {note}",Espèce : {species}. Lieu : {location}. {note},Player; use label to avoid double article and locale-aware location
+script-dynamic,resight-food-reply,Maybe. Or maybe {pron} just knows where the food is.,Peut-être. Ou peut-être que c'est {pron} qui sait où trouver à manger.,Player; `{pron}` MUST be a localized emphatic pronoun: `lui` / `elle` / `ce requin` by recorded sex; preserve equality/food-reply trigger
+script-dynamic,reunion-thread-sarah,WAIT. You saw {name} again?!?,ATTENDS. Tu as revu {name}?!,Sarah
+script-dynamic,reunion-thread-player,The tag matched — it's really them.,La balise correspond. C'est bien le même individu.,Player
+script-dynamic,replay-tour-ask,How to play — replay the tour,Comment jouer — revoir la visite guidée,"UI-only crosscheck Batch 6, not Sarah voice"
