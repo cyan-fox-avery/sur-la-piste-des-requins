@@ -91,10 +91,26 @@ the big ones.**
    Latin names do NOT change. Research-tab art is Latin-only, so it
    needs no translation. Research images are selective, not all 50
    (see FRENCH-ASSETS-AUDIT.md).
-8. **Sarah / Phone — LAST (big one)** — all Sarah-voice dialogue in
-   `sarah-data.js` plus Sarah-voice fields in `sharks-data.js`
-   (cheer, opener, name-egg threads), kept in one pass so her voice
-   stays consistent. This is where voice preservation matters most.
+8. **Sarah / Phone — LAST (big one) — Mira draft in PR #8, Roman review pending (2026-10-24).**
+   At Avery's invitation the roles reverse for this batch: **Mira writes,
+   Roman critically reviews, Avery approves any merge**. Mira's branch
+   `mira-batch-08-sarah-voice` contains **734 Québec French dialogue
+   rows in 17 themed CSV workbooks**: 300 species chat lines, 50
+   nudges, 100 cheers/openers, 122 Big Day lines, 60 special/Easter
+   egg lines, 28 re-sighting reactions, 43 named/generic/region
+   conversations, and 31 dynamic/finale/support messages. English
+   source text is retained with stable review keys. Scope spans
+   `sarah-data.js`, `sharks-data.js`, `bigday-data.js`,
+   `game-data.js`, and Sarah dialogue in `script.js`.
+   See `MIRA-SARAH-VOICE-HANDOFF.md` for the file index, voice guide,
+   review questions, dynamic-integration safeguards, and unresolved
+   English-source science claims. The special `4D` Big Day Sarah line
+   contains one intentional `TABARNOUCHE !` excitement spike.
+   These are **draft translations, not a French game implementation**.
+   A source/version delta and integration QA are required, including
+   nickname prompts, all reused Phone strings, and translation of
+   interpolated `{speciesList}`, `{species}`, `{name}`, `{hook}` and
+   sex-dependent pronouns. No merge/build/deployment authorized.
 
 ## Québec French rules for this translation
 
