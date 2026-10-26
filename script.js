@@ -1312,7 +1312,7 @@ function showMapPopup(sid) {
   pop.innerHTML = `
     <h4>${t.name ? `“${esc(t.name)}”` : esc(t.researchId)}</h4>
     <p class="latin">${esc(s.name)} · ${esc(t.researchId)}</p>
-    <p class="map-meta">📍 Marqué à ${esc(t.location)} · ${esc(t.date)}<br>📡 Dernier point du trajet : ${last ? esc(last.label) : "—"}${t.resightings && t.resightings.length ? `<br>🔁 Re-sighted ${t.resightings.length}×` : ""}</p>
+    <p class="map-meta">📍 Marqué à ${esc(t.location)} · ${esc(t.date)}<br>📡 Dernier point du trajet : ${last ? esc(last.label) : "—"}${t.resightings && t.resightings.length ? `<br>🔁 Réobservé ${t.resightings.length}×` : ""}</p>
     ${kindNote ? `<p class="map-kind-note">${kindNote}</p>` : ""}
     <button class="secondary-button" type="button" id="mapCardBtn">🗂️ Open collection card</button>
     <button class="secondary-button" type="button" id="mapTrackBtn">📈 View full track</button>`;
