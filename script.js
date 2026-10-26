@@ -3159,7 +3159,7 @@ const RESIGHT_NOTES_EXCITED = [
   "ENCORE une visite! Je pense que ce requin nous a adoptés. On est ses humains maintenant.",
   "Ce requin revient toujours! Je ne dis pas qu'on est inséparables, mais on est inséparables.",
   "Encore ce requin! On connaît son endroit préféré, et quelle chance!"
-]
+];
 /* French sex-aware variants (slot numbers are 1-based; male/unknown uses the base array). Slot-first pick is preserved: the slot is chosen, then the variant renders. */
 const RESIGHT_LIKES_US_LINE_FEMALE = "Encore elle! Je commence à croire qu'elle nous aime bien.";
 const RESIGHT_REUNION_CLOSERS_FEMALE = {
