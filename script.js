@@ -87,72 +87,65 @@ const CREATURE_ART = {
 };
 /* Filled in at load: art-loader.js must be loaded before script.js. */
 function initCreatureArt() {
-  CREATURE_ART.turtle = bgCreatureImg("bg-sea-turtle", "Sea turtle");
-  CREATURE_ART.fish = bgCreatureImg("bg-fish-school", "School of fish");
-  CREATURE_ART.dolphin = bgCreatureImg("bg-dolphin", "Dolphin");
+  CREATURE_ART.turtle = bgCreatureImg("bg-sea-turtle", "Tortue de mer");
+  CREATURE_ART.fish = bgCreatureImg("bg-fish-school", "Banc de poissons");
+  CREATURE_ART.dolphin = bgCreatureImg("bg-dolphin", "Dauphin");
   CREATURE_ART.ray = bgCreatureImg("bg-ray", "Raie");
-  CREATURE_ART.seal = bgCreatureImg("bg-seal", "Seal");
-  CREATURE_ART.jellyfish = bgCreatureImg("bg-jellyfish", "Jellyfish");
-  CREATURE_ART.anglerfish = bgCreatureImg("bg-anglerfish", "Anglerfish");
-  CREATURE_ART.penguin = bgCreatureImg("bg-penguin", "Penguin");
-  CREATURE_ART.mola = bgCreatureImg("bg-mola", "Sunfish");
-  CREATURE_ART.moray = bgCreatureImg("bg-moray", "Moray eel");
-  CREATURE_ART.seahorse = bgCreatureImg("bg-seahorse", "Seahorse");
-  CREATURE_ART.clownfish = bgCreatureImg("bg-clownfish", "Clownfish");
-  CREATURE_ART.parrotfish = bgCreatureImg("bg-parrotfish", "Parrotfish");
-  CREATURE_ART.pufferfish = bgCreatureImg("bg-pufferfish", "Pufferfish");
-  CREATURE_ART.lionfish = bgCreatureImg("bg-lionfish", "Lionfish");
-  CREATURE_ART.hatchetfish = bgCreatureImg("bg-hatchetfish", "Hatchetfish");
-  CREATURE_ART.gulper = bgCreatureImg("bg-gulper", "Gulper eel");
-  CREATURE_ART.vampire = bgCreatureImg("bg-vampire-squid", "Vampire squid");
+  CREATURE_ART.seal = bgCreatureImg("bg-seal", "Phoque");
+  CREATURE_ART.jellyfish = bgCreatureImg("bg-jellyfish", "Méduse");
+  CREATURE_ART.anglerfish = bgCreatureImg("bg-anglerfish", "Baudroie");
+  CREATURE_ART.penguin = bgCreatureImg("bg-penguin", "Manchot");
+  CREATURE_ART.mola = bgCreatureImg("bg-mola", "Poisson-lune");
+  CREATURE_ART.moray = bgCreatureImg("bg-moray", "Murène");
+  CREATURE_ART.seahorse = bgCreatureImg("bg-seahorse", "Hippocampe");
+  CREATURE_ART.clownfish = bgCreatureImg("bg-clownfish", "Poisson-clown");
+  CREATURE_ART.parrotfish = bgCreatureImg("bg-parrotfish", "Poisson-perroquet");
+  CREATURE_ART.pufferfish = bgCreatureImg("bg-pufferfish", "Poisson-globe");
+  CREATURE_ART.lionfish = bgCreatureImg("bg-lionfish", "Poisson-lion");
+  CREATURE_ART.hatchetfish = bgCreatureImg("bg-hatchetfish", "Poisson-hachette");
+  CREATURE_ART.gulper = bgCreatureImg("bg-gulper", "Anguille pélican");
+  CREATURE_ART.vampire = bgCreatureImg("bg-vampire-squid", "Calmar vampire");
   CREATURE_ART.siphonophore = bgCreatureImg("bg-siphonophore", "Siphonophore");
-  CREATURE_ART.krill = bgCreatureImg("bg-krill", "Krill swarm");
-  CREATURE_ART.viperfish = bgCreatureImg("bg-viperfish", "Viperfish");
-  CREATURE_ART.snailfish = bgCreatureImg("bg-snailfish", "Snailfish");
-  CREATURE_ART.cusk = bgCreatureImg("bg-cusk-eel", "Cusk eel");
-  CREATURE_ART.otter = bgCreatureImg("bg-sea-otter", "Sea otter");
-  CREATURE_ART.narwhal = bgCreatureImg("bg-narwhal", "Narwhal");
-  CREATURE_ART.beluga = bgCreatureImg("bg-beluga", "Beluga");
-  CREATURE_ART.snake = bgCreatureImg("bg-sea-snake", "Sea snake");
-  CREATURE_ART.manatee = bgCreatureImg("bg-manatee", "Manatee");
-  CREATURE_ART.tuna = bgCreatureImg("bg-tuna", "Tuna school");
+  CREATURE_ART.krill = bgCreatureImg("bg-krill", "Essaim de krill");
+  CREATURE_ART.viperfish = bgCreatureImg("bg-viperfish", "Poisson-vipère");
+  CREATURE_ART.snailfish = bgCreatureImg("bg-snailfish", "Poisson-limace");
+  CREATURE_ART.cusk = bgCreatureImg("bg-cusk-eel", "Donzelle");
+  CREATURE_ART.otter = bgCreatureImg("bg-sea-otter", "Loutre de mer");
+  CREATURE_ART.narwhal = bgCreatureImg("bg-narwhal", "Narval");
+  CREATURE_ART.beluga = bgCreatureImg("bg-beluga", "Béluga");
+  CREATURE_ART.snake = bgCreatureImg("bg-sea-snake", "Serpent de mer");
+  CREATURE_ART.manatee = bgCreatureImg("bg-manatee", "Lamantin");
+  CREATURE_ART.tuna = bgCreatureImg("bg-tuna", "Banc de thons");
 }
 
 /* Flavour: the dive log describes the place, not just the mechanics.
    v0.6.0: depth sets the atmosphere — shallow flavour is bright and busy,
    deep flavour is dark and strange. */
 const DEPTH_FLAVOUR = {
-  surface: [
-    "Sunlight shatters across the surface in moving panes. The water is warm and impossibly clear.",
-    "The surface chop rocks the boat gently. Below, everything glows blue-green.",
-    "You can see the boat's shadow drifting above you, a dark shape on the bright ceiling of the sea.",
-    "A breeze ruffles the surface into glitter. Gulls cry somewhere far above."
+  "surface": [
+    "La lumière du soleil éclate à la surface en plaques mouvantes. L'eau est chaude et d'une limpidité incroyable.",
+    "Le clapot de surface berce doucement le bateau. En dessous, tout brille d'un bleu-vert.",
+    "Tu peux voir l'ombre du bateau qui dérive au-dessus de toi, une forme sombre sur le plafond lumineux de la mer.",
+    "Une brise ride la surface en paillettes. Des goélands crient quelque part, très haut."
   ],
-  "v1.4.15-beta": [
-    "🌊 <strong>Underwater vista.</strong> The background is now a full surface-to-seafloor scene — sunlit top, deepening blues, sediment and kelp silhouettes at the bottom.",
-    "🦈 <strong>Bigger logo.</strong> The shark logo beside the title is 150% bigger on desktop.",
-    "🏷️ <strong>IUCN color coding.</strong> Threat levels now read at a glance — green (LC) through yellow, orange, red, to dark purple (CR). The badge sits snug beside the pin.",
-    "📌 <strong>Smarter pinned hints.</strong> The pinned card shows the shark's description with key clues in bold — and the expedition line hints at diet in plain words instead of giving away answers.",
-    "⏳ <strong>Time passes on expeditions.</strong> The dive log now moves from morning through afternoon to evening across your encounters."
+  "reef": [
+    "Des têtes de corail s'élèvent comme une ville engloutie. De petits poissons vifs filent entre les branches.",
+    "Le récif bourdonne — pas de bruit, mais de mouvement. Ici, tout s'affaire.",
+    "Une station de nettoyage s'affaire en dessous : de minuscules poissons qui picorent les parasites d'un mérou patient.",
+    "Une pieuvre se faufile d'une crevasse à l'autre, changeant de couleur au passage."
   ],
-  reef: [
-    "Coral heads rise like a drowned city. Small bright fish dart between the branches.",
-    "The reef hums — not with sound, but with movement. Everything here is busy.",
-    "A cleaning station bustles below: tiny fish picking parasites off a patient grouper.",
-    "An octopus oozes from one crevice to another, changing colour as it goes."
+  "twilight": [
+    "La lumière s'amincit jusqu'à un indigo profond. Tes yeux s'adaptent lentement à la pénombre.",
+    "Des particules dérivent comme de la neige qui tombe vers le haut. C'est très silencieux, ici.",
+    "La pente s'enfonce dans l'obscurité d'un côté. Tu sens la profondeur plus que tu ne la vois.",
+    "Ton profondimètre dépasse les 200 mètres. Le dernier bleu s'efface vers un bleu-noir."
   ],
-  twilight: [
-    "The light thins to a deep indigo. Your eyes adjust slowly to the dim.",
-    "Particles drift past like snow falling upward. It is very quiet down here.",
-    "The slope falls away into darkness to one side. You feel the depth more than see it.",
-    "Your depth gauge ticks past 200 metres. The last of the blue fades to black-blue."
-  ],
-  deep: [
-    "There is no light left to speak of — only the glow of the submersible and the dark pressing in.",
-    "The seafloor, when the lights catch it, is soft grey mud, undisturbed for longer than you've been alive.",
-    "Every movement down here feels deliberate. Nothing wastes energy in the deep.",
-    "The submersible's lights catch marine snow — a slow, endless snowfall of tiny white specks.",
-    "Somewhere out in the black, something flashes blue-green, once. Bioluminescence — the deep's own language."
+  "deep": [
+    "Il ne reste pour ainsi dire plus de lumière — seulement la lueur du submersible et l'obscurité qui presse de partout.",
+    "Le fond marin, quand les faisceaux l'éclairent, est une boue grise et douce, qui semble n'avoir pas été remuée depuis des décennies.",
+    "Chaque mouvement, ici, semble délibéré. Rien ne gaspille d'énergie dans les profondeurs.",
+    "Les faisceaux du submersible éclairent la neige marine : une chute lente et sans fin de minuscules particules blanches.",
+    "Quelque part dans le noir, quelque chose clignote en bleu-vert, une fois. La bioluminescence — le langage même des profondeurs."
   ]
 };
 
@@ -161,73 +154,565 @@ const DEPTH_FLAVOUR = {
    like cards per trip — the old pure-random pick is what stacked three
    turtles in one dive. */
 const SIGHTINGS = {
-  surface: [
-    { text: "A sea turtle glides past, unhurried, flippers moving like slow wings.", creature: "turtle", biomes: ["tropical","temperate","volcanic","pelagic"] },
-    { text: "A school of small silver fish wheels past in perfect unison.", creature: "fish", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A dolphin arcs through the blue in the distance, there and gone.", creature: "dolphin", biomes: ["tropical","temperate","pelagic"] },
-    { text: "A pair of flying fish skitter across the surface, touching down and lifting off again.", creature: "fish", biomes: ["tropical","pelagic"] },
-    { text: "A seal torpedoes past, sleek and curious, then vanishes into the blue.", creature: "seal", biomes: ["temperate","kelp","polar","volcanic"] },
-    { text: "A manta ray breaches in the distance — a slow black wingspan against the sky, then gone.", creature: "ray", biomes: ["tropical","pelagic"] },
-    { text: "A loggerhead turtle surfaces to breathe, exhales with a sound like a sigh, and dives.", creature: "turtle", biomes: ["tropical","temperate"] },
-    { text: "A pod of spotted dolphins hunts in formation, herding a bait ball into a glittering panic.", creature: "dolphin", biomes: ["tropical","pelagic"] },
-    { text: "A sunfish the size of a door basks at the surface, tilting slowly in the sun.", creature: "mola", biomes: ["tropical","temperate","pelagic"] },
-    { text: "An African penguin torpedoes past in a burst of bubbles, impossibly fast for a bird.", creature: "penguin", regions: ["south-africa"] },
-    { text: "A Galápagos penguin darts past, tiny and quick, gone before you can point.", creature: "penguin", regions: ["galapagos"] },
-    { text: "A hammerhead's silhouette sweeps past in the distance, its wide head unmistakable even this far off.", creature: "shark:hammerhead", biomes: ["tropical","pelagic"] },
-    { text: "Something enormous glides beneath the boat — a whale shark's shadow, slow and vast, there and gone.", creature: "shark:whale", biomes: ["tropical","pelagic"] },
-    { text: "A sea otter glides past, paws tucked, utterly at home in the kelp.", creature: "otter", biomes: ["kelp"] },
-    { text: "A narwhal glides through the cold green water, its long tusk leading the way.", creature: "narwhal", biomes: ["polar"] },
-    { text: "A beluga drifts past, pale and slow, with no dorsal fin to break its outline.", creature: "beluga", biomes: ["polar"] },
-    { text: "A sea snake ripples past, flat tail paddling, paying you no mind.", creature: "snake", regions: ["philippines","papua-new-guinea","maldives"] },
-    { text: "A manatee lumbers past, slow and whiskered, grazing as it goes.", creature: "manatee", regions: ["caribbean"] },
-    { text: "A school of tuna powers past, silver and fast, gone in a heartbeat.", creature: "tuna", biomes: ["pelagic"] },
-    { text: "A clownfish darts among the anemone tentacles, then ducks back in.", creature: "clownfish", regions: ["philippines","papua-new-guinea","maldives"] },
-    { text: "A great white's silhouette passes far off, huge and unhurried, too distant to follow.", creature: "shark:greatwhite", biomes: ["tropical","temperate","pelagic"] },
-    { text: "A mako's silhouette streaks past in the distance, too fast and too far to follow.", creature: "shark:mako", biomes: ["tropical","temperate","pelagic"] },
-    { text: "A thresher's silhouette sweeps by far off, its long tail trailing behind it, too distant to follow.", creature: "shark:thresher", biomes: ["tropical","temperate","pelagic"] }
+  "surface": [
+    {
+      "text": "Une tortue de mer glisse devant toi, sans se presser, ses nageoires bougeant comme de lentes ailes.",
+      "creature": "turtle",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "volcanic",
+        "pelagic"
+      ]
+    },
+    {
+      "text": "Un banc de petits poissons argentés tournoie en parfaite harmonie.",
+      "creature": "fish",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Un dauphin apparaît au loin, décrit un arc dans le bleu, puis disparaît.",
+      "creature": "dolphin",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "pelagic"
+      ]
+    },
+    {
+      "text": "Deux poissons volants rasent la surface, touchant l'eau puis s'envolant à nouveau.",
+      "creature": "fish",
+      "biomes": [
+        "tropical",
+        "pelagic"
+      ]
+    },
+    {
+      "text": "Un phoque file comme une torpille, élégant et curieux, puis disparaît dans le bleu.",
+      "creature": "seal",
+      "biomes": [
+        "temperate",
+        "kelp",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Une raie manta bondit hors de l'eau au loin, déploie ses grandes ailes noires contre le ciel, puis disparaît.",
+      "creature": "ray",
+      "biomes": [
+        "tropical",
+        "pelagic"
+      ]
+    },
+    {
+      "text": "Une tortue caouanne remonte respirer, expire avec un son comme un soupir, puis plonge.",
+      "creature": "turtle",
+      "biomes": [
+        "tropical",
+        "temperate"
+      ]
+    },
+    {
+      "text": "Un groupe de dauphins tachetés chasse en formation, rabattant un banc serré de petits poissons dans une panique scintillante.",
+      "creature": "dolphin",
+      "biomes": [
+        "tropical",
+        "pelagic"
+      ]
+    },
+    {
+      "text": "Un poisson-lune de la taille d'une porte se prélasse à la surface, se balançant lentement au soleil.",
+      "creature": "mola",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "pelagic"
+      ]
+    },
+    {
+      "text": "Un manchot du Cap file comme une torpille dans un jet de bulles, d'une vitesse impossible pour un oiseau.",
+      "creature": "penguin",
+      "regions": [
+        "south-africa"
+      ]
+    },
+    {
+      "text": "Un manchot des Galápagos file devant toi, minuscule et rapide, disparu avant que tu puisses le montrer du doigt.",
+      "creature": "penguin",
+      "regions": [
+        "galapagos"
+      ]
+    },
+    {
+      "text": "La silhouette d'un requin-marteau passe au loin, sa large tête reconnaissable même d'aussi loin.",
+      "creature": "shark:hammerhead",
+      "biomes": [
+        "tropical",
+        "pelagic"
+      ]
+    },
+    {
+      "text": "Quelque chose d'énorme glisse sous le bateau — l'ombre d'un requin-baleine, lente et immense, avant de disparaître.",
+      "creature": "shark:whale",
+      "biomes": [
+        "tropical",
+        "pelagic"
+      ]
+    },
+    {
+      "text": "Une loutre de mer glisse devant toi, pattes repliées, parfaitement chez elle dans le varech.",
+      "creature": "otter",
+      "biomes": [
+        "kelp"
+      ]
+    },
+    {
+      "text": "Un narval glisse dans l'eau verte et froide, sa longue défense ouvrant la voie.",
+      "creature": "narwhal",
+      "biomes": [
+        "polar"
+      ]
+    },
+    {
+      "text": "Un béluga dérive lentement, pâle, sans nageoire dorsale pour briser sa silhouette.",
+      "creature": "beluga",
+      "biomes": [
+        "polar"
+      ]
+    },
+    {
+      "text": "Un serpent de mer ondule devant toi, sa queue plate ramant, sans faire attention à toi.",
+      "creature": "snake",
+      "regions": [
+        "philippines",
+        "papua-new-guinea",
+        "maldives"
+      ]
+    },
+    {
+      "text": "Un lamantin passe pesamment, lent et moustachu, broutant au passage.",
+      "creature": "manatee",
+      "regions": [
+        "caribbean"
+      ]
+    },
+    {
+      "text": "Un banc de thons file à toute vitesse, argentés et rapides, disparus en un clin d'œil.",
+      "creature": "tuna",
+      "biomes": [
+        "pelagic"
+      ]
+    },
+    {
+      "text": "Un poisson-clown file entre les tentacules d'anémone, puis s'y réfugie.",
+      "creature": "clownfish",
+      "regions": [
+        "philippines",
+        "papua-new-guinea",
+        "maldives"
+      ]
+    },
+    {
+      "text": "La silhouette d'un grand requin blanc passe au loin, énorme et sans se presser, trop éloignée pour la suivre.",
+      "creature": "shark:greatwhite",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "pelagic"
+      ]
+    },
+    {
+      "text": "La silhouette d'un requin-taupe bleu file au loin, trop rapide et trop éloignée pour la suivre.",
+      "creature": "shark:mako",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "pelagic"
+      ]
+    },
+    {
+      "text": "La silhouette d'un requin-renard traverse le bleu au loin, sa longue queue traînant derrière, trop éloignée pour la suivre.",
+      "creature": "shark:thresher",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "pelagic"
+      ]
+    }
   ],
-  reef: [
-    { text: "A sea turtle paddles over the coral, unbothered by your presence.", creature: "turtle", biomes: ["tropical","volcanic"] },
-    { text: "A shimmering school of fusiliers pours over the reef crest.", creature: "fish", biomes: ["tropical","volcanic"] },
-    { text: "A hawksbill turtle works a sponge off the coral head, beak crunching steadily.", creature: "turtle", biomes: ["tropical"] },
-    { text: "A small reef shark patrols the drop-off — not your target, just a colleague passing through.", creature: "fish", biomes: ["tropical","volcanic"] },
-    { text: "A spotted eagle ray glides over the sand flat, wings rippling like slow applause.", creature: "ray", biomes: ["tropical"] },
-    { text: "A green turtle rests on a coral bommie, tucked in like it's naptime. It probably is.", creature: "turtle", biomes: ["tropical"] },
-    { text: "A school of barracuda hangs motionless in the blue, silver commas all facing the same way.", creature: "fish", biomes: ["tropical","volcanic","temperate"] },
-    { text: "A reef octopus flows across the coral, colour-shifting with every metre.", creature: "fish", biomes: ["tropical","volcanic"] },
-    { text: "A seal weaves through the kelp stipes, there and gone like a rumour.", creature: "seal", biomes: ["kelp","temperate"] },
-    { text: "Cold water, low light — a school of small silver fish holds station over the rocky reef.", creature: "fish", biomes: ["temperate","polar","kelp"] },
-    { text: "A vast school of mackerel wheels overhead, a living cloud flashing silver.", creature: "fish", biomes: ["pelagic"] },
-    { text: "A squid pulses through the blue, arms trailing, hunting in the open water.", creature: "fish", biomes: ["pelagic"] },
-    { text: "A moon jelly drifts past in the open blue, pulsing gently.", creature: "jellyfish", biomes: ["pelagic"] },
-    { text: "A tiger shark's silhouette crosses the drop-off far below, too distant to follow.", creature: "shark:tiger", biomes: ["tropical"] },
-    { text: "A moray eel slides past, long and sinuous, mouth opening and closing as it goes.", creature: "moray", biomes: ["tropical"] },
-    { text: "A seahorse drifts past upright, tail curled tight, swaying with the water.", creature: "seahorse", biomes: ["tropical","temperate"] },
-    { text: "A parrotfish crunches coral with its beak mouth, trailing a puff of sand behind it.", creature: "parrotfish", biomes: ["tropical"] },
-    { text: "A pufferfish hovers over the reef, smooth and unhurried, fins fluttering to hold still.", creature: "pufferfish", biomes: ["tropical","temperate"] },
-    { text: "A lionfish hovers over the reef, fins flared wide, beautiful and unbothered.", creature: "lionfish", biomes: ["tropical","temperate"] },
+  "reef": [
+    {
+      "text": "Une tortue de mer pagaye au-dessus du corail, indifférente à ta présence.",
+      "creature": "turtle",
+      "biomes": [
+        "tropical",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Un banc scintillant de fusiliers déferle sur la crête du récif.",
+      "creature": "fish",
+      "biomes": [
+        "tropical",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Une tortue imbriquée grignote une éponge sur une tête de corail, son bec croquant sans relâche.",
+      "creature": "turtle",
+      "biomes": [
+        "tropical"
+      ]
+    },
+    {
+      "text": "Un petit requin de récif patrouille le tombant — pas ta cible, juste un collègue de passage.",
+      "creature": "fish",
+      "biomes": [
+        "tropical",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Une raie aigle tachetée glisse sur le platier sableux, ses ailes ondulant comme de lents applaudissements.",
+      "creature": "ray",
+      "biomes": [
+        "tropical"
+      ]
+    },
+    {
+      "text": "Une tortue verte repose sur un massif de corail, blottie comme pour une sieste. C'est probablement le cas.",
+      "creature": "turtle",
+      "biomes": [
+        "tropical"
+      ]
+    },
+    {
+      "text": "Un banc de barracudas flotte immobile dans le bleu, des virgules argentées toutes tournées dans le même sens.",
+      "creature": "fish",
+      "biomes": [
+        "tropical",
+        "volcanic",
+        "temperate"
+      ]
+    },
+    {
+      "text": "Une pieuvre de récif se glisse sur le corail, changeant de couleur à chaque mètre.",
+      "creature": "fish",
+      "biomes": [
+        "tropical",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Un phoque serpente entre les stipes de varech, apparaît un instant, puis disparaît, comme une rumeur.",
+      "creature": "seal",
+      "biomes": [
+        "kelp",
+        "temperate"
+      ]
+    },
+    {
+      "text": "Eau froide, peu de lumière — un banc de petits poissons argentés se tient au-dessus du récif rocheux.",
+      "creature": "fish",
+      "biomes": [
+        "temperate",
+        "polar",
+        "kelp"
+      ]
+    },
+    {
+      "text": "Un immense banc de maquereaux tournoie au-dessus de ta tête, un nuage vivant aux reflets argentés.",
+      "creature": "fish",
+      "biomes": [
+        "pelagic"
+      ]
+    },
+    {
+      "text": "Un calmar progresse par jets d'eau dans le bleu, bras traînants, chassant en pleine eau.",
+      "creature": "fish",
+      "biomes": [
+        "pelagic"
+      ]
+    },
+    {
+      "text": "Une méduse lune dérive dans le bleu, se contractant doucement.",
+      "creature": "jellyfish",
+      "biomes": [
+        "pelagic"
+      ]
+    },
+    {
+      "text": "La silhouette d'un requin-tigre traverse le tombant très en dessous, trop éloignée pour la suivre.",
+      "creature": "shark:tiger",
+      "biomes": [
+        "tropical"
+      ]
+    },
+    {
+      "text": "Une murène glisse devant toi, longue et sinueuse, la bouche qui s'ouvre et se ferme au passage.",
+      "creature": "moray",
+      "biomes": [
+        "tropical"
+      ]
+    },
+    {
+      "text": "Un hippocampe dérive debout, queue bien enroulée, se balançant avec l'eau.",
+      "creature": "seahorse",
+      "biomes": [
+        "tropical",
+        "temperate"
+      ]
+    },
+    {
+      "text": "Un poisson-perroquet racle la surface du corail de son bec, laissant derrière lui un nuage de sable.",
+      "creature": "parrotfish",
+      "biomes": [
+        "tropical"
+      ]
+    },
+    {
+      "text": "Un poisson-globe plane au-dessus du récif, lisse et sans se presser, nageoires frémissantes pour rester sur place.",
+      "creature": "pufferfish",
+      "biomes": [
+        "tropical",
+        "temperate"
+      ]
+    },
+    {
+      "text": "Un poisson-lion plane au-dessus du récif, nageoires largement déployées, magnifique et indifférent.",
+      "creature": "lionfish",
+      "biomes": [
+        "tropical",
+        "temperate"
+      ]
+    }
   ],
-  twilight: [
-    { text: "A loose school of lanternfish flickers past, each one carrying its own small light.", creature: "fish", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A chain of salps drifts past, glassy barrels linked nose to tail.", creature: "fish", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A squid pulses through the edge of the lights, arms trailing, gone in a blink.", creature: "fish", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A moon jelly drifts past, pulsing gently, trailing its fine oral arms.", creature: "jellyfish", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A hatchetfish flickers past, deep-bodied and silver, its belly lights blinking.", creature: "hatchetfish", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A gulper eel drifts by, huge mouth first, its long tail trailing into the dark.", creature: "gulper", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A vampire squid pulses past, dark cape of webbed arms trailing behind it.", creature: "vampire", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A siphonophore drifts past, a long chain of bells and threads, longer than you are.", creature: "siphonophore", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A cloud of krill swarms past, thousands of tiny bodies moving as one.", creature: "krill", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A viperfish hangs in the dark, fangs bared, its lure swaying ahead of it.", creature: "viperfish", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] }
+  "twilight": [
+    {
+      "text": "Un banc lâche de poissons-lanternes scintille devant toi, chacun portant sa propre petite lumière.",
+      "creature": "fish",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Une chaîne de salpes dérive devant toi, des tonneaux vitreux reliés bout à bout.",
+      "creature": "fish",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Un calmar progresse par jets d'eau à la lisière des lumières, bras traînants, disparu en un clin d'œil.",
+      "creature": "fish",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Une méduse lune dérive, se contractant doucement, traînant ses fins bras buccaux.",
+      "creature": "jellyfish",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Un poisson-hachette scintille devant toi, au corps haut et argenté, les lumières de son ventre clignotant.",
+      "creature": "hatchetfish",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Une anguille pélican dérive, bouche énorme d'abord, sa longue queue se perdant dans le noir.",
+      "creature": "gulper",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Un calmar vampire avance par pulsations devant toi, sa cape sombre de bras palmés traînant derrière lui.",
+      "creature": "vampire",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Un siphonophore dérive, longue chaîne de cloches et de filaments, plus long que toi.",
+      "creature": "siphonophore",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Un nuage de krill grouille devant toi, des milliers de minuscules corps se déplaçant comme un seul.",
+      "creature": "krill",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Un poisson-vipère flotte dans le noir, crocs découverts, son long rayon dorsal se balançant devant lui.",
+      "creature": "viperfish",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    }
   ],
-  deep: [
-    { text: "Something small and pale drifts through the edge of the lights — gone before you can focus.", creature: "fish", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A rattail fish noses through the mud at the edge of the lights, unhurried.", creature: "fish", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A dumbo octopus flaps past like a tiny ghost with ears.", creature: "fish", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A deep-sea jellyfish pulses in the darkness, its bell glowing faintly red.", creature: "jellyfish", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "An anglerfish drifts through the edge of the lights, its lure glowing faintly ahead of all those teeth.", creature: "anglerfish", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A snailfish drifts past, soft and tadpole-shaped, unbothered by the dark.", creature: "snailfish", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A cusk eel slides through the mud, long and plain, tail tapering away.", creature: "cusk", biomes: ["tropical","temperate","kelp","pelagic","polar","volcanic"] },
-    { text: "A goblin shark's silhouette drifts through the dark below, too deep and too far to follow.", creature: "shark:goblin", biomes: ["tropical","temperate","kelp","pelagic","volcanic"] }
+  "deep": [
+    {
+      "text": "Quelque chose de petit et de pâle dérive à la lisière des lumières — disparu avant que tu aies pu le distinguer.",
+      "creature": "fish",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Un grenadier fouille la boue à la lisière des lumières, sans se presser.",
+      "creature": "fish",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Une pieuvre dumbo passe en agitant ses nageoires, comme un petit fantôme avec des oreilles.",
+      "creature": "fish",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Une méduse des grands fonds avance par pulsations dans l'obscurité, sa cloche luisant faiblement en rouge.",
+      "creature": "jellyfish",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Une baudroie dérive à la lisière des lumières, son leurre luisant faiblement devant toutes ces dents.",
+      "creature": "anglerfish",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Un poisson-limace dérive, au corps mou, en forme de têtard, indifférent à l'obscurité.",
+      "creature": "snailfish",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "Une donzelle glisse dans la boue, au corps allongé et discret, la queue s'effilant au loin.",
+      "creature": "cusk",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "polar",
+        "volcanic"
+      ]
+    },
+    {
+      "text": "La silhouette d'un requin-lutin dérive dans le noir en dessous, trop profonde et trop éloignée pour la suivre.",
+      "creature": "shark:goblin",
+      "biomes": [
+        "tropical",
+        "temperate",
+        "kelp",
+        "pelagic",
+        "volcanic"
+      ]
+    }
   ]
 };
 
