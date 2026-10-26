@@ -19,7 +19,7 @@ English main is now 4144d89d (v2.7.15, PR #162 "final English fixes"), up from 3
 - art-data.js: 100 English aria-labels → Batch 7 French names (small pass).
 - map-data.js: English geo labels in tracking envelopes — confirm which surface in UI, translate those.
 - Archive UI chrome: "Your shark", "tagged", "at", "coming soon" + "trimmed from original" build string ("raccourci par rapport à l'original") — small batch, not yet drafted.
-- French version number: English is v2.7.15-beta; French edition version scheme is an open decision for Avery (launch version, not a copy of the English number).
+- French version number: SETTLED 2026-10-25 (Avery): French edition launches as v1.0.0, independent of the English v2.7.15-beta number.
 - Final localization audit + iPad playtest + Mira review of the assembled build.
 
 ## Decisions already settled (do not re-open without Avery)
