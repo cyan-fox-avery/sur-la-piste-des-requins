@@ -48,7 +48,7 @@ expedition,template-expedition-hours-1,"⏳ The hours slip by. The deep does not
 expedition,template-expedition-home-1,⛵ You call it a day and turn for home — a good day on the water.,⛵ Tu termines ta journée et tu rentres — une belle journée sur l'eau.,End-of-day log line.
 expedition,template-expedition-done-1,🌅 The light changes. Time to head in — the day is done.,🌅 La lumière change. Il est temps de rentrer — la journée est finie.,End-of-day log line.
 expedition,template-expedition-none-1,No sharks today. The sea keeps its counsel.,Aucun requin aujourd'hui. La mer garde ses secrets.,Empty-expedition log line; distinct from the covered plain No sharks today.
-logbook,template-logbook-empty-1,"No expeditions logged yet. Every trip lands here — plan, encounters, outcome. 📓","Aucune expédition consignée pour l'instant. Chaque sortie atterrit ici — plan, rencontres, résultat. 📓",Logbook empty state.
+"No expeditions logged yet. Every trip lands here — plan, encounters, outcome. 📓","Aucune expédition consignée pour l'instant. Chaque sortie est consignée ici : plan, rencontres et résultat. 📓",Logbook empty state.
 logbook,template-logbook-nomatch-1,No trips match those filters. Try clearing something — the ocean is bigger than it looks.,Aucune sortie ne correspond à ces filtres. Essaie d'en retirer un — l'océan est plus grand qu'il n'y paraît.,Logbook filtered-empty state.
 logbook,template-logbook-repeat-1,🔁 Repeat this plan,🔁 Reprendre ce plan,Logbook entry button.
 logbook,template-logbook-older-1,📓 Show older trips ({count} more),📓 Afficher les sorties plus anciennes ({count} de plus),Logbook pagination button.
@@ -73,7 +73,7 @@ collection,template-collection-insights-1,— all insights discovered,— toutes
 collection,template-collection-showall-1,Show all ({count}),Tout afficher ({count}),"Toggle button, used for older re-sightings and collection lists."
 collection,template-collection-resightings-1,🔁 Re-sightings ({count}),🔁 Réobservations ({count}),Heading in collection detail; distinct from the skipped Re-sighting log line.
 collection,template-collection-fieldnotes-1,📓 Field notes from watching ({count}),📓 Notes de terrain prises en observant ({count}),Heading in collection detail.
-collection,template-collection-insights-2,🔬 Tag-along insights ({have}/{total}),🔬 Découvertes en accompagnement ({have}/{total}),Heading in collection detail; term découvertes — flag for Mira.
+🔬 Tag-along insights ({have}/{total}),"🔬 Découvertes du suivi ({have}/{total})",Heading in collection detail; term découvertes — flag for Mira.
 collection,template-collection-conservation-1,Conservation:,Conservation :,Label before a conservation note in collection detail.
 collection,template-collection-taggedat-1,📍 Tagged at: {location},📍 Marqué à : {location},Collection-detail label; same label family as the skipped map-meta Tagged at — keep wording consistent across map and cards.
 collection,template-collection-lastping-1,Last ping: {label},Dernier signal : {label},Track-modal variant of the skipped map-meta Latest ping; keep wording consistent.
@@ -93,7 +93,7 @@ celebration,template-follow-back-1,"🌊 {name} is back in the water — tag sec
 celebration,template-follow-course-1,🧭 You're changing course to follow {name} — no more encounters this trip.,🧭 Tu changes de cap pour suivre {name} — plus de rencontres pendant cette sortie.,"Follow log line; appears twice in code, one row."
 celebration,template-follow-following-1,"🧭 Following {name} — tag secure, swimming strong.","🧭 Tu suis {name} — balise bien fixée, nage vigoureuse.",Follow status line.
 insight,template-insight-header-1,Species insight,Découverte sur l'espèce,"Insight overlay header, observe variant."
-insight,template-insight-header-2,Tag-along insight,Découverte en accompagnement,"Insight overlay header, follow variant."
+Tag-along insight,"Découverte du suivi","Insight overlay header, follow variant."
 insight,template-insight-learned-1,— learned {learned}/{total},— {learned}/{total} apprises,Insight overlay header counter variant.
 insight,template-insight-learned-2,— {learned}/{total} learned,— {learned}/{total} apprises,Insight overlay body counter variant; same French as the header variant despite different English word order.
 insight,template-insight-observe-1,Observing this {name} paid off.,Observer ce {name} a porté ses fruits.,"Insight overlay line, observe variant."
@@ -104,9 +104,9 @@ insight,template-insight-species-1,That's everything this species had to teach.,
 insight,template-insight-shark-1,That's everything this shark had to teach.,C'est tout ce que ce requin avait à enseigner.,"Insight overlay line, individual exhausted."
 insight,template-insight-all-1,I've learned all I can — the rest is in the specialists' hands now.,J'ai appris tout ce que je pouvais — le reste est entre les mains des spécialistes.,Learned-all popup line.
 insight,template-insight-studied-1,{name} still appreciates being studied. 🔬,{name} apprécie toujours qu'on l'étudie. 🔬,"Learned-all popup line, observe variant."
-insight,template-insight-company-1,{name} still appreciates the company. 🧭,{name} apprécie toujours la compagnie. 🧭,"Learned-all popup line, follow variant."
+{name} still appreciates the company. 🧭,"Tu peux toujours accompagner {name} dans ses déplacements. 🧭","Learned-all popup line, follow variant."
 insight,template-insight-header-3,🔬 Species insight — {name},🔬 Découverte sur l'espèce — {name},"Learned-all popup header, observe variant."
-insight,template-insight-header-4,🧭 Tagging along with {name},🧭 En accompagnement avec {name},"Learned-all popup header, follow variant."
+🧭 Tagging along with {name},"🧭 Suivi de {name}","Learned-all popup header, follow variant."
 win,template-win-count-1,{count} for {count}. Couldn't have done it without my research assistant.,{count} pour {count}. Je n'aurais jamais pu y arriver sans mon assistant de recherche.,Win-thread line; both counts are the total shark count (e.g. 50 for 50).
 win,template-win-first-1,{name} — the {species}. I'll never forget.,{name} — le {species}. Je n'oublierai jamais.,Win-thread line; article gender note applies.
 win,template-win-know-1,"And now you know {count} individual sharks. Not species — individuals. With names, and tracks, and lives they're still living right now.","Et maintenant, tu connais {count} requins en particulier. Pas des espèces — des individus. Avec des noms, des parcours, et des vies qu'ils vivent encore en ce moment.",Win-thread line.
@@ -125,7 +125,7 @@ win,template-win-dedication-1,For Sarah who finished Rockhound at 1:26 AM and lo
 win,template-win-skip-1,Skip,Passer,Finale skip button; distinct from tour Skip tour.
 win,template-win-cert-1,📥 Save / share certificate,📥 Enregistrer / partager le certificat,Certificate overlay button.
 win,template-win-cert-2,Your name,Ton nom,Certificate signature line.
-win,template-win-cert-3,Awarded with salt on it. 🦈,Décerné avec du sel dessus. 🦈,Certificate line; wordplay preserved literally.
+Awarded with salt on it. 🦈,"Décerné avec une pincée de sel marin. 🦈",Certificate line; wordplay preserved literally.
 win,template-win-cert-4,🔍 Make it bigger,🔍 Agrandir,Certificate overlay button.
 win,template-win-list-1,{name} — {species} ({count} / {total}),{name} — {species} ({count} / {total}),"Finale roster line; {name} is the nickname (may be empty), counts are tagged/total."
 win,template-win-and-1,{first} and {second},{first} et {second},Two-item species-list joiner in formatSpeciesList.
