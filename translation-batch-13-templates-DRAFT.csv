@@ -1,0 +1,139 @@
+category,key,english,quebec_french,notes
+ui,template-pin-empty-1,📌 Pinned sharks appear here. Sarah might know something if you ask her about one.,"📌 Les requins épinglés apparaissent ici. Sarah en sait peut-être quelque chose, si tu lui demandes.",Pinned-panel empty state.
+ui,template-pin-empty-2,"📌 No shark pinned — tap 📌 on any field-guide entry to keep it here while you research. Tip: pinning a shark switches on soft logbook hints — when your expedition plan is close for the shark you're researching, your notes will nudge you. Sarah might know something too, if you ask her about it.","📌 Aucun requin épinglé — touche 📌 sur une fiche du guide de terrain pour le garder ici pendant tes recherches. Astuce : épingler un requin active les petits indices du journal de bord — quand ton plan d'expédition est proche pour le requin que tu étudies, tes notes te donneront un coup de pouce. Sarah en sait peut-être quelque chose aussi, si tu lui demandes.","Pinned-panel empty state, long version."
+ui,template-pin-current-1,📌 Currently researching,📌 En cours d'étude,Pinned-panel heading; distinct from the expedition pin line with a colon.
+ui,template-pin-unpin-1,Unpin {species},Désépingler {species},aria-label on the pinned-panel unpin button; distinct from the guide-card pin aria rows.
+ui,template-pin-expedition-1,📌 Currently researching: {species},📌 En cours d'étude : {species},Expedition pin line.
+ui,template-pin-hints-1,📓 Pin hints on — your logbook notes nudge you when the plan is close.,📓 Indices d'épingle activés — tes notes du journal de bord te donnent un coup de pouce quand le plan est proche.,Expedition pin line note.
+ui,template-guide-count-1,Showing {shown} of {total} sharks,Affichage de {shown} requins sur {total},Field-guide result count.
+ui,template-guide-locked-1,🔒 Our vessel hasn't surveyed these waters yet — tag 10 sharks to unlock them.,🔒 Notre navire n'a pas encore exploré ces eaux — marque 10 requins pour les débloquer.,Locked-region note in a guide card.
+ui,template-guide-locked-2,🔒 {region} — locked,🔒 {region} — verrouillée,"Locked-region row; all currently locked regions have feminine French names, so verrouillée agrees; revisit if a masculine region is ever locked."
+ui,template-guide-tagged-1,Tagged {id} as {name} 🎉,Marqué {id} sous le nom de {name} 🎉,Completed-tag note in a guide card; not the filter chip (Batch 7 Marqué/Marqués).
+ui,template-guide-close-1,Close {species} details,Fermer les détails de {species},Guide-card close button aria-label; mirrors the covered static Close details → Fermer les détails.
+ui,template-guide-pin-1,Pin {species} as currently researching,Épingler {species} comme étude en cours,Guide-card pin button aria-label.
+ui,template-guide-pin-2,Unpin {species} as currently researching,Désépingler {species} comme étude en cours,Guide-card unpin button aria-label.
+ui,template-filter-remove-1,Remove filter: {label},Retirer le filtre : {label},Active-filter chip aria-label.
+ui,template-aria-trackmap-1,Migration track map,Carte de l'itinéraire de migration,aria-label on the track-modal map.
+ui,template-aria-reveal-1,Something is out there — tap to reveal,Quelque chose est là — touche pour révéler,aria-label on the encounter silhouette.
+ui,template-reveal-1,👆 Tap to reveal,👆 Touche pour révéler,Encounter silhouette button.
+ui,template-reveal-2,🦈 Something's out there...,🦈 Quelque chose est là...,Encounter log line.
+encounter,template-encounter-new-1,{species} — new to your book!,{species} — nouveau dans ton carnet !,"Already-in-book suffix, new species; the species name precedes it in the Shark! line."
+encounter,template-encounter-reunion-1,— wait... that tag looks familiar. It's {name}! 🥹,— attends... cette balise me dit quelque chose. C'est {name} ! 🥹,"Already-in-book suffix, reunion; {name} is the nickname or research ID."
+encounter,template-encounter-other-1,— another {species}! This one has no matching tag — not {name}.,— un autre {species} ! Celui-ci n'a pas de balise correspondante — ce n'est pas {name}.,"Already-in-book suffix, different shark; build must map the English fallback name yours to le tien."
+encounter,template-encounter-shark-1,🦈 Shark! A {species}{suffix},🦈 Requin ! Un {species}{suffix},Encounter log line; {suffix} is one of the three already-in-book rows above; article before {species} must agree with species gender (only petite roussette is feminine).
+encounter,template-encounter-badge-1,🥹 YOUR SHARK — {name},🥹 TON REQUIN — {name},"Encounter status badge, reunion."
+encounter,template-encounter-badge-2,🦈 ANOTHER {species},🦈 UN AUTRE {species},"Encounter status badge, different shark; species name keeps code casing."
+encounter,template-encounter-tag-1,🏷️ Tag the {species},🏷️ Marque le {species},Encounter action button; article before {species} must agree with species gender.
+encounter,template-encounter-noted-1,📓 Noted: {note}.,📓 Noté : {note}.,Log line after a note is recorded.
+encounter,template-encounter-watch-1,"👁️ You watch the {species} {doing}. A good sighting, logged.","👁️ Tu observes le {species} {doing}. Une belle observation, consignée.","Watch log line; {doing} is a Batch 9b doing fragment, already translated; article gender note applies."
+encounter,template-encounter-follow-1,🧭 Follow {name} ends this expedition — no more shark encounters today,🧭 Suivre {name} met fin à l'expédition — plus de rencontres avec des requins aujourd'hui,"Follow button text; Follow here is a verb, not a noun."
+encounter,template-encounter-follow-2,Follow {name} for the rest of this trip (ends expedition),Suivre {name} pour le reste de cette sortie (met fin à l'expédition),Follow button aria-label variant.
+encounter,template-encounter-insights-1,(insights: {have}/{total}),(découvertes : {have}/{total}),Insights counter on encounter buttons; term choice découvertes for insights — flag for Mira for build-wide consistency.
+encounter,template-encounter-insights-2,({have} of {total} insights learned),({have} découvertes sur {total} apprises),"Insights counter, aria-label variant."
+encounter,template-encounter-observe-1,🔬 Observe species,🔬 Observer l'espèce,Observe button heading.
+encounter,template-encounter-observe-2,study this {species} — all insights learned (ends the expedition),étudier ce {species} — toutes les découvertes apprises (met fin à l'expédition),"Observe button sublabel, exhausted case."
+encounter,template-encounter-observe-3,study this {species} — may reveal a secret fact (ends the expedition),étudier ce {species} — peut révéler un fait secret (met fin à l'expédition),"Observe button sublabel, live case."
+encounter,template-encounter-observe-4,"Observe this {species} (species study, not your tagged shark; all insights already learned; ends the expedition)","Observer ce {species} (étude de l'espèce, pas ton requin marqué ; toutes les découvertes sont déjà apprises ; met fin à l'expédition)","Observe button aria-label, exhausted case."
+encounter,template-encounter-observe-5,"Observe this {species} (species study, not your tagged shark; learning a new fact ends the expedition)","Observer ce {species} (étude de l'espèce, pas ton requin marqué ; apprendre un fait nouveau met fin à l'expédition)","Observe button aria-label, live case."
+encounter,template-encounter-debrief-1,🧭 That discovery deserves a full debrief — heading back to the ship to log it properly.,🧭 Cette découverte mérite un vrai compte rendu — retour au navire pour la consigner correctement.,Post-discovery log line.
+encounter,template-encounter-debrief-2,🧭 The study is complete — heading back to the ship to log it properly.,🧭 L'étude est terminée — retour au navire pour la consigner correctement.,Post-study log line.
+expedition,template-expedition-bait-1,Bait deployed: {bait}.,Appât déployé : {bait}.,Log line; {bait} is a translated BAITS value.
+expedition,template-expedition-begun-1,🛥️ Expedition begun — the research vessel leaves the harbor.,🛥️ Expédition commencée — le navire de recherche quitte le port.,Log line.
+expedition,template-expedition-attractant-1,{attractant} in the water.,{attractant} dans l'eau.,Log line; {attractant} is a translated METHODS option value.
+expedition,template-expedition-descent-1,"⬇️ The water darkens as you descend. The surface light thins, then lets go.","⬇️ L'eau s'assombrit pendant ta descente. La lumière de surface s'amincit, puis lâche prise.",Log line.
+expedition,template-expedition-morning-1,⏳ The morning wears on…,⏳ La matinée s'étire…,Time-passing log line.
+expedition,template-expedition-afternoon-1,⏳ The afternoon stretches out…,⏳ L'après-midi s'étire…,Time-passing log line.
+expedition,template-expedition-evening-1,⏳ Evening approaches…,⏳ Le soir approche…,Time-passing log line.
+expedition,template-expedition-hours-1,"⏳ The hours slip by. The deep does not hurry, so neither do you.","⏳ Les heures passent. Les profondeurs ne se pressent pas, et toi non plus.",Time-passing log line.
+expedition,template-expedition-home-1,⛵ You call it a day and turn for home — a good day on the water.,⛵ Tu termines ta journée et tu rentres — une belle journée sur l'eau.,End-of-day log line.
+expedition,template-expedition-done-1,🌅 The light changes. Time to head in — the day is done.,🌅 La lumière change. Il est temps de rentrer — la journée est finie.,End-of-day log line.
+expedition,template-expedition-none-1,No sharks today. The sea keeps its counsel.,Aucun requin aujourd'hui. La mer garde ses secrets.,Empty-expedition log line; distinct from the covered plain No sharks today.
+logbook,template-logbook-empty-1,"No expeditions logged yet. Every trip lands here — plan, encounters, outcome. 📓","Aucune expédition consignée pour l'instant. Chaque sortie atterrit ici — plan, rencontres, résultat. 📓",Logbook empty state.
+logbook,template-logbook-nomatch-1,No trips match those filters. Try clearing something — the ocean is bigger than it looks.,Aucune sortie ne correspond à ces filtres. Essaie d'en retirer un — l'océan est plus grand qu'il n'y paraît.,Logbook filtered-empty state.
+logbook,template-logbook-repeat-1,🔁 Repeat this plan,🔁 Reprendre ce plan,Logbook entry button.
+logbook,template-logbook-older-1,📓 Show older trips ({count} more),📓 Afficher les sorties plus anciennes ({count} de plus),Logbook pagination button.
+phone,template-phone-empty-1,No messages yet. Sarah will text you between expeditions. 💬,Aucun message pour l'instant. Sarah t'écrira entre les expéditions. 💬,Phone empty state.
+phone,template-phone-ask-1,Ask Sarah about the {species},Demander à Sarah au sujet du {species},Ask-Sarah button; article gender note applies.
+phone,template-phone-ask-2,Ask Sarah for advice about the {species},Demander conseil à Sarah au sujet du {species},Ask-Sarah button variant.
+phone,template-phone-ask-3,I'm striking out — any advice on the {species}?,Je n'y arrive pas — un conseil sur le {species} ?,"Ask-Sarah button, post-failure variant."
+sightings,template-sightings-empty-1,No sightings yet. Watch a shark without tagging it and it'll be logged here. 👁️,Aucune observation pour l'instant. Observe un requin sans le marquer et ce sera consigné ici. 👁️,Sightings empty state.
+sightings,template-sightings-more-1,👁️ Show more sightings ({count} more),👁️ Afficher plus d'observations ({count} de plus),Sightings pagination button.
+resight,template-resight-again-1,You saw {label} again? The {species}?,Tu as revu {label} ? Le {species} ?,Re-sighting thread opener; {label} is the nickname or research ID; article gender note applies.
+resight,template-resight-off-1,"{species}, off {location}. {note}","{species}, au large de {location}. {note}","Player bubble reporting a re-sighting; {note} is a Batch 9b resight note, already translated; off means near that place."
+resight,template-resight-wait-1,WAIT. You saw {name} again?!?,ATTENDS. Tu as revu {name} ?!?,First-reunion thread opener.
+resight,template-resight-matched-1,The tag matched — it's really them.,La balise correspond — c'est vraiment le même individu.,First-reunion thread line; neutral wording avoids assigning a sex the thread does not state.
+collection,template-collection-tagged-1,"No sharks tagged yet. Do your research, then get out there. 🦈","Aucun requin marqué pour l'instant. Fais tes recherches, puis lance-toi. 🦈",Collection empty state.
+collection,template-achievement-toast-1,Achievement Unlocked!,Succès débloqué !,Achievement toast heading; the Sweet! tail is already covered.
+collection,template-achievement-progress-1,Achievements {unlocked} of {total} unlocked,Succès {unlocked} sur {total} débloqués,Achievements panel progress line.
+collection,template-achievement-cert-1,🏆 Master Shark Tagger Official certificate — tap to view,🏆 Certificat officiel de Maître du marquage des requins — touche pour voir,Certificate row in Achievements.
+collection,template-achievement-derpy-1,🎁 Claim your derpy award,🎁 Réclamer ton prix zinzin,Derpy award button; derpy → zinzin per Batch 2 Les requins zinzins.
+collection,template-collection-derpy-1,🦈 Derpy mode: {state},🦈 Mode zinzin : {state},"Derpy mode toggle label; {state} is the code value ON/OFF rendered by the button — build must map it to activé/désactivé, not translated here."
+collection,template-collection-details-1,Open details for {name},Ouvrir les détails de {name},Collection card button.
+collection,template-collection-insights-1,— all insights discovered,— toutes les découvertes faites,Suffix on a collection card line when all insights for that shark are learned.
+collection,template-collection-showall-1,Show all ({count}),Tout afficher ({count}),"Toggle button, used for older re-sightings and collection lists."
+collection,template-collection-resightings-1,🔁 Re-sightings ({count}),🔁 Réobservations ({count}),Heading in collection detail; distinct from the skipped Re-sighting log line.
+collection,template-collection-fieldnotes-1,📓 Field notes from watching ({count}),📓 Notes de terrain prises en observant ({count}),Heading in collection detail.
+collection,template-collection-insights-2,🔬 Tag-along insights ({have}/{total}),🔬 Découvertes en accompagnement ({have}/{total}),Heading in collection detail; term découvertes — flag for Mira.
+collection,template-collection-conservation-1,Conservation:,Conservation :,Label before a conservation note in collection detail.
+collection,template-collection-taggedat-1,📍 Tagged at: {location},📍 Marqué à : {location},Collection-detail label; same label family as the skipped map-meta Tagged at — keep wording consistent across map and cards.
+collection,template-collection-lastping-1,Last ping: {label},Dernier signal : {label},Track-modal variant of the skipped map-meta Latest ping; keep wording consistent.
+collection,template-collection-sex-1,female,femelle,"DISPLAY label only, in the ♀/♂ sex ternary; stored sex values stay English code and must not be translated."
+collection,template-collection-sex-2,male,mâle,"DISPLAY label only, in the ♀/♂ sex ternary; stored sex values stay English code and must not be translated."
+collection,template-collection-researchid-1,Research ID {id},Identifiant de recherche {id},Covers both Research ID {id}. and 🔬 Research ID: {id} usages; punctuation comes from the template.
+collection,template-collection-auto-1,(assigned automatically),(attribué automatiquement),Certificate/card note after a research ID.
+collection,template-collection-rename-1,Rename,Renommer,"Collection-detail button, when a nickname exists."
+collection,template-collection-rename-2,Add nickname,Ajouter un surnom,"Collection-detail button, when no nickname exists."
+collection,template-collection-track-1,📍 Tracking on map ✓,📍 Suivi sur la carte ✓,"Track button, tracking-on state."
+collection,template-collection-track-2,📍 Track this shark,📍 Suivre ce requin,"Track button, tracking-off state."
+collection,template-collection-name-1,"A {species} — {length} metres, {sex}. Research ID {id}.","Un {species} — {length} mètres, {sex}. Identifiant de recherche {id}.",Collection card identity line; {sex} here is the stored English code — build must map it to femelle/mâle (see sex rows); article gender note applies.
+collection,template-collection-health-1,"{species} — {id} 🩺 Health check: {sex}, {length} m. Tag seated well, swimming strongly, good body condition. Every shark released healthy. 🦈","{species} — {id} 🩺 Bilan de santé : {sex}, {length} m. Balise bien en place, nage vigoureuse, bonne condition physique. Chaque requin est relâché en bonne santé. 🦈",Tagging-ceremony health line; {sex} here is the ♀/♂ display label (see sex rows).
+celebration,template-celebration-new-1,🎉 New species! This is your first {species}!,🎉 Nouvelle espèce ! C'est ton premier {species} !,First-tag toast; premier must agree with species gender (première for petite roussette).
+celebration,template-celebration-tagged-1,🎉 {species} tagged! That's the {ordinal} {species} you've tagged!,🎉 {species} marqué ! C'est le {ordinal} {species} que tu as marqué !,"Tag-count toast; build must render French ordinals ({ordinal} like 3e), not English 3rd."
+celebration,template-follow-back-1,"🌊 {name} is back in the water — tag secure, swimming strong.","🌊 {name} est de retour dans l'eau — balise bien fixée, nage vigoureuse.","Release log line; appears twice in code, one row."
+celebration,template-follow-course-1,🧭 You're changing course to follow {name} — no more encounters this trip.,🧭 Tu changes de cap pour suivre {name} — plus de rencontres pendant cette sortie.,"Follow log line; appears twice in code, one row."
+celebration,template-follow-following-1,"🧭 Following {name} — tag secure, swimming strong.","🧭 Tu suis {name} — balise bien fixée, nage vigoureuse.",Follow status line.
+insight,template-insight-header-1,Species insight,Découverte sur l'espèce,"Insight overlay header, observe variant."
+insight,template-insight-header-2,Tag-along insight,Découverte en accompagnement,"Insight overlay header, follow variant."
+insight,template-insight-learned-1,— learned {learned}/{total},— {learned}/{total} apprises,Insight overlay header counter variant.
+insight,template-insight-learned-2,— {learned}/{total} learned,— {learned}/{total} apprises,Insight overlay body counter variant; same French as the header variant despite different English word order.
+insight,template-insight-observe-1,Observing this {name} paid off.,Observer ce {name} a porté ses fruits.,"Insight overlay line, observe variant."
+insight,template-insight-follow-1,Following {name} paid off.,Suivre {name} a porté ses fruits.,"Insight overlay line, follow variant."
+insight,template-insight-observe-2,Observe {name} again sometime to learn more.,Observe {name} à nouveau un de ces jours pour en apprendre plus.,"Insight overlay line, observe variant, more to learn."
+insight,template-insight-follow-2,Follow {name} again sometime to learn more.,Suis {name} à nouveau un de ces jours pour en apprendre plus.,"Insight overlay line, follow variant, more to learn."
+insight,template-insight-species-1,That's everything this species had to teach.,C'est tout ce que cette espèce avait à enseigner.,"Insight overlay line, species exhausted."
+insight,template-insight-shark-1,That's everything this shark had to teach.,C'est tout ce que ce requin avait à enseigner.,"Insight overlay line, individual exhausted."
+insight,template-insight-all-1,I've learned all I can — the rest is in the specialists' hands now.,J'ai appris tout ce que je pouvais — le reste est entre les mains des spécialistes.,Learned-all popup line.
+insight,template-insight-studied-1,{name} still appreciates being studied. 🔬,{name} apprécie toujours qu'on l'étudie. 🔬,"Learned-all popup line, observe variant."
+insight,template-insight-company-1,{name} still appreciates the company. 🧭,{name} apprécie toujours la compagnie. 🧭,"Learned-all popup line, follow variant."
+insight,template-insight-header-3,🔬 Species insight — {name},🔬 Découverte sur l'espèce — {name},"Learned-all popup header, observe variant."
+insight,template-insight-header-4,🧭 Tagging along with {name},🧭 En accompagnement avec {name},"Learned-all popup header, follow variant."
+win,template-win-count-1,{count} for {count}. Couldn't have done it without my research assistant.,{count} pour {count}. Je n'aurais jamais pu y arriver sans mon assistant de recherche.,Win-thread line; both counts are the total shark count (e.g. 50 for 50).
+win,template-win-first-1,{name} — the {species}. I'll never forget.,{name} — le {species}. Je n'oublierai jamais.,Win-thread line; article gender note applies.
+win,template-win-know-1,"And now you know {count} individual sharks. Not species — individuals. With names, and tracks, and lives they're still living right now.","Et maintenant, tu connais {count} requins en particulier. Pas des espèces — des individus. Avec des noms, des parcours, et des vies qu'ils vivent encore en ce moment.",Win-thread line.
+win,template-win-waters-1,🗺️ New waters surveyed,🗺️ Nouvelles eaux explorées,"Region-unlock heading, shared by the 10-tag templates; region flavor sentences come from Batch 1 region notes."
+win,template-win-waters-2,Ten sharks tagged.,Dix requins marqués.,Older hardcoded 10-tag unlock line only; the general template uses a region placeholder.
+win,template-win-waters-3,The institute trusts you with farther waters now — and Sarah texted you about it. 📱,L'institut te fait maintenant confiance pour des eaux plus lointaines — et Sarah t'a écrit à ce sujet. 📱,"Region-unlock line, shared by the 10-tag templates."
+win,template-win-derpy-1,🎁 A gift from Sarah,🎁 Un cadeau de Sarah,Derpy award overlay heading.
+win,template-win-derpy-2,The original derpy sharks — unlocked!,Les requins zinzins originaux — débloqués !,Derpy award overlay line.
+win,template-win-derpy-3,"Before the institute sent the real illustrations, these little derpy sharks were the whole game. Sarah saved every single one.","Avant que l'institut n'envoie les vraies illustrations, ces petits requins zinzins étaient tout le jeu. Sarah les a tous gardés.",Derpy award overlay line.
+win,template-win-derpy-4,Derpy mode is now available — toggle it in your collection book to see all {count} sharks in their original derpy glory.,Le mode zinzin est maintenant disponible — active-le dans ton carnet de collection pour voir les {count} requins dans leur gloire zinzin originale.,Derpy award overlay line.
+win,template-win-derpy-5,Back to the collection book,Retour au carnet de collection,Derpy award overlay button.
+win,template-win-phone-1,📱 Your phone buzzes…,📱 Ton téléphone vibre…,Phone-buzz overlay line.
+win,template-win-phone-2,Saved in 📱 Phone.,Enregistré dans 📱 Téléphone.,Phone-buzz overlay line; Phone is the Téléphone tab.
+win,template-win-archive-1,"🖼️ Your Wild Archive is complete — every species you tagged, face to face with the real animal.","🖼️ Tes Archives sauvages sont complètes — chaque espèce que tu as marquée, face à face avec le vrai animal.",Wild Archive completion line.
+win,template-win-dedication-1,For Sarah who finished Rockhound at 1:26 AM and loves sharks. 🦈,"Pour Sarah, qui a terminé Cherche-cailloux à 1 h 26 et qui adore les requins. 🦈",Acknowledgements dedication; Rockhound's French title is Cherche-cailloux; time converted to French format.
+win,template-win-skip-1,Skip,Passer,Finale skip button; distinct from tour Skip tour.
+win,template-win-cert-1,📥 Save / share certificate,📥 Enregistrer / partager le certificat,Certificate overlay button.
+win,template-win-cert-2,Your name,Ton nom,Certificate signature line.
+win,template-win-cert-3,Awarded with salt on it. 🦈,Décerné avec du sel dessus. 🦈,Certificate line; wordplay preserved literally.
+win,template-win-cert-4,🔍 Make it bigger,🔍 Agrandir,Certificate overlay button.
+win,template-win-list-1,{name} — {species} ({count} / {total}),{name} — {species} ({count} / {total}),"Finale roster line; {name} is the nickname (may be empty), counts are tagged/total."
+win,template-win-and-1,{first} and {second},{first} et {second},Two-item species-list joiner in formatSpeciesList.
+win,template-win-and-2,", and {last}",", et {last}","Final joiner for three-or-more-item species lists; build must use , et for the last joiner."
+map,template-map-card-1,🗂️ Open collection card,🗂️ Ouvrir la fiche de collection,Map popup button.
+map,template-map-card-2,📈 View full track,📈 Voir l'itinéraire complet,Map popup button.
+track,template-track-day-1,Day {day} — {label},Jour {day} — {label},Track stop line.
+track,template-track-km-1,(+{km} km),(+{km} km),Track stop distance suffix.
+track,template-track-title-1,📍 Tracking {title},📍 Suivi de {title},Track modal heading; {title} is the nickname or species name.
+track,template-track-km-2,{km} km travelled,{km} km parcourus,Track stats line.
+track,template-track-days-1,{days} days at liberty,{days} jours en liberté,Track stats line.
