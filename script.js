@@ -1250,7 +1250,7 @@ function renderMap() {
     const showTrack = mapShowsTrack(t);
     if (showTrack) {
       const tag = pts[0];
-      svg += `<g class="map-marker" data-sid="${sid}"><title>${label} (tag site)</title>`
+      svg += `<g class="map-marker" data-sid="${sid}"><title>${label} (lieu de marquage)</title>`
         + `<circle cx="${tag.x.toFixed(1)}" cy="${tag.y.toFixed(1)}" r="${(6 / z).toFixed(1)}" fill="none" stroke="${color}" stroke-width="${(2.5 / z).toFixed(2)}"/>`
         + `<circle cx="${tag.x.toFixed(1)}" cy="${tag.y.toFixed(1)}" r="${(1.8 / z).toFixed(1)}" fill="${color}"/></g>`;
     }
@@ -1260,7 +1260,7 @@ function renderMap() {
        latest-position marker (same place; a filled dot on top would hide the
        ring). Exactly one position + tracking off → latest dot only. */
     if (pts.length > 1 || !showTrack) {
-      svg += `<g class="map-marker latest" data-sid="${sid}"><title>${label} (latest)</title>`
+      svg += `<g class="map-marker latest" data-sid="${sid}"><title>${label} (dernier point)</title>`
         + `<circle cx="${last.x.toFixed(1)}" cy="${last.y.toFixed(1)}" r="${(8 / z).toFixed(1)}" fill="${color}" stroke="#fff" stroke-width="${(2 / z).toFixed(2)}"/></g>`;
     }
   });
@@ -1312,7 +1312,7 @@ function showMapPopup(sid) {
   pop.innerHTML = `
     <h4>${t.name ? `“${esc(t.name)}”` : esc(t.researchId)}</h4>
     <p class="latin">${esc(s.name)} · ${esc(t.researchId)}</p>
-    <p class="map-meta">📍 Tagged at ${esc(t.location)} · ${esc(t.date)}<br>📡 Latest ping: ${last ? esc(last.label) : "—"}${t.resightings && t.resightings.length ? `<br>🔁 Re-sighted ${t.resightings.length}×` : ""}</p>
+    <p class="map-meta">📍 Marqué à ${esc(t.location)} · ${esc(t.date)}<br>📡 Dernier point du trajet : ${last ? esc(last.label) : "—"}${t.resightings && t.resightings.length ? `<br>🔁 Re-sighted ${t.resightings.length}×` : ""}</p>
     ${kindNote ? `<p class="map-kind-note">${kindNote}</p>` : ""}
     <button class="secondary-button" type="button" id="mapCardBtn">🗂️ Open collection card</button>
     <button class="secondary-button" type="button" id="mapTrackBtn">📈 View full track</button>`;
@@ -2171,7 +2171,7 @@ function pinHintForTrip(trip, pinnedId) {
       return { kind: "hint", dimension: "method", hint: PIN_HINTS.method };
     }
     // Conditions were right, shark just wasn't there — "you're warm"
-    return { kind: "warm", hint: "The water felt right for " + s.name.toLowerCase() + " today. Sometimes they're just not there." };
+    return { kind: "warm", hint: "L'eau semblait convenir à l'espèce " + s.name.toLowerCase() + " aujourd'hui. Parfois, aucun individu ne se présente, même quand les conditions sont bonnes." };
   }
   if (!possible && !encountered) {
     // Which dimension was off? Observational only.
@@ -2318,7 +2318,7 @@ function renderResearch() {
             <span class="guide-row-name"><span class="tag-check${done ? " is-done" : ""}" aria-hidden="true"></span><span class="sr-only">${done ? "Marqué" : "Non marqué"}</span>${s.name}</span>
             <span class="latin">${s.latin}</span>
           </span>
-          <span class="status-pill iucn-${iucnAbbr}" title="IUCN Red List: ${s.status}">${iucnAbbr}</span>
+          <span class="status-pill iucn-${iucnAbbr}" title="Liste rouge de l'UICN : ${s.statusFr || s.status}">${iucnAbbr}</span>
         </button>
         <button type="button" class="pin-btn${isPinned ? " pinned-on" : ""}" data-pin="${s.id}"
           aria-label="${isPinned ? "Unpin" : "Pin"} ${s.name} as currently researching"
@@ -2326,7 +2326,7 @@ function renderResearch() {
       </div>
       <div class="guide-row-body hidden">
         <button type="button" class="guide-close" aria-label="Close ${s.name} details">\u2715</button>
-        <p class="iucn-full">IUCN Red List: <strong>${s.status}</strong></p>
+        <p class="iucn-full">Liste rouge de l'UICN : <strong>${s.statusFr || s.status}</strong></p>
         ${s.research.split("\n\n").map(p => `<p class="research-text">${highlightResearchClues(s, p)}</p>`).join("")}
         ${done
           ? `<p class="hook">Tagged ${idLine(state.tagged[s.id])}${state.tagged[s.id].name ? ` as <strong>${esc(state.tagged[s.id].name)}</strong>` : ""} 🎉</p>`
@@ -5909,7 +5909,7 @@ function openDetail(id) {
     <span class="status-pill">IUCN: ${s.status}</span>
     <p class="book-stats">
       📏 ${t.length} m · ${t.sex === "female" ? "♀ femelle" : "♂ mâle"}<br>
-      📍 Tagged at ${esc(t.location)}<br>
+      📍 Marqué à ${esc(t.location)}<br>
       📅 ${esc(t.date)}
     </p>
     <button id="trackBtn" class="secondary-button" type="button" style="margin:4px 0 8px" aria-pressed="${t.mapTrack ? "true" : "false"}">${t.mapTrack ? "📍 Suivi sur la carte ✓" : "📍 Suivre ce requin"}</button>
