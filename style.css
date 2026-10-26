@@ -1,0 +1,1941 @@
+:root {
+  --bg-deep: #0b2237;
+  --bg-panel: #123049;
+  --bg-card: #16405f;
+  --bg-soft: #0e2a42;
+  --ink: #eef6fb;
+  --ink-dim: #a9c3d6;
+  --accent: #ffd166;
+  --accent-ink: #3a2b00;
+  --teal: #4fd1c5;
+  --coral: #ff8fa3;
+  --radius: 16px;
+}
+
+* { box-sizing: border-box; }
+
+/* Dark fallback for overscroll areas; also keeps body's transparent
+   background off the canvas so the fixed gradient layer paints cleanly. */
+html { background: #000; } /* v1.5.28-beta: pure black — no blue in overscroll */
+
+body {
+  margin: 0;
+  /* v1.5.8-beta: kill double-tap zoom on touch devices; pinch zoom still works. */
+  touch-action: manipulation;
+  font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  /* v2.3.0-beta: solid abyssal base (#020204) matching the video's bottom edge.
+     The underwater videos (landscape/portrait) carry the full gradient. */
+  background: #020204;
+  color: var(--ink);
+  min-height: 100vh;
+  min-height: 100dvh; /* v1.5.27-beta: dynamic viewport height tracks iPad Safari's collapsing toolbar */
+  position: relative;
+}
+
+.app { max-width: 640px; margin: 0 auto; padding: 12px 14px 40px; position: relative; z-index: 1; }
+/* v0.19.1: underwater ambience — sits behind the app, never interactive.
+   Document-positioned (not viewport-fixed): the surface and light
+   belong to actual depths, so scrolling feels like descending. */
+.ocean-decor { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+/* The surface, just below the title card. */
+.surface-shimmer {
+  position: absolute; top: 0; left: -4%; right: -4%; height: 210px; /* v1.4.8: oversized so the ±2% drift never exposes an edge (was showing dark bars) */
+  background:
+    radial-gradient(60% 90px at 20% 0%, rgba(170,220,255,0.28), transparent 70%),
+    radial-gradient(50% 70px at 70% 0%, rgba(170,220,255,0.20), transparent 70%),
+    linear-gradient(180deg, rgba(160,210,250,0.22) 0%, transparent 85%);
+  animation: shimmer-drift 14s ease-in-out infinite alternate;
+}
+@keyframes shimmer-drift {
+  from { transform: translateX(-2%); opacity: 0.85; }
+  to { transform: translateX(2%); opacity: 1; }
+}
+/* v2.3.0-beta: the underwater background is a pair of looping videos by Mira —
+   underwater-landscape.mp4 (16:9) and underwater-portrait.mp4 (9:16, separately
+   composed). JS picks the right one for the viewport orientation. Upper-left
+   illumination, gentle drift, surface shimmer — the natural sunlight look.
+   Video decoding uses dedicated hardware; the old 8-span CSS caustics system
+   (v2.1.0-v2.1.5) broke iPad Safari and is long gone. */
+.sun-video {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: -1; pointer-events: none;
+}
+/* v2.3.0-beta: static fallback — the matching poster frame. Shown while the
+   video loads, if autoplay fails, and for reduced-motion users (sunlight
+   without movement). JS swaps the src for orientation. */
+.sun-still {
+  display: none;
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: -1; pointer-events: none;
+}
+
+/* Slow rising bubbles — viewport-fixed for a little continuous life while scrolling.
+   v1.7.25-beta: bubbles are driven by a tiny time-based JS loop in
+   script.js (initBubbles), NOT by CSS keyframe animations. Still 8 columns, 2-5 bubbles each. The v1.7.22 CSS
+   port and the v1.7.23 explicit-transform + will-change fix both still left
+   bubbles frozen at the bottom on Avery's iPad (DuckDuckGo / WKWebView):
+   the full-riser columns launch from below the viewport, and iOS WKWebView
+   does not reliably tick compositor animations for layers created fully
+   offscreen (desktop WebKit and Chromium run the same CSS fine — this is
+   iOS-specific; the caustics rays, which launch onscreen, were never
+   affected). A time-based loop recomputes every bubble's position from
+   the rAF timestamp each frame, so a bubble can pause while the main thread
+   is busy but can never get permanently stuck at a wrong position;
+   backgrounding/foregrounding resumes cleanly for the same reason.
+   Per-bubble config lives here as custom properties (single source of
+   truth); the loop reads them via getComputedStyle. --bubble-rise is the
+   total travel (vh); --bubble-duration / --bubble-delay are in seconds
+   (delay is negative: the bubble starts partway through its rise, so the
+   screen is full of bubbles at load instead of launching one wave).
+   Motion is pixel-identical to the old keyframes: linear rise plus the
+   same 0→2→20→24px drift and 0→0.85→0.45→0 opacity envelope — see
+   bubbleFrameAt() in script.js. */
+.bubbles { position: fixed; inset: 0; pointer-events: none; }
+.bubbles span {
+  position: absolute; border-radius: 50%;
+  border: 1.5px solid rgba(180,220,250,0.35); background: rgba(180,220,250,0.06);
+  opacity: 0;
+}
+/* column A — full riser, 4 bubbles */
+.bubbles span:nth-child(1)  { left: 7%;    bottom: -20px; --bubble-rise: -105vh; width: 12px; height: 12px; --bubble-delay: -1s;  --bubble-duration: 18s; }
+.bubbles span:nth-child(2)  { left: 10.5%; bottom: -20px; --bubble-rise: -105vh; width: 7px;  height: 7px;  --bubble-delay: -1s;  --bubble-duration: 24s; }
+.bubbles span:nth-child(3)  { left: 5.2%;  bottom: -20px; --bubble-rise: -105vh; width: 9px;  height: 9px;  --bubble-delay: -1s;  --bubble-duration: 21s; }
+.bubbles span:nth-child(4)  { left: 12.8%; bottom: -20px; --bubble-rise: -105vh; width: 6px;  height: 6px;  --bubble-delay: -1s;  --bubble-duration: 26s; }
+/* column B — mid hop, 3 bubbles */
+.bubbles span:nth-child(5)  { left: 18%;   bottom: 30%; --bubble-rise: -55vh; width: 11px; height: 11px; --bubble-delay: -6s;  --bubble-duration: 19s; }
+.bubbles span:nth-child(6)  { left: 21.7%; bottom: 30%; --bubble-rise: -55vh; width: 6px;  height: 6px;  --bubble-delay: -6s;  --bubble-duration: 25s; }
+.bubbles span:nth-child(7)  { left: 16.1%; bottom: 30%; --bubble-rise: -55vh; width: 8px;  height: 8px;  --bubble-delay: -6s;  --bubble-duration: 22s; }
+/* column C — full riser, 4 bubbles */
+.bubbles span:nth-child(8)  { left: 30%;   bottom: -20px; --bubble-rise: -105vh; width: 8px;  height: 8px;  --bubble-delay: -11s; --bubble-duration: 22s; }
+.bubbles span:nth-child(9)  { left: 34.2%; bottom: -20px; --bubble-rise: -105vh; width: 12px; height: 12px; --bubble-delay: -11s; --bubble-duration: 18s; }
+.bubbles span:nth-child(10) { left: 27.5%; bottom: -20px; --bubble-rise: -105vh; width: 6px;  height: 6px;  --bubble-delay: -11s; --bubble-duration: 26s; }
+.bubbles span:nth-child(11) { left: 32.8%; bottom: -20px; --bubble-rise: -105vh; width: 10px; height: 10px; --bubble-delay: -11s; --bubble-duration: 20s; }
+/* column D — short hop, 2 bubbles */
+.bubbles span:nth-child(12) { left: 43%;   bottom: 55%; --bubble-rise: -38vh; width: 9px; height: 9px; --bubble-delay: -4s;  --bubble-duration: 21s; }
+.bubbles span:nth-child(13) { left: 46.3%; bottom: 55%; --bubble-rise: -38vh; width: 7px; height: 7px; --bubble-delay: -4s;  --bubble-duration: 24s; }
+/* column E — full riser, 5 bubbles */
+.bubbles span:nth-child(14) { left: 55%;   bottom: -20px; --bubble-rise: -105vh; width: 10px; height: 10px; --bubble-delay: -16s; --bubble-duration: 20s; }
+.bubbles span:nth-child(15) { left: 59.1%; bottom: -20px; --bubble-rise: -105vh; width: 12px; height: 12px; --bubble-delay: -16s; --bubble-duration: 18s; }
+.bubbles span:nth-child(16) { left: 52.4%; bottom: -20px; --bubble-rise: -105vh; width: 6px;  height: 6px;  --bubble-delay: -16s; --bubble-duration: 26s; }
+.bubbles span:nth-child(17) { left: 57.6%; bottom: -20px; --bubble-rise: -105vh; width: 8px;  height: 8px;  --bubble-delay: -16s; --bubble-duration: 22s; }
+.bubbles span:nth-child(18) { left: 61.3%; bottom: -20px; --bubble-rise: -105vh; width: 7px;  height: 7px;  --bubble-delay: -16s; --bubble-duration: 24s; }
+/* column F — mid riser, 3 bubbles */
+.bubbles span:nth-child(19) { left: 68%;   bottom: 20%; --bubble-rise: -70vh; width: 11px; height: 11px; --bubble-delay: -9s;  --bubble-duration: 19s; }
+.bubbles span:nth-child(20) { left: 71.9%; bottom: 20%; --bubble-rise: -70vh; width: 6px;  height: 6px;  --bubble-delay: -9s;  --bubble-duration: 25s; }
+.bubbles span:nth-child(21) { left: 65.8%; bottom: 20%; --bubble-rise: -70vh; width: 9px;  height: 9px;  --bubble-delay: -9s;  --bubble-duration: 21s; }
+/* column G — full riser, 3 bubbles */
+.bubbles span:nth-child(22) { left: 80%;   bottom: -20px; --bubble-rise: -105vh; width: 8px;  height: 8px;  --bubble-delay: -2s;  --bubble-duration: 22s; }
+.bubbles span:nth-child(23) { left: 83.6%; bottom: -20px; --bubble-rise: -105vh; width: 12px; height: 12px; --bubble-delay: -2s;  --bubble-duration: 18s; }
+.bubbles span:nth-child(24) { left: 77.9%; bottom: -20px; --bubble-rise: -105vh; width: 7px;  height: 7px;  --bubble-delay: -2s;  --bubble-duration: 24s; }
+/* column H — full riser, 2 bubbles.
+   v1.8.1-beta: was a short hop (bottom: 45%, rise -45vh) — far-right
+   bubbles appeared halfway up, leaving a bubble-less bottom-right corner.
+   Now a full riser like columns A/C/E/G. */
+.bubbles span:nth-child(25) { left: 90%;   bottom: -20px; --bubble-rise: -105vh; width: 10px; height: 10px; --bubble-delay: -13s; --bubble-duration: 20s; }
+.bubbles span:nth-child(26) { left: 93.2%; bottom: -20px; --bubble-rise: -105vh; width: 6px;  height: 6px;  --bubble-delay: -13s; --bubble-duration: 26s; }
+/* Calm waters for those who need them. */
+@media (prefers-reduced-motion: reduce) {
+  .surface-shimmer, .bubbles span { animation: none; }
+  /* v2.2.0-beta: reduced-motion users get the still sunbeams (no movement),
+     not a sunless gradient. The video hides; the still image shows. */
+  .sun-video { display: none; }
+  .sun-still { display: block; }
+  .bubbles { display: none; }
+}
+/* v0.10.4: safety net — no flex row may ever widen the page again.
+   `clip` (not `hidden`) keeps position:sticky working on the tab bar. */
+body { overflow-x: clip; }
+
+/* Build number — top corner, always visible, bump every release. */
+.build-tag {
+  position: fixed; top: 8px; right: 10px; z-index: 40;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px; font-weight: 700; color: var(--ink-dim);
+  background: rgba(11, 34, 55, 0.85); border: 1px solid #2c5364;
+  border-radius: 999px; padding: 3px 10px; pointer-events: none;
+}
+
+/* v1.5.1: tighter header — less vertical room around the logo/title/tab bar */
+/* v1.6.1-beta: bigger logo, tighter margins still */
+/* v2.4.1-beta: tight header on all screens — shark left of title (was stacked on
+   mobile), just a few px between logo top and page top, shark sitting just
+   above the tab bar. */
+.topbar { display: flex; align-items: center; justify-content: center; gap: 10px; text-align: left; padding: 4px 8px 2px; }
+.site-logo { display: block; height: 53px; width: auto; margin: 0; flex: none; border-radius: 8px; }
+.topbar-text { min-width: 0; }
+.topbar h1 { margin: 0 0 1px; font-size: 28px; letter-spacing: 1px; }
+.subtitle { margin: 0; color: var(--ink-dim); font-size: 13px; }
+/* v1.4.0: desktop — bigger logo, same tight crop. */
+@media (min-width: 1024px) {
+  .topbar { gap: 12px; padding: 3px 8px 2px; }
+  /* v1.4.15-beta: logo 150% bigger — it's a logo, give it presence */
+  /* v1.6.1-beta: bigger still */
+  /* v2.5.2-beta: restored to original 190px (Avery) — tightness from padding, not shrinking */
+  .site-logo { height: 132px; }
+  .topbar h1 { font-size: 34px; }
+  .subtitle { font-size: 14px; }
+}
+.eyebrow {
+  margin: 0; font-size: 11px; letter-spacing: 3px; color: var(--ink-dim);
+}
+
+/* v1.4.0: full-bleed tab band — the dark band spans the viewport edge to edge
+   while the buttons stay aligned to the content column (the inner padding
+   restores the exact content inset). Fixed grid tracks keep every tab the
+   same width even on sparse rows (Archive locked: 7 tabs); the locked tab
+   stays display:none, never a fake placeholder. */
+/* v1.4.2: tab buttons centered in the middle of the full-width dark
+   band (not left-aligned). Fixed max-width columns, centered as a group. */
+/* v1.5.7: flex (not grid) at ALL breakpoints — grid's justify-content
+   left the tab group off-center on iPad Safari; flex-wrap + center
+   centers every row reliably. No transforms. */
+/* v1.5.16: grid is now the BASE tab layout. iPad Safari kept ignoring
+   flex-wrap: nowrap AND the tablet media queries didn't reliably match, so
+   tabs wrapped anyway. display:grid + repeat(8, 1fr) on the base rule
+   applies everywhere by default and structurally cannot wrap. Only phones
+   (<560px) override with repeat(4, 1fr) for the 4+4 layout.
+   No transforms, no compositing. */
+.tabs {
+  display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px;
+  margin: 14px calc(50% - 50vw);
+  position: sticky; top: 0; z-index: 5;
+  background: rgba(11, 34, 55, 0.92); padding: 8px calc(50vw - 50%);
+  backdrop-filter: blur(4px);
+  align-items: stretch;
+}
+/* v1.4.0: equal-height tabs — every .tab is a 3-row stack
+   (count/icon/label); tabs without a count use an invisible spacer with
+   identical dimensions, so all buttons are naturally the same height. */
+.tab {
+  flex: 0 1 108px;
+  border: 2px solid transparent; border-radius: 999px;
+  background: var(--bg-panel); color: var(--ink);
+  padding: 10px 4px; font-size: 14px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  min-width: 0; box-sizing: border-box;
+}
+.tab.active { background: var(--accent); color: var(--accent-ink); }
+/* v1.5.11: locked Archive tab — visible but greyed out and unclickable.
+   Keeps the tab count stable at 8 so the bar never re-wraps. */
+.tab[disabled], .tab.tab-locked {
+  opacity: 0.45; cursor: not-allowed; filter: grayscale(0.6);
+}
+.count-badge {
+  background: var(--bg-deep); color: var(--ink); border-radius: 999px;
+  padding: 1px 8px; font-size: 12px; margin-left: 2px;
+}
+.tab.active .count-badge { background: rgba(0,0,0,0.15); color: var(--accent-ink); }
+/* v1.4.0: Phone notification badge — a small familiar red circular
+   app-notification badge at the top-right of the Phone icon. The unread
+   count is real text (never red-alone); updateMsgBadge() also sets an
+   aria-label on the tab with the conversation count. Static: no animation. */
+.tab-icon { position: relative; display: inline-block; }
+/* v1.4.2: bigger tab emojis on desktop — icons only, labels unchanged */
+@media (min-width: 1024px) {
+  .tab-icon { font-size: 24px; }
+}
+/* v1.7.7-beta: badge number vertically centered via flexbox — the old
+   line-height centering left the digit sitting low in the bubble. */
+.phone-badge {
+  position: absolute; top: -8px; right: -12px;
+  min-width: 20px; height: 20px; border-radius: 999px;
+  background: #ff3b30; color: #fff;
+  font-size: 11px; font-weight: 800; text-align: center;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0 5px; pointer-events: none;
+  border: 2px solid var(--bg-panel); box-sizing: border-box;
+}
+.phone-badge.hidden { display: none; }
+.tab.active .phone-badge { border-color: var(--accent); }
+/* v0.24.0: Archive new-photo indicator — a dot plus aria-label, not color alone. */
+.tab-badge { color: var(--accent); font-size: 12px; margin-left: 4px; vertical-align: super; }
+.tab-badge.hidden { display: none; }
+/* v1.4.0: stacked count tabs — count above, icon middle, label below
+   (Collection, Achievements). Inline-flex centering on .tab keeps every
+   other tab's label on one consistent vertical level. */
+.tab-stack { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; line-height: 1.25; }
+.tab-stack .count-badge { margin-left: 0; font-size: 11px; }
+.tab-stack .tab-label { font-size: 11px; }
+/* v1.4.0: invisible count-row spacer — same box dimensions as .count-badge
+   inside .tab-stack, so every tab is 3 rows tall even without a count. */
+/* v0.10.4: on phones the six tab pills' minimum width exceeds the viewport,
+   so they used to overflow the page and leave a dead strip on the right.
+   Two rows of three keeps every tab visible and tappable with no overflow.
+   (Review fix: this block sits AFTER the general .tab rule — equal
+   specificity, so source order decides.) */
+@media (max-width: 559px) {
+  /* v1.5.14: two rows of 4 via grid — repeat(4, 1fr) can't wrap unevenly. */
+  .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .tab { font-size: 12px; padding: 10px 2px; min-width: 0; }
+  /* v1.4.0: Avery — count tabs keep the column stack on phones too:
+     count on top, icon on its own row, label below (Collection, Achievements). */
+  .dive-scene { top: 160px; }
+}
+/* v1.5.16: grid(8) now inherited from the base .tabs rule — these queries
+   only tune gap, type size, and label truncation. */
+@media (min-width: 560px) and (max-width: 699px) {
+  .tabs { gap: 4px; }
+  .tab { min-width: 0; font-size: 9px; padding: 8px 1px; }
+  .tab-icon { font-size: 14px; }
+  .tab-stack { min-width: 0; max-width: 100%; }
+  .tab-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+}
+@media (min-width: 700px) and (max-width: 1023px) {
+  .tabs { gap: 6px; }
+  .tab { min-width: 0; font-size: 10px; padding: 8px 2px; }
+  .tab-icon { font-size: 16px; }
+  .tab-stack { min-width: 0; max-width: 100%; }
+  .tab-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+}
+
+.panel { display: none; }
+.panel.active { display: block; animation: fadein 0.25s ease; }
+@keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+
+.section-head h2 { margin: 8px 0 2px; font-size: 22px; }
+.section-head p { margin: 0 0 14px; color: var(--ink-dim); font-size: 14px; }
+
+.card-list { display: grid; gap: 12px; }
+
+.species-card, .planner-card, .book-card {
+  background: var(--bg-card); border-radius: var(--radius);
+  padding: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+.species-card h3 { margin: 0; font-size: 18px; }
+.latin { color: var(--ink-dim); font-style: italic; font-size: 13px; margin: 2px 0 8px; }
+/* v1.6.0-beta: full scientific name in expanded Collection/Archive cards —
+   larger and more prominent than the inline latin. */
+.detail-scientific { font-size: 15px; margin: 4px 0 10px; }
+/* v1.7.15-beta: achievement hints wrap fully. Two lines still truncated
+   hints like "The collection book is officially…" into unreadability —
+   now the hint takes as many lines as it needs, on mobile and iPad. */
+.guide-row-head .latin.ach-hint {
+  white-space: normal;
+  display: block;
+  overflow: visible;
+  text-overflow: clip;
+}
+/* v1.7.19-beta: achievement cards stack — icon beside a vertical name/hint
+   stack instead of name and hint side-by-side. Saves horizontal room. */
+.guide-row-head.ach-stack { align-items: flex-start; }
+.guide-row-head .ach-icon { flex: none; line-height: 1.25; }
+.guide-row-head .ach-texts {
+  display: flex; flex-direction: column; min-width: 0; flex: 1; gap: 3px;
+}
+/* v1.7.19-beta Mira review: achievement names wrap within the vertical stack
+   instead of truncating — the stack has room, so no ellipsis needed here. */
+.guide-row-head .ach-texts .guide-row-name { flex: none; white-space: normal; overflow: visible; text-overflow: clip; }
+.guide-row-head .ach-texts .ach-hint { flex: none; }
+/* v1.7.23-beta: achievement cards are identical height across ALL rows, not
+   just within each row. The grid tracks themselves are equal:
+   grid-auto-rows: minmax(140px, 1fr) keeps every implicit row at least 140px
+   while wrapping stays automatic; align-items: stretch pulls every card to
+   fill its track (overrides the align-items:start on .guide-list at the
+   768px+ breakpoint from v1.7.22). The per-card min-height is a fallback so
+   a single orphan card still holds the 140px floor. */
+#achieveList { grid-auto-rows: minmax(140px, 1fr); align-items: stretch; }
+#achieveList .guide-row { min-height: 140px; }
+/* v2.5.10-beta (Avery): achievement content vertically centred in its
+   card — the icon stays at the far left but sits in the middle
+   vertically, and the name/hint stack centres with it, instead of
+   everything hugging the top of the uniform-height box. Scoped to
+   the Achievements grid; Research/Collection guide rows unaffected. */
+#achieveList .guide-row { display: flex; }
+#achieveList .guide-row-head.ach-stack { flex: 1; align-items: center; }
+.status-pill {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  background: #2c5364; border-radius: 999px; padding: 3px 10px; margin-bottom: 8px;
+  color: #fff; border: 1px solid transparent;
+  line-height: 1.35; /* v1.7.12-beta: explicit line-height stops iPad Safari clipping badge text */
+}
+/* v1.4.15-beta: IUCN threat-level color coding — green (safe) to black (critical) */
+.status-pill.iucn-LC { background: #2d7a3e; border-color: #3d9a52; }  /* Least Concern — green */
+.status-pill.iucn-NT { background: #8a8a1a; border-color: #b0b02a; }  /* Near Threatened — yellow */
+.status-pill.iucn-VU { background: #b86a1a; border-color: #e08a2a; }  /* Vulnerable — orange */
+.status-pill.iucn-EN { background: #b03030; border-color: #e04040; }  /* Endangered — red */
+.status-pill.iucn-CR { background: #2a1a3a; border-color: #6a3a9a; color: #e8d8ff; }  /* Critically Endangered — dark purple */
+.status-pill.iucn-DD { background: #4a4a4a; border-color: #6a6a6a; }  /* Data Deficient — grey */
+/* v1.5.17-beta: compact IUCN badge key at the top of the field guide */
+.iucn-legend { font-size: 11px; color: var(--ink-dim); margin: 8px 2px 14px; line-height: 2.1; }
+.iucn-legend .status-pill { font-size: 10px; padding: 2px 8px; margin: 0 2px 0 0; vertical-align: 1px; line-height: 1.35; /* v1.7.12-beta: override inherited 2.1 line-height + more padding so text doesn't clip */ }
+/* v1.4.2: full IUCN status line inside expanded field-guide entries */
+.iucn-full { font-size: 13px; color: var(--ink-dim); margin: 6px 0; }
+/* v1.4.2: prominent collection count at the top of the collection page */
+.collection-count { font-size: 16px; margin: 2px 0 8px; }
+.collection-count strong { font-size: 20px; }
+.research-text { font-size: 14px; line-height: 1.55; color: #dcebf5; margin: 8px 0; }
+.hook { font-size: 13px; color: var(--accent); margin: 6px 0 10px; }
+
+.shark-art { text-align: center; margin: 4px 0 8px; }
+/* v0.26.0: WebP illustrations in shark-art containers. */
+.shark-art img { width: 100%; max-width: 320px; height: auto; display: block; margin: 0 auto; }
+.grid-cell .shark-art img { max-width: 100%; }
+.shark-art svg { width: 100%; max-width: 320px; height: auto; }
+
+.field { display: block; margin: 10px 0; }
+.field span { display: block; font-size: 13px; font-weight: 700; color: var(--ink-dim); margin-bottom: 5px; }
+/* v0.9.1: live icon strip under each planner row — a small visual echo of
+   the current pick. Pure decoration; the selects stay the source of truth. */
+.pick-visual { font-size: 26px; line-height: 1.2; margin-top: 6px; min-height: 32px; }
+.pick-visual .pick-dot {
+  display: inline-block; width: 26px; height: 15px; border-radius: 50%;
+  background: #5b7a99; transform: rotate(-14deg); vertical-align: middle;
+}
+select, input[type="text"] {
+  width: 100%; padding: 11px 12px; font-size: 15px; border-radius: 12px;
+  border: 2px solid #2c5364; background: var(--bg-soft); color: var(--ink);
+  font-family: inherit;
+}
+select:focus, input:focus { outline: none; border-color: var(--accent); }
+/* v0.13.0: locked regions read as locked, not broken. */
+select option:disabled { color: #7a8a9e; }
+
+.primary-button {
+  width: 100%; margin-top: 12px; padding: 13px; font-size: 16px; font-weight: 800;
+  border: none; border-radius: 14px; cursor: pointer;
+  background: var(--accent); color: var(--accent-ink);
+  font-family: inherit;
+}
+.primary-button:active { transform: scale(0.98); }
+.primary-button:disabled { opacity: 0.5; cursor: default; }
+/* v1.5.8-beta: "Release & keep diving" matches the tag-along yellow gradient. */
+#releaseBtn {
+  background: linear-gradient(180deg, #ffd166 0%, #f0b429 100%);
+  border: 2px solid #b8860b; color: #3a2b00;
+}
+.secondary-button {
+  width: 100%; margin-top: 8px; padding: 11px; font-size: 14px; font-weight: 700;
+  border: 2px solid var(--ink-dim); border-radius: 14px; cursor: pointer;
+  background: transparent; color: var(--ink); font-family: inherit;
+}
+
+/* Dive view */
+.dive-view { margin-top: 14px; }
+/* v1.4.2: calm idle message in the dive log when showing the porthole */
+.dive-idle { color: var(--ink-dim); font-style: italic; text-align: center; padding: 12px 8px; }
+.dive-scene {
+  position: sticky; top: 196px; z-index: 4;
+  height: 190px; border-radius: var(--radius); overflow: hidden;
+  border: 2px solid #2c5364;
+}
+.dive-scene .scenery {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+}
+.dive-scene .scenery svg {
+  position: absolute; bottom: 0; left: 0; width: 100%; height: 46%;
+}
+/* Marine snow in the deep. */
+.dive-scene .scenery .snow {
+  position: absolute; top: -4px; border-radius: 50%;
+  background: rgba(255,255,255,0.55);
+  animation: snowfall linear infinite;
+}
+@keyframes snowfall { from { transform: translateY(0); } to { transform: translateY(200px); } }
+/* Background fish: small, dim, clearly behind the action. */
+.dive-scene .ambient.bg-fish { opacity: 0.45; filter: blur(0.4px); z-index: 1; }
+.dive-scene .dive-shark { z-index: 3; }
+@keyframes sway { from { transform: translateX(-14px); } to { transform: translateX(14px); } }
+
+/* v1.4.14: porthole — asset-led boat-window waves. Illustrated wave strips
+   (far/mid/near, art by Mira) move as slow parallax layers; one big splash
+   hits the glass occasionally. Transform/opacity only, respects
+   prefers-reduced-motion.
+   v1.4.18: (1) layers stacked tight — almost on top of each other, no gaps;
+   (2) OVAL orbital motion — each layer traces a gentle ellipse like real
+   water, replacing the one-direction drift; (3) splash is bigger (320px),
+   more sudden, and slides down fast — the quickest thing in the scene. */
+.dive-scene.porthole {
+  /* v1.4.14: sky above the far wave — sun glow + soft CSS clouds, then the
+     horizon melts into ocean. Placeholder until Mira art-directs the sky.
+     v1.5.1: clouds more defined — harder edges, brighter cores, layered puffs. */
+  background:
+    radial-gradient(90px 90px at 76% 10%, rgba(255,253,235,0.95), rgba(255,250,220,0.4) 45%, transparent 70%),
+    radial-gradient(70px 26px at 14% 8%, rgba(255,255,255,0.95), rgba(255,255,255,0.5) 55%, transparent 85%),
+    radial-gradient(95px 30px at 22% 10%, rgba(255,255,255,0.9), rgba(255,255,255,0.4) 60%, transparent 88%),
+    radial-gradient(60px 24px at 44% 3%, rgba(255,255,255,0.95), rgba(255,255,255,0.45) 55%, transparent 85%),
+    radial-gradient(80px 28px at 52% 5%, rgba(255,255,255,0.85), rgba(255,255,255,0.35) 60%, transparent 88%),
+    radial-gradient(85px 30px at 84% 17%, rgba(255,255,255,0.9), rgba(255,255,255,0.45) 55%, transparent 86%),
+    radial-gradient(110px 34px at 92% 20%, rgba(255,255,255,0.8), rgba(255,255,255,0.3) 60%, transparent 88%),
+    linear-gradient(180deg,
+      #a8dcf5 0%, #c9ecfb 13%, #9fd8ec 23%,
+      #5d9ec2 31%, #2a6f96 48%, #1a4f70 72%, #103a56 100%);
+  overflow: hidden;
+}
+/* v1.4.10: hide the old underwater diagonal-stripe rays in porthole mode only */
+.dive-scene.porthole .rays { display: none; }
+
+/* wave layer container — full-bleed, clips the drifting tiles */
+.dive-scene.porthole .porthole-waves {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  overflow: hidden;
+}
+.dive-scene.porthole .pw-layer {
+  position: absolute; left: 0; right: 0; overflow: hidden;
+}
+/* v1.4.18: OVAL orbital motion — each layer traces a gentle ellipse like
+   real water, instead of scrolling constantly to one side. A single orbital
+   animation per layer (on .pw-orbit) replaces the old drift+bob nesting.
+   The 8-stop keyframes trace x=A*cos, y=B*sin for a smooth closed ellipse;
+   different periods + phase offsets per layer so they never sync up.
+   The strip is 6 tiles wide (way wider than the porthole), so the ±50px
+   orbital swing never exposes an edge. Loops seamlessly by construction. */
+.dive-scene.porthole .pw-orbit {
+  display: flex; width: max-content; height: 100%;
+  will-change: transform;
+  /* v1.5.1: left buffer so the orbital swing never exposes the strip's
+     left edge at the porthole edge — the strip must always cover the view. */
+  margin-left: -70px;
+}
+.dive-scene.porthole .pw-tile {
+  flex: none; height: 100%; aspect-ratio: 3 / 1;
+  margin-right: -1px; /* swallow subpixel hairline gaps between tiles */
+  background-repeat: no-repeat; background-size: 100% 100%;
+}
+/* v1.4.12: mirror every other tile. Each seam then joins an image edge to
+   its own mirror, so the strip tiles seamlessly whatever the PNG edges do.
+   The repeating unit is 2 tiles wide, so the drift loop shifts exactly
+   2 tiles (1/3 of the 6-tile strip) per cycle. */
+.dive-scene.porthole .pw-tile:nth-child(even) {
+  transform: scaleX(-1);
+}
+
+/* v1.4.16: far sits LOWER, near is BIG — the three layers overlap into
+   continuous swells filling the whole porthole, no blue gap underneath.
+   far: drift RIGHT 52s linear, bob ±6px on 18s. */
+
+/* v1.4.18: stacked tight — far DOWN, near UP, almost on top of each other */
+.dive-scene.porthole .pw-far {
+  top: 14%; height: 150px; opacity: 0.7;
+}
+.dive-scene.porthole .pw-far .pw-tile {
+  background-image: url(assets/porthole/drafts/porthole_wave_far_draft.png);
+}
+/* v1.5.1: pronounced depth gradient — far slowest, near clearly fastest.
+   far: 38s, mid: 26s, near: 16s. Faster overall than v1.4.18, near is 2.4x far. */
+.dive-scene.porthole .pw-far .pw-orbit {
+  animation: pw-orbit-far-x 38s ease-in-out infinite;
+  animation-delay: -7s;
+}
+/* v1.5.5: far Y oscillation lives on the layer itself (nested with X above) */
+.dive-scene.porthole .pw-far {
+  animation: pw-orbit-far-y 38s ease-in-out infinite;
+  animation-delay: -7s;
+}
+
+/* mid: pulled up to overlap the far crest — drift LEFT 40s linear, bob ±8px on 15s */
+.dive-scene.porthole .pw-mid {
+  top: 20%; height: 175px; opacity: 0.85;
+}
+.dive-scene.porthole .pw-mid .pw-tile {
+  background-image: url(assets/porthole/drafts/porthole_wave_mid_draft.png);
+}
+.dive-scene.porthole .pw-mid .pw-orbit {
+  animation: pw-orbit-mid 26s linear infinite;
+  animation-delay: -23s;
+}
+
+/* near: pulled up to overlap the mid crest — drift RIGHT 32s linear, bob ±10px on 12s */
+.dive-scene.porthole .pw-near {
+  top: 24%; height: 210px;
+}
+.dive-scene.porthole .pw-near .pw-tile {
+  background-image: url(assets/porthole/drafts/porthole_wave_near_draft.png);
+}
+.dive-scene.porthole .pw-near .pw-orbit {
+  animation: pw-orbit-near 16s linear infinite;
+  animation-delay: -11s;
+}
+
+/* orbital ellipses: mid/near use 8 stops tracing x=A*cos, y=B*sin;
+   far uses split sinusoidal X/Y (see pw-orbit-far-x/y) for a true ellipse.
+   far: slowest/gentlest (±30px, ±8px), 38s. mid: medium (±40px, ±10px), 26s.
+   near: fastest/liveliest (±50px, ±12px), 16s — clear parallax gradient.
+   The splash is still the fastest thing; the water stays calm. */
+/* v1.5.5: far layer traces a TRUE smooth ellipse. The old 8-stop linear
+   keyframes made the thin (±30px, ±8px) far orbit read as a rectangle —
+   straight chords between stops with such a flat ellipse show visible
+   corners. Now X oscillates on .pw-orbit and Y on .pw-layer, both with
+   ease-in-out (sinusoidal) timing 90° out of phase: x=A*cos, y=B*sin, a
+   mathematically smooth ellipse with no corners. Same 38s period and
+   ±30/±8px amplitude; mid and near keep their 8-stop paths (Avery is
+   happy with those). */
+@keyframes pw-orbit-far-x {
+  0%   { transform: translateX(30px); }
+  50%  { transform: translateX(-30px); }
+  100% { transform: translateX(30px); }
+}
+@keyframes pw-orbit-far-y {
+  0%   { transform: translateY(0); }
+  25%  { transform: translateY(-8px); }
+  50%  { transform: translateY(0); }
+  75%  { transform: translateY(8px); }
+  100% { transform: translateY(0); }
+}
+@keyframes pw-orbit-mid {
+  0%    { transform: translate(-40px, 0); }
+  12.5% { transform: translate(-28px, 7px); }
+  25%   { transform: translate(0, 10px); }
+  37.5% { transform: translate(28px, 7px); }
+  50%   { transform: translate(40px, 0); }
+  62.5% { transform: translate(28px, -7px); }
+  75%   { transform: translate(0, -10px); }
+  87.5% { transform: translate(-28px, -7px); }
+  100%  { transform: translate(-40px, 0); }
+}
+@keyframes pw-orbit-near {
+  0%    { transform: translate(0, 12px); }
+  12.5% { transform: translate(35px, 8px); }
+  25%   { transform: translate(50px, 0); }
+  37.5% { transform: translate(35px, -8px); }
+  50%   { transform: translate(0, -12px); }
+  62.5% { transform: translate(-35px, -8px); }
+  75%   { transform: translate(-50px, 0); }
+  87.5% { transform: translate(-35px, 8px); }
+  100%  { transform: translate(0, 12px); }
+}
+
+/* spray on the glass — ONE big splash at a time, brief and snappy.
+   Two instances alternate on a 24s cycle, 12s apart: quick appear, FAST
+   slide down the glass, quick fade. Most of the glass stays clear.
+   v1.5.1: less frequent (was 14s) — the splash is a rare punctuation. */
+/* v1.4.18: BIGGER splash (320px), more sudden, FASTER slide — it's the
+   fastest thing in the wave scene, the quick punctuation in calm water. */
+.dive-scene.porthole .porthole-spray {
+  position: absolute; z-index: 4; pointer-events: none;
+  width: 320px; height: 320px; opacity: 0;
+  background: url(assets/porthole/drafts/porthole_glass_splash_draft.png)
+    center / contain no-repeat;
+  will-change: transform, opacity;
+}
+.dive-scene.porthole .splash-a {
+  left: 12%; top: -4%;
+  animation: pw-spray-1 24s ease-in infinite;
+}
+.dive-scene.porthole .splash-b {
+  left: 56%; top: -6%;
+  animation: pw-spray-2 24s ease-in infinite;
+  animation-delay: -12s;
+}
+@keyframes pw-spray-1 {
+  0%   { opacity: 0; transform: scale(0.92) translateY(0); }
+  2%   { opacity: 0.95; transform: scale(1.08) translateY(0); }
+  8%   { opacity: 0.75; transform: scale(1.08) translateY(110px); }
+  12%  { opacity: 0; transform: scale(1.08) translateY(140px); }
+  100% { opacity: 0; transform: scale(1.08) translateY(140px); }
+}
+@keyframes pw-spray-2 {
+  0%   { opacity: 0; transform: scale(0.88) translateY(0); }
+  2%   { opacity: 0.9; transform: scale(1.04) translateY(0); }
+  8%   { opacity: 0.7; transform: scale(1.04) translateY(100px); }
+  12%  { opacity: 0; transform: scale(1.04) translateY(130px); }
+  100% { opacity: 0; transform: scale(1.04) translateY(130px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* freeze waves at attractive offsets; no bob, no spray */
+  .dive-scene.porthole .pw-orbit,
+  .dive-scene.porthole .pw-far,
+  .dive-scene.porthole .porthole-spray { animation: none; }
+  .dive-scene.porthole .pw-far .pw-orbit { transform: translate(12px, -3px); }
+  .dive-scene.porthole .pw-mid .pw-orbit { transform: translate(-15px, 4px); }
+  .dive-scene.porthole .pw-near .pw-orbit { transform: translate(8px, -5px); }
+  .dive-scene.porthole .porthole-spray { opacity: 0; }
+}
+
+.depth-shallow { background: linear-gradient(180deg, #8fd8ef 0%, #2a9db8 100%); }
+.depth-surface { background: linear-gradient(180deg, #7cc7e8 0%, #2f88b5 100%); }
+.depth-midwater { background: linear-gradient(180deg, #2b6f9e 0%, #10385c 100%); }
+.depth-deep { background: linear-gradient(180deg, #0a1a33 0%, #020610 100%); }
+.depth-deep .rays, .depth-midwater .rays { opacity: 0.12; }
+
+.dive-shark {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 78%; height: 88%;
+  display: flex; align-items: center; justify-content: center;
+  animation: swim 5s ease-in-out infinite;
+}
+/* v0.26.2: the absolute-positioned flex container had no definite height,
+   so vertical centering failed and the shark stayed bottom-clipped. Give it
+   a real height, and drop the cap to 130px to leave room for the swim bob
+   and the overlaid tap-hint. */
+/* v0.26.1: keep the full shark inside the 190px dive scene — wide
+   illustrations overflowed and got clipped at the bottom. Cap the height
+   and preserve aspect ratio, for both silhouette and reveal phases. */
+.dive-shark svg { max-width: 100%; max-height: 130px; width: auto; height: auto; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.4)); }
+/* v0.26.0: tap-to-reveal encounter. The silhouette is tappable; tapping
+   crossfades to the full-colour illustration. */
+.dive-shark img { max-width: 100%; max-height: 130px; width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.4)); }
+/* v1.8.5-beta: size tiers — the MYSTERY SILHOUETTE scales with the species'
+   real size. Small sharks no longer fill the frame like white sharks.
+   v1.8.5-beta fix (Mira review): tiers are scoped to .shark-silhouette ONLY.
+   The reveal phase keeps the deliberate 108px cap (v1.7.14) so art + the
+   identification badge always fit inside the 190px dive scene — a tier rule
+   must never override the reveal/badge safety cap. */
+.dive-shark.size-small .shark-silhouette img, .dive-shark.size-small .shark-silhouette svg { max-height: 64px; }
+.dive-shark.size-medium .shark-silhouette img, .dive-shark.size-medium .shark-silhouette svg { max-height: 96px; }
+.dive-shark.size-large .shark-silhouette img, .dive-shark.size-large .shark-silhouette svg { max-height: 130px; }
+.dive-shark.size-xlarge .shark-silhouette img, .dive-shark.size-xlarge .shark-silhouette svg { max-height: 168px; }
+/* v0.26.0: generic mystery silhouette shown if a silhouette WebP fails to
+   load — sized like the real silhouette, never reveals the species. */
+.dive-shark .mystery-silhouette { max-width: 100%; max-height: 130px; width: auto; height: auto; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.4)); }
+/* v2.5.1-beta: glowy outline on the shark sprite in the two deepest zones
+   (Avery) — same treatment as ambient creatures, so the shark stays visible
+   against the dark backgrounds. Keeps the base drop shadow, adds the glow.
+   v2.5.1-beta fix (Mira review): the mystery silhouette must stay
+   brightness(0) pre-reveal — the glow is added WITHOUT un-blacking it,
+   or the shark is revealed before the player taps. */
+.depth-midwater .dive-shark svg, .depth-deep .dive-shark svg,
+.depth-midwater .dive-shark img, .depth-deep .dive-shark img,
+.depth-midwater .dive-shark .mystery-silhouette, .depth-deep .dive-shark .mystery-silhouette {
+  filter: drop-shadow(0 0 8px rgba(180, 220, 255, 0.55)) drop-shadow(0 6px 10px rgba(0,0,0,0.4));
+}
+.depth-midwater .dive-shark .shark-shadow img, .depth-deep .dive-shark .shark-shadow img,
+.depth-midwater .dive-shark .shark-shadow svg, .depth-deep .dive-shark .shark-shadow svg {
+  filter: brightness(0) drop-shadow(0 0 8px rgba(180, 220, 255, 0.55));
+}
+.shark-silhouette { position: relative; cursor: pointer; transition: opacity 0.35s ease, transform 0.35s ease; }
+.shark-silhouette.revealing { opacity: 0; transform: scale(0.96); }
+.shark-silhouette:focus-visible { outline: 3px solid var(--teal); outline-offset: 4px; border-radius: 8px; }
+/* v1.6.6-beta: the mystery shadow uses the shark's actual illustration with a
+   dark overlay, so the silhouette always matches the shark. The filter applies
+   to both the WebP image and any SVG fallback, so the mystery is never spoiled
+   by a failed image load. */
+.shark-shadow img, .shark-shadow svg { filter: brightness(0); }
+/* v1.7.21-beta: derpy SVGs carry a viewBox but no width/height attributes, so
+   inside the plain .shark-shadow block the SVG collapsed to zero size and the
+   mystery phase showed empty water. Give the shadow SVG explicit dimensions
+   matching the 220x110 viewBox. */
+.shark-shadow svg { width: 220px; height: 110px; max-width: 100%; }
+.tap-hint {
+  position: absolute; bottom: 2px; left: 0; right: 0;
+  text-align: center; font-size: 15px; font-weight: 600;
+  color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  animation: tapPulse 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes tapPulse { 0%,100% { opacity: 0.75; } 50% { opacity: 1; } }
+/* v1.7.14-beta: explicit centered vertical stack — art above, badge below.
+   The badge was inline-block after the img with no column layout, so on wide
+   views they could share a line and on mobile the 190px scene clipped the
+   badge. Now both are constrained to the .dive-shark container. */
+.shark-reveal {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  max-width: 100%; max-height: 100%;
+  animation: revealIn 0.4s ease;
+}
+/* v1.7.14-beta Mira fix: cap the reveal art lower than the 130px silhouette
+   cap so art + badge together fit inside the 190px dive scene. Later in the
+   stylesheet than .dive-shark img, so it wins the specificity tie. */
+.shark-reveal img, .shark-reveal svg {
+  max-width: 100%; max-height: 108px; width: auto; height: auto; object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.4));
+}
+@keyframes revealIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+/* v1.7.14-beta: prominent encounter status badge — new species / your shark /
+   another individual, right under the illustration where it can't be missed. */
+.encounter-badge {
+  display: block; margin-top: 8px; padding: 8px 16px;
+  max-width: 100%; box-sizing: border-box;
+  border-radius: 999px; font-size: 14px; font-weight: 700;
+  color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  text-align: center; overflow-wrap: anywhere;
+  animation: revealIn 0.4s ease;
+}
+.encounter-badge.enc-new { background: #2d7a3e; border: 2px solid #3d9a52; }
+.encounter-badge.enc-reunion { background: #8a6d1a; border: 2px solid #b8962a; }
+.encounter-badge.enc-other { background: #2c5364; border: 2px solid #3d7a8c; }
+@media (prefers-reduced-motion: reduce) {
+  .shark-silhouette, .shark-reveal, .tap-hint, .encounter-badge { transition: none; animation: none; }
+}
+@keyframes swim { 0%,100% { transform: translate(-50%,-52%); } 50% { transform: translate(-50%,-46%); } }
+
+.dive-log {
+  background: rgba(0,0,0,0.35); border-radius: var(--radius);
+  margin-top: 10px; padding: 12px 14px; min-height: 150px; max-height: 300px;
+  overflow-y: auto; font-size: 14px;
+}
+.dive-log p { margin: 7px 0; animation: fadein 0.4s ease; }
+.dive-log .found { color: var(--accent); font-weight: 800; font-size: 17px; }
+.dive-log .miss { color: var(--ink-dim); }
+
+.dive-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.dive-actions .primary-button, .dive-actions .secondary-button { margin-top: 0; }
+
+/* Collection book */
+.book-card .given-name { font-size: 20px; margin: 2px 0 4px; color: var(--accent); }
+.book-stats { font-size: 13px; color: var(--ink-dim); margin: 4px 0 8px; line-height: 1.6; }
+/* v0.6.0: Phone tab — a genuine texting UI, no tutorial copy */
+.phone-screen {
+  background: #0a1826; border-radius: 26px; border: 1px solid #2c5364;
+  overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  max-width: 430px; margin: 0 auto;
+  /* v1.4.4: realistic phone proportions — nearly double the old height.
+     Flex column so the conversation fills and the composer stays pinned. */
+  display: flex; flex-direction: column;
+  height: min(88vh, 880px); min-height: 620px;
+}
+.phone-statusbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 18px 2px; font-size: 12px; font-weight: 700; color: var(--ink-dim);
+}
+.phone-contact {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; background: var(--bg-panel);
+  border-bottom: 1px solid #2c5364;
+}
+.contact-avatar {
+  width: 44px; height: 44px; border-radius: 50%; background: #2c5364;
+  display: flex; align-items: center; justify-content: center; font-size: 24px; flex: none;
+}
+.contact-name { font-weight: 800; font-size: 16px; }
+.contact-sub { font-size: 12px; color: var(--ink-dim); }
+.phone-convo {
+  padding: 14px 12px 20px; display: grid; gap: 16px;
+  overflow-y: auto;
+  /* v1.4.4: fills the taller phone; composer stays pinned at the bottom. */
+  flex: 1 1 auto; min-height: 0; max-height: none;
+}
+
+/* v1.4.0-beta: third release choice — tag along ends the expedition. */
+.tagalong-choice {
+  display: block; width: 100%; margin-top: 10px;
+  padding: 14px 16px; border-radius: 12px; cursor: pointer;
+  background: linear-gradient(180deg, #ffd166 0%, #f0b429 100%);
+  border: 2px solid #b8860b; color: #3a2b00;
+  font-size: 16px; font-weight: 700; text-align: center;
+  font-family: inherit;
+}
+.tagalong-choice .tagalong-sub {
+  display: block; font-size: 12px; font-weight: 400; margin-top: 4px;
+  color: #5a4500;
+}
+.tagalong-choice:active { transform: scale(0.98); }
+
+/* v1.4.0-beta: tag-along insights in collection detail. */
+.secret-facts-block {
+  background: var(--bg-soft); border-left: 3px solid #ffd166;
+  border-radius: 0 8px 8px 0; padding: 8px 12px; margin: 8px 0;
+  font-size: 13px; line-height: 1.55;
+}
+.secret-facts-block h4 { margin: 0 0 6px; font-size: 14px; }
+@media (prefers-reduced-motion: reduce) {
+  .tagalong-choice:active { transform: none; }
+}
+.thread-stamp {
+  text-align: center; font-size: 11px; color: var(--ink-dim); margin-bottom: 6px;
+}
+.phone-convo .empty-note { background: transparent; }
+
+/* v0.17.1: Ask Sarah panel — player-initiated advice after a tough trip. */
+.sarah-ask {
+  padding: 12px 14px; border-top: 1px solid #2c5364;
+  background: var(--bg-panel);
+}
+.sarah-ask p { margin: 0 0 8px; font-size: 13px; }
+/* v1.8.5-beta: Ask Sarah is a single button naming the researched shark —
+   no dropdown, so no row layout needed. The button wraps long names. */
+#sarahAskBtn { max-width: 100%; white-space: normal; text-align: center; }
+
+/* v1.4.0: decorative message composer — visual only. Divs, not inputs, plus
+   aria-hidden and pointer-events:none, so it can never steal focus or
+   accept input. Sits in normal flow below the scrolling conversation, so
+   it never overlaps the final message. */
+.phone-composer {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px 16px; background: var(--bg-panel);
+  border-top: 1px solid #2c5364; border-radius: 0 0 26px 26px;
+  user-select: none; -webkit-user-select: none; pointer-events: none;
+}
+.composer-field {
+  flex: 1; min-width: 0; border-radius: 999px;
+  border: 1px solid #2c5364; background: var(--bg-soft);
+  color: var(--ink-dim); font-size: 14px; padding: 11px 16px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.composer-send {
+  flex: none; width: 42px; height: 42px; border-radius: 50%;
+  background: var(--accent); color: var(--accent-ink);
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+
+/* v0.6.0: field guide entries */
+.guide-list { display: grid; gap: 14px; }
+/* v0.19.0: field-guide database tools. Large touch targets throughout. */
+.guide-tools { display: flex; gap: 10px; margin-bottom: 10px; }
+.guide-search {
+  flex: 1; min-height: 48px; padding: 10px 14px; font-size: 1rem;
+  border: 2px solid rgba(255,255,255,0.18); border-radius: 12px;
+  background: rgba(255,255,255,0.06); color: inherit;
+}
+.guide-search::placeholder { opacity: 0.55; }
+.filter-toggle {
+  min-height: 48px; padding: 10px 18px; font-size: 1rem; font-weight: 700;
+  border: 2px solid rgba(255,255,255,0.18); border-radius: 12px;
+  background: rgba(255,255,255,0.06); color: inherit; cursor: pointer;
+  display: flex; align-items: center; gap: 8px;
+}
+.filter-toggle[aria-expanded="true"] { background: rgba(255,255,255,0.14); }
+.active-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+.active-chips:empty { display: none; }
+.chip-active {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 48px; padding: 6px 8px 6px 14px; border-radius: 999px;
+  background: rgba(140,200,255,0.18); border: 1px solid rgba(140,200,255,0.4);
+  font-size: 0.9rem;
+}
+.chip-remove {
+  min-width: 48px; min-height: 48px; border-radius: 50%; border: none;
+  background: rgba(255,255,255,0.12); color: inherit; font-size: 1.3rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+/* v0.19.0 review: Clear all gets its own substantial target, not the tiny link-button. */
+#guideClear {
+  min-height: 48px; padding: 10px 20px; border-radius: 999px; font-size: 1rem;
+  border: 2px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.06);
+  color: inherit; cursor: pointer; font-weight: 700;
+}
+.sheet-head { display: none; }
+/* Mobile: filter panel becomes a bottom sheet. */
+@media (max-width: 640px) {
+  .filter-panel.open-sheet .sheet-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px;
+  }
+  .filter-panel.open-sheet .sheet-head h2 { margin: 0; font-size: 1.2rem; }
+  .sheet-close {
+    min-height: 52px; min-width: 96px; padding: 10px 24px; border-radius: 999px;
+    font-size: 1.05rem; font-weight: 800; cursor: pointer;
+    border: none; background: rgba(140,200,255,0.3); color: inherit;
+  }
+}
+.guide-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 10px; min-height: 24px;
+}
+.filter-panel {
+  border: 2px solid rgba(255,255,255,0.14); border-radius: 14px;
+  padding: 14px; margin-bottom: 14px; background: rgba(255,255,255,0.04);
+  display: grid; gap: 14px;
+}
+.filter-group h3 { margin: 0 0 8px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.7; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 10px; }
+/* v1.6.3-beta: Archive sort row sits between the search box and the list. */
+#tab-archive .chip-row { margin: 10px 0 14px; }
+.chip {
+  min-height: 48px; padding: 10px 18px; border-radius: 999px; font-size: 1rem;
+  border: 2px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.05);
+  color: inherit; cursor: pointer;
+}
+.chip[aria-pressed="true"] {
+  background: rgba(140,200,255,0.25); border-color: rgba(140,200,255,0.7);
+  font-weight: 700;
+}
+/* Mobile: filter panel becomes a bottom sheet. */
+@media (max-width: 640px) {
+  .filter-panel.open-sheet {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
+    max-height: 82vh; overflow-y: auto; margin: 0;
+    border-radius: 18px 18px 0 0; border-bottom: none;
+    background: #0f2233; padding: 18px 18px 28px;
+    box-shadow: 0 -8px 40px rgba(0,0,0,0.5);
+  }
+  .chip { min-height: 52px; padding: 12px 22px; }
+}
+.guide-entry {
+  background: var(--bg-card); border-radius: var(--radius);
+  padding: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+.guide-head { display: flex; gap: 12px; align-items: flex-start; }
+.guide-title { flex: 1; min-width: 0; }
+.guide-title h3 { margin: 0; font-size: 18px; }
+
+/* v0.6.0: trophy shelf — sits ABOVE the grid, never in it */
+.trophy-shelf {
+  display: block; width: 100%; margin: 0 0 14px; padding: 16px 12px;
+  background: linear-gradient(180deg, #1d3a56 0%, #16405f 100%);
+  border: 2px solid var(--accent); border-radius: var(--radius);
+  color: var(--ink); font-family: inherit; cursor: pointer; text-align: center;
+  box-shadow: 0 4px 18px rgba(255, 209, 102, 0.15);
+}
+.trophy-shelf:active { transform: scale(0.98); }
+.trophy-shelf .cert-trophy { font-size: 40px; }
+.trophy-shelf h3 { margin: 6px 0 2px; font-size: 19px; color: var(--accent); }
+.trophy-shelf .latin { margin: 2px 0 0; }
+
+/* v0.6.0: win ceremony */
+@keyframes buzz {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); } 40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); } 80% { transform: translateX(3px); }
+}
+.buzz-phone { animation: buzz 0.5s ease 2; }
+.win-thread { display: grid; gap: 8px; margin: 10px 0 12px; }
+/* v0.16.0: the map finale — "they're all still out there." */
+.finale { max-width: 640px; margin: 0 auto; padding: 8px; }
+.finale-map { border-radius: 12px; overflow: hidden; border: 1px solid var(--line); }
+.finale-map svg { display: block; width: 100%; height: auto; }
+.finale-marker { transform-box: fill-box; transform-origin: center; }
+@keyframes finalePop {
+  from { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.4); opacity: 1; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Overlays */
+.overlay {
+  position: fixed; inset: 0; background: rgba(2, 8, 16, 0.72);
+  display: flex; padding: 18px; z-index: 20;
+  /* v0.17.1: overlays must scroll when content exceeds the viewport —
+     beat 2's 10-bubble thread trapped short screens with the Continue
+     button below the fold. margin:auto centers when content fits and
+     scrolls when it doesn't (unlike align-items:center, which clips). */
+  overflow-y: auto; align-items: flex-start;
+}
+.overlay > * { margin: auto; }
+.phone {
+  position: relative; /* v1.7.23-beta: anchor for the top-right .modal-close ✕ */
+  background: var(--bg-panel); border-radius: 22px; padding: 16px;
+  width: 100%; max-width: 380px; box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+/* v2.5.6-beta (Mira review): the win ceremony's certificate beat is the
+   hero, not a phone thread — it gets a wide shell. Other beats keep the
+   380px phone. The player can widen it further to read the small print. */
+.phone.cert-phone { max-width: min(680px, 94vw); }
+.phone.cert-phone.cert-wide { max-width: min(940px, 97vw); }
+/* v1.7.23-beta: top-right ✕ on long-content modals (Collection detail,
+   Tracking, What's New). The bottom Close button sits below the fold on
+   mobile, so the exit must be visible the moment the modal opens.
+   44×44px touch target; semi-opaque so it reads over shark art. */
+.modal-close {
+  position: absolute; top: 8px; right: 8px; z-index: 2;
+  width: 44px; height: 44px; min-width: 44px; min-height: 44px; padding: 0;
+  border-radius: 50%; border: 1px solid var(--line);
+  background: rgba(2, 8, 16, 0.55); color: #fff;
+  font-size: 20px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-close:active { transform: scale(0.94); }
+.phone-head { font-weight: 800; margin-bottom: 10px; font-size: 15px; }
+/* v0.12.0: one conversation scroll, like a real phone — threads no longer
+   get their own nested scrollboxes; #messagesList (.phone-convo) is the
+   single scroller, pinned to the newest message. */
+.phone-thread { display: grid; gap: 8px; margin-bottom: 12px; }
+.bubble {
+  padding: 10px 13px; border-radius: 16px; font-size: 14px; line-height: 1.5;
+  max-width: 92%;
+}
+.bubble.them { background: #2c5364; justify-self: start; border-bottom-left-radius: 4px; }
+.bubble.me { background: var(--teal); color: #07332f; justify-self: end; border-bottom-right-radius: 4px; font-weight: 600; }
+.tag-art { text-align: center; }
+.tag-art svg { width: 100%; max-width: 300px; height: auto; }
+/* v0.26.3: constrain WebP illustrations in the tagging/health views so they
+   don't overflow the modal on mobile. */
+.tag-art img { width: 100%; max-width: 300px; max-height: 220px; height: auto; object-fit: contain; display: block; margin: 0 auto; }
+.tag-info { font-size: 14px; line-height: 1.7; background: var(--bg-soft); border-radius: 12px; padding: 10px 12px; margin: 10px 0; }
+
+.foot { text-align: center; color: var(--ink-dim); font-size: 12px; margin-top: 26px; }
+
+.ack-card {
+  margin-top: 18px; background: var(--bg-panel); border: 2px solid var(--accent);
+  border-radius: var(--radius); padding: 20px 16px; text-align: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+.ack-card .eyebrow { margin-bottom: 6px; }
+.ack-name { font-size: 15px; color: var(--ink-dim); margin: 0 0 8px; }
+.ack-name span { font-size: 28px; font-weight: 800; color: var(--accent); letter-spacing: 0.5px; }
+.ack-card p:last-child { margin: 0; color: var(--ink); font-size: 14px; }
+
+/* Collection grid: compact two-across cells, tap for detail */
+.collection-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.collection-grid .empty-note { grid-column: 1 / -1; }
+@media (min-width: 560px) {
+  .collection-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.grid-cell {
+  background: var(--bg-card); border: none; border-radius: var(--radius);
+  padding: 10px 8px; cursor: pointer; color: var(--ink); font-family: inherit;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25); text-align: center;
+}
+.grid-cell:active { transform: scale(0.97); }
+/* v1.8.1-beta: 100%-complete indicator — subtle yellow border when every
+   insight for that species is discovered. Border-box sizing (global *)
+   keeps the border inside the cell's grid track. */
+.grid-cell.insights-complete { border: 2px solid rgba(255, 209, 102, 0.55); }
+.grid-cell h3 { margin: 4px 0 0; font-size: 15px; }
+.grid-cell .latin { margin: 2px 0 0; font-size: 11px; }
+.grid-cell .shark-art { margin: 0; }
+.grid-cell .shark-art svg { max-width: 100%; }
+.grid-name { font-size: 13px; color: var(--accent); margin-top: 6px; min-height: 18px; }
+.unnamed { color: var(--ink-dim); font-style: italic; }
+.given-name { font-size: 20px; margin: 2px 0 4px; color: var(--accent); }
+.detail-name-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; margin: 4px 0;
+}
+.detail-name-row .given-name { margin: 0; }
+.mini-button {
+  padding: 6px 12px; font-size: 13px; font-weight: 700; border-radius: 999px;
+  border: 2px solid var(--ink-dim); background: transparent; color: var(--ink);
+  cursor: pointer; font-family: inherit; white-space: nowrap;
+}
+#renameForm { margin: 8px 0; }
+.rename-actions { display: flex; gap: 8px; margin-top: 8px; }
+.rename-actions .primary-button, .rename-actions .secondary-button { margin-top: 0; }
+.bonus-fact { font-size: 13px; color: var(--teal); margin: 6px 0 10px; line-height: 1.55; }
+
+/* Certificate + win state */
+.cert-trophy { text-align: center; }
+.cert-body {
+  background: var(--bg-soft); border-radius: 12px; padding: 12px 14px;
+  font-size: 14px; line-height: 1.6; margin: 10px 0;
+}
+.cert-sig { color: var(--ink-dim); font-size: 13px; margin: 8px 0 0; }
+/* v2.5.6-beta: the Master Shark Tagger certificate — Avery's artwork
+   with the player's name and the award date set into its blank lines.
+   Positions are % of the artwork; fonts scale with the figure via
+   container units so the writing sits on the printed lines at any
+   modal width. */
+.cert-figure { position: relative; margin: 0; container-type: inline-size; }
+.cert-img { display: block; width: 100%; height: auto; border-radius: 6px; }
+/* Scoped under the figure with an element+class selector on purpose:
+   the global input[type="text"] rule (0,1,1) outranks a lone class
+   (0,1,0) and restyled this field dark/wide/full-width in v2.5.6. */
+.cert-figure input.cert-name {
+  /* Centre stays at 51.5% (the placement Avery approved); the box is
+     tall enough that script descenders (J, y) finish below the
+     printed line instead of clipping at the field's lower edge. */
+  position: absolute; left: 16%; top: 45%; width: 68%; height: 13%;
+  background: transparent; border: none; outline: none; border-radius: 4px;
+  padding: 0;
+  text-align: center; color: #2b3a55;
+  font-family: "Snell Roundhand", "Segoe Script", "Brush Script MT", cursive;
+  font-size: 24px; font-size: 5.4cqw;
+}
+.cert-figure input.cert-name:focus { background: rgba(255, 252, 240, 0.55); }
+.cert-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+.cert-name-box {
+  display: block; margin: 10px auto 0; max-width: 420px;
+  font-size: 14px; color: var(--ink-dim); text-align: left;
+}
+.cert-name-box input {
+  display: block; width: 100%; box-sizing: border-box; margin-top: 4px;
+  min-height: 44px; padding: 10px 12px; border-radius: 10px;
+  border: 1px solid var(--accent); background: #0d2f4d; color: var(--ink);
+  font-size: 17px;
+}
+.cert-action-btn {
+  min-height: 44px; padding: 10px 18px; border-radius: 999px; cursor: pointer;
+  background: #14486e; color: var(--ink); border: 1px solid var(--accent);
+  font-size: 15px;
+}
+.cert-date {
+  position: absolute; left: 65%; top: 74.8%; width: 26%;
+  text-align: center; color: #2b3a55; pointer-events: none;
+  font-family: "Snell Roundhand", "Segoe Script", "Brush Script MT", cursive;
+  font-size: 13px; font-size: 2.9cqw;
+}
+.cert-cell { border: 2px solid var(--accent); }
+.cert-cell .cert-trophy { font-size: 34px; margin: 4px 0; }
+
+/* Tracking view */
+.track-map { width: 100%; height: auto; border-radius: 12px; margin: 8px 0; }
+.track-stats { display: flex; gap: 8px; margin: 8px 0; }
+.track-stats > div {
+  flex: 1; background: var(--bg-soft); border-radius: 12px; padding: 8px 6px;
+  text-align: center;
+}
+.track-stats strong { display: block; font-size: 16px; color: var(--accent); }
+.track-stats span { font-size: 11px; color: var(--ink-dim); }
+.track-stops { list-style: none; margin: 8px 0; padding: 0; font-size: 13px; line-height: 1.9; }
+.track-stops .dim { color: var(--ink-dim); }
+.track-note { font-size: 13px; line-height: 1.6; }
+.track-note .dim { color: var(--ink-dim); font-size: 12px; }
+
+/* v0.6.0: depth-aware silhouette tinting — pale and reflective at depth
+   where the water is near-black, dark in the bright shallows.
+   (Fixes the v0.5.0 contrast bug: dark fills at 0.55 opacity were
+   invisible on deep backgrounds.) */
+.depth-midwater .ambient, .depth-deep .ambient { opacity: 0.8; }
+/* v0.26.0: same deep-water glow for WebP creature shadows. */
+.depth-midwater .ambient img, .depth-deep .ambient img {
+  filter: drop-shadow(0 0 6px rgba(180, 220, 255, 0.5));
+}
+.depth-midwater .ambient svg [fill], .depth-deep .ambient svg [fill] { fill: #cfe6f7; }
+.depth-midwater .ambient svg, .depth-deep .ambient svg {
+  filter: drop-shadow(0 0 6px rgba(180, 220, 255, 0.5));
+}
+
+/* v0.4.0: research IDs, ambient sea life */
+.research-id {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px; color: var(--teal);
+  background: rgba(79, 209, 197, 0.12);
+  border-radius: 6px; padding: 2px 8px; white-space: nowrap;
+}
+.grid-id {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 11px; color: var(--teal); margin-top: 4px;
+}
+.opt { font-weight: 400; font-style: italic; }
+/* v0.6.0: the dive log speaks in one voice — no separate "flavour" style. */
+.ambient {
+  position: absolute; top: 30%; left: -30%;
+  opacity: 0.55; pointer-events: none; z-index: 2;
+  animation-name: drift; animation-timing-function: linear; animation-fill-mode: forwards;
+}
+/* v2.5.3-beta: darker ambient entity shadows in the first two layers (Avery) —
+   dark gray at surface, almost black at reef/shallows. */
+.depth-surface .ambient img { filter: brightness(0.35); }
+.depth-surface .ambient.bg-fish img { filter: brightness(0.35) blur(0.4px); }
+.depth-shallow .ambient img { filter: brightness(0.12); }
+.depth-shallow .ambient.bg-fish img { filter: brightness(0.12) blur(0.4px); }
+.ambient svg { height: 100%; width: auto; display: block; }
+/* v0.26.0: background creature WebP shadows. */
+.ambient img { height: 100%; width: auto; display: block; }
+.bg-creature-img { height: 100%; width: auto; }
+@keyframes drift { from { left: -30%; } to { left: 112%; } }
+/* v2.7.4-beta: ambient shark silhouettes fill the ambient slot, so the
+   darkened art sizes like the WebP sprites (the .shark-shadow SVG's fixed
+   220x110 would otherwise fight the slot height). */
+.ambient .shark-shadow { height: 100%; }
+/* v2.7.4-fix (Mira review): the plain .shark-shadow filter lost to the
+   depth rules (.depth-surface/.depth-shallow .ambient img and
+   .depth-midwater/.depth-deep .ambient svg), leaving dimmed full-colour
+   art in the shallows instead of a true silhouette. This
+   higher-specificity rule restores the uniformly dark shadow on every
+   depth, for the WebP img and the fallback SVG alike. */
+.dive-scene .ambient .shark-shadow img, .dive-scene .ambient .shark-shadow svg { filter: brightness(0); }
+/* v2.7.5-fix (Avery): deep drift was invisible — the drift 0.45 opacity
+   outranked the deep 0.8 rule, and small dark shapes vanish on the black
+   top of the deep scene. Deep drift matches sighting opacity, with a
+   stronger halo; deep/midwater shark silhouettes keep their black fill
+   but gain the halo too (brightness first, glow after). */
+.dive-scene.depth-deep .ambient.bg-fish { opacity: 0.8; }
+.dive-scene.depth-deep .ambient.bg-fish img { filter: drop-shadow(0 0 8px rgba(180, 220, 255, 0.7)); }
+.dive-scene.depth-midwater .ambient .shark-shadow img,
+.dive-scene.depth-deep .ambient .shark-shadow img { filter: brightness(0) drop-shadow(0 0 8px rgba(180, 220, 255, 0.65)); }
+/* v2.7.5-fix (Avery): the lanternfish school's own lights — warm, bright,
+   and big enough to throw the school into relief. Sighting only. */
+.dive-scene .ambient.lit img { filter: drop-shadow(0 0 14px rgba(255, 210, 120, 0.9)) brightness(1.4); }
+/* v0.26.1: ambient creatures swim both ways — .swim-left reverses the drift
+   so creatures can travel right-to-left, facing their direction of travel. */
+.ambient.swim-left { animation-name: driftLeft; }
+@keyframes driftLeft { from { left: 112%; } to { left: -30%; } }
+
+/* v0.7.0: field-guide database — compact roster rows, expandable entries */
+.guide-row {
+  background: var(--bg-card); border-radius: var(--radius);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25); overflow: hidden;
+}
+.guide-row-head {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  background: transparent; border: none; color: var(--ink);
+  font-family: inherit; text-align: left; cursor: pointer;
+  padding: 13px 14px; font-size: 15px;
+}
+.guide-row-head:active { background: rgba(255,255,255,0.04); }
+/* v1.4.0: long names (e.g. Oceanic Whitetip) truncate with ellipsis instead of
+   colliding with the pin button. Was flex:none which prevented shrinking. */
+.guide-row-name {
+  font-weight: 800; flex: 0 1 auto; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* v0.18.0: locked achievements — dimmed, breadcrumb visible. */
+.guide-row.locked { opacity: 0.55; }
+.guide-row-head .latin { margin: 0; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* v1.5.15: Avery — card headers stack vertically: bold common name on its
+   own line, italic Latin name below it. Scoped to .guide-names so the
+   Achievements rows (same classes, row layout) are untouched. */
+.guide-row-head .guide-names { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.guide-row-head .guide-names .guide-row-name { flex: none; max-width: 100%; }
+.guide-row-head .guide-names .latin { flex: none; font-size: 12px; }
+/* v1.6.0-beta: more space between IUCN badge and pin icon — matches the
+   pin-to-edge distance so Latin names have more room.
+   v1.8.1-beta: Avery — 6px now, real close, maximum room for the name.
+   (The head's right padding is zeroed on .guide-row-top rows, so this
+   6px margin is the whole pill-to-pin gap.)
+   v1.8.2-beta: correction — v1.8.1 measured the 6px to the pin BUTTON's
+   edge, but the 📌 glyph sits centered inside the 52px button, so the
+   visual gap was still ~22px. Pill margin is now 0; the 6px lives in the
+   pin button's left padding instead (see .guide-row-top .pin-btn below),
+   measured to the glyph itself. */
+.guide-row-head .status-pill { margin-bottom: 0; margin-right: 0; flex: none; }
+/* v1.6.1-beta: checklist-style tag status — an empty circle before each name
+   that fills green when the shark is tagged. Replaces the ✅ prefix. */
+.tag-check {
+  display: inline-block; width: 13px; height: 13px; flex: none;
+  border: 2px solid var(--ink-dim); border-radius: 50%;
+  margin-right: 7px; vertical-align: -1px;
+}
+.tag-check.is-done { background: #2ecc71; border-color: #2ecc71; }
+/* v1.6.1-beta: screen-reader-only text — keeps tagged/untagged status
+   readable after the ✅ prefix became a visual-only circle. */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0;
+  margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0);
+  white-space: nowrap; border: 0; }
+.guide-caret { color: var(--ink-dim); font-size: 13px; flex: none; transition: transform 0.2s ease; }
+.guide-row.open .guide-caret { transform: rotate(180deg); }
+.guide-row-body { padding: 0 14px 14px; border-top: 1px solid #2c5364; }
+/* v1.4.0-beta: expanded entries overlay the grid instead of pushing it down.
+   The row keeps its grid cell; the detail floats above its neighbors.
+   v1.4.16-beta: hard containment — position:absolute removes the body from flow,
+   contain:layout on the row adds a boundary, and explicit width/max-width guards
+   against any intrinsic-size leakage, so an open entry can never widen its column. */
+/* v1.5.3-beta: REMOVED contain:layout — it establishes a containing block for
+   fixed descendants, breaking the mobile modal centering. The absolute
+   positioning with explicit width/max-width below is sufficient to prevent
+   column widening (absolute elements don't participate in grid sizing). */
+.guide-row { position: relative; min-width: 0; }
+/* v2.0.0-beta: NO z-index on the open row itself — the row header must
+   slide UNDER the sticky tab bar like normal content (iPad clip report:
+   the elevated row painted the shark's name over the tabs). The floating
+   detail card (.guide-row-body) keeps its own z-index, now also fed by
+   the rising guideOverlayZ, so it still overlays neighboring rows. */
+.guide-row.open { overflow: visible; }
+/* v1.5.12: expanded cards show the full description — no internal scrolling,
+   the card grows to fit its content. Top corners rounded to match the bottom. */
+.guide-row.open .guide-row-body {
+  position: absolute; top: 100%; left: 0; width: 100%; max-width: 100%; min-width: 0; z-index: 20;
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: 0 18px 36px rgba(0,0,0,0.55);
+}
+/* v1.5.2-beta: on small screens the expanded card becomes a centered modal
+   so the full content is always reachable — no more cut-off bottoms. */
+@media (max-width: 768px) {
+  /* v1.5.2-beta: on small screens the expanded card becomes a centered modal
+     so the full content is always reachable — no more cut-off bottoms.
+     v1.5.12: top-anchored (not vertically centered) so a tall card can never
+     clip its close button; no max-height, no internal scroll — the card
+     grows to fit its full content. */
+  .guide-row.open .guide-row-body {
+    position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+    width: calc(100vw - 32px); max-width: 520px;
+    border-radius: var(--radius);
+  }
+}
+/* v1.5.4-beta: explicit close button inside the guide popup. On small screens
+   the fixed modal can cover its own row header, leaving no way to dismiss it
+   otherwise. 44px touch target for accessibility. */
+.guide-close {
+  position: absolute; top: 10px; right: 10px; z-index: 2;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(2, 12, 20, 0.55); color: var(--ink);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  font-size: 20px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-family: inherit;
+}
+.guide-close:hover { background: rgba(2, 12, 20, 0.8); }
+.guide-close:focus-visible { outline: 2px solid #ffd166; outline-offset: 2px; }
+/* v0.20.0: pinned shark — pin button beside each row head, focus card on top. */
+.guide-row-top { display: flex; align-items: stretch; }
+/* v1.5.17-beta: pill moved inside the head button (whole header is one tap
+   target); the .guide-row-head .status-pill rule above covers its sizing. */
+/* v1.8.1-beta: Avery — IUCN badge 6px from the pin icon, max room for the
+   name. The head's 14px right padding used to sit between pill and pin
+   (8px pill margin + 14px padding = 22px gap); zero it here so the pill's
+   6px margin is the whole gap. Scoped to .guide-row-top so Achievements
+   heads (no pin) keep their padding.
+   v1.8.2-beta: correction — the 6px must be measured to the 📌 GLYPH, not
+   the button edge: the glyph sits centered inside the 52px button, so
+   v1.8.1's visual gap was still ~22px. Pill margin is now 0 (see above);
+   this rule left-aligns the glyph with 5px left padding, so the visual
+   gap is 1px button border + 5px padding = ~6px. Button stays 52px wide
+   (44px+ touch target untouched). Scoped to .guide-row-top so the
+   pinned-card ✕ unpin button keeps its centered glyph. */
+.guide-row-top .guide-row-head { flex: 1; min-width: 0; padding-right: 0; }
+.guide-row-top .pin-btn { text-align: left; padding-left: 5px; }
+.pin-btn {
+  flex: none; width: 52px; min-height: 52px; font-size: 1.3rem;
+  background: transparent; border: none; border-left: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer; opacity: 0.45; transition: opacity 0.15s, transform 0.15s;
+}
+.pin-btn:hover { opacity: 0.9; }
+.pin-btn.pinned-on { opacity: 1; transform: scale(1.15); }
+.pinned-card {
+  background: linear-gradient(180deg, #1d3a56 0%, #16405f 100%);
+  border: 2px solid rgba(255,209,102,0.4); border-radius: var(--radius);
+  padding: 14px; margin-bottom: 14px; box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+.pinned-empty { border-style: dashed; border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.03); }
+.pinned-empty .latin { margin: 0; }
+.pinned-head { display: flex; justify-content: space-between; align-items: center; font-weight: 800; margin-bottom: 10px; }
+.pinned-head .unpin {
+  width: 48px; min-height: 48px; border-radius: 12px; font-size: 1.1rem;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: var(--ink); cursor: pointer;
+}
+.pinned-body { display: flex; gap: 12px; align-items: center; margin-bottom: 10px; }
+/* v1.4.15-beta: pinned research preview — clues in bold, same font/size */
+.pinned-research { font-size: 13px; line-height: 1.5; color: #dcebf5; margin: 8px 0 4px; }
+.pinned-research strong { font-weight: 700; }
+
+/* v0.20.0: pinned-shark line on the Expedition tab. */
+.expedition-pin {
+  background: rgba(255,209,102,0.08); border: 1px solid rgba(255,209,102,0.3);
+  border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; font-size: 0.95rem;
+}
+.expedition-pin .latin { display: block; margin-top: 2px; }
+/* v0.20.0: repeat-plan button on logbook entries. */
+.repeat-btn {
+  margin-top: 8px; min-height: 44px; padding: 8px 18px; border-radius: 999px;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  background: rgba(79,209,197,0.12); border: 1px solid rgba(79,209,197,0.4);
+  color: var(--ink);
+}
+/* v1.8.4-beta: logbook pagination — the "show older trips" button. */
+.logbook-more { display: block; width: 100%; margin-top: 8px; }
+/* v0.20.0: quick-pace toggle in the planner. */
+.pace-toggle {
+  display: flex; align-items: center; gap: 10px; margin-top: 10px;
+  font-size: 0.95rem; cursor: pointer; user-select: none;
+}
+.pace-toggle input { width: 22px; height: 22px; accent-color: var(--teal); flex: none; }
+.guide-row-body .research-text { margin-top: 4px; }
+
+/* v0.7.0: sightings log */
+.sightings-list { display: grid; gap: 8px; }
+.sighting-entry {
+  background: var(--bg-soft); border-radius: 12px; padding: 10px 12px;
+  border-left: 3px solid var(--teal);
+}
+.sighting-name { font-weight: 800; font-size: 14px; }
+.sighting-detail { font-size: 13px; color: var(--ink-dim); margin-top: 2px; }
+.empty-note {
+  text-align: center; color: var(--ink-dim); font-size: 14px;
+  padding: 18px 12px; line-height: 1.6;
+}
+
+/* v0.8.0: expedition logbook + re-sighting blocks */
+.logbook-list { display: grid; gap: 8px; }
+.logbook-entry {
+  background: var(--bg-soft); border-radius: 12px; padding: 10px 12px;
+  border-left: 3px solid #ffd166;
+}
+.logbook-date { font-weight: 800; font-size: 14px; }
+.logbook-plan { font-size: 13px; color: var(--ink-dim); margin-top: 2px; }
+.logbook-enc { font-size: 13px; margin-top: 4px; line-height: 1.7; }
+.resight-block h4 { font-size: 14px; margin: 10px 0 4px; }
+
+/* v0.9.0: the tracking map tab */
+.map-wrap {
+  background: #0d2f4d; border-radius: var(--radius); overflow: hidden;
+  border: 1px solid #2c5364; position: relative;
+}
+.map-wrap svg { display: block; width: 100%; height: auto; }
+/* v0.10.2: touch-action base — JS flips it to "none" when zoomed so drags pan */
+#worldMapWrap { touch-action: pan-y; }
+/* v0.10.0: map toolbar (zoom + currents toggle) */
+/* v0.10.2: 44px minimum tap targets for touchscreens */
+/* v0.10.4: wrap so the Explore/Done buttons never push the page wider on phones */
+.map-toolbar { display: flex; gap: 8px; margin: 0 0 10px; align-items: center; flex-wrap: wrap; }
+.map-toolbar button {
+  font-family: inherit; font-size: 15px; font-weight: 700; line-height: 1;
+  min-width: 44px; min-height: 44px; padding: 10px 14px; border-radius: 999px; cursor: pointer;
+  background: var(--bg-soft); color: var(--ink); border: 1px solid #2c5364;
+}
+.map-toolbar button:hover { border-color: var(--accent); }
+#mapCurrentsToggle { font-size: 13px; font-weight: 600; }
+#mapCurrentsToggle[aria-pressed="true"] {
+  background: var(--accent); color: var(--accent-ink); border-color: var(--accent);
+}
+/* v0.15.0: the map gets a subtle outline while zoomed in, when one-finger
+   drags pan the map instead of scrolling the page. */
+#worldMapWrap.exploring { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* v0.10.0: currents overlay — warm/cold hues are real oceanography */
+/* v1.5.2-beta: currents are dashed + lower opacity so they're never confused with solid shark track lines */
+.current { fill: none; opacity: 0.45; }
+.current.warm { stroke: #ff9e5e; }
+.current.cold { stroke: #6ecff5; }
+.current-label {
+  fill: rgba(255,255,255,0.9); font-style: italic; font-size: 14px;
+  paint-order: stroke; stroke: rgba(4,38,59,0.7); stroke-width: 3;
+}
+.map-track { fill: none; opacity: 0.55; }
+/* v1.8.6 follow-up (Mira review): neutral halo under each route so thin
+   strokes stay legible on the photographic map, not just the dark
+   fallback. Full opacity — the halo is the contrast mechanism. */
+.map-track-halo { fill: none; stroke: rgba(255,255,255,0.85); }
+.map-marker { cursor: pointer; stroke: #fff; stroke-width: 1.5; }
+.map-marker:hover { stroke-width: 3; }
+.map-marker.latest { stroke-width: 2.5; }
+.map-empty {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  color: #d7e8f5; font-size: 15px; line-height: 1.8; padding: 20px;
+  background: rgba(6,20,35,0.55);
+}
+.map-empty .big { font-size: 40px; display: block; margin-bottom: 8px; }
+.map-popup {
+  background: var(--bg-card); border-radius: 12px; padding: 12px 14px; margin-top: 10px;
+  border-left: 4px solid var(--accent);
+}
+.map-popup h4 { margin: 0 0 2px; font-size: 16px; }
+.map-popup .latin { font-size: 13px; color: var(--ink-dim); margin: 0 0 6px; }
+.map-popup .map-meta { font-size: 13px; color: var(--ink-dim); margin: 0 0 8px; line-height: 1.6; }
+.map-popup .map-kind-note { font-size: 12px; color: var(--ink-dim); font-style: italic; margin: 0 0 8px; }
+/* v0.17.1: two-column legend, taller chips (friendlier touch targets),
+   common name before the ID. */
+.map-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.map-chip {
+  font-size: 13px; padding: 10px 12px; border-radius: 999px;
+  background: var(--bg-soft); border: 1px solid #2c5364; color: var(--ink-dim);
+  display: inline-flex; align-items: center; gap: 6px;
+  cursor: pointer; /* v0.11.0: chips focus the map, like markers */
+}
+.map-chip .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+  /* v1.8.6 follow-up (Mira review): neutral outline so dark route colors
+     stay legible as legend dots too. box-shadow keeps the 10px layout. */
+  box-shadow: 0 0 0 1.5px rgba(255,255,255,0.9); }
+.map-honesty { font-size: 12px; color: var(--ink-dim); font-style: italic; margin-top: 10px; line-height: 1.6; }
+
+/* v0.7.0: discreet reset link in the footer */
+.link-button {
+  background: none; border: none; padding: 2px 4px; cursor: pointer;
+  color: var(--ink-dim); font-size: 12px; font-family: inherit;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.link-button:active { color: var(--ink); }
+
+.hidden { display: none !important; }
+
+/* v0.17.0: Wild Archive — real-world media dossiers */
+.archive-asset { margin: 0 0 18px; }
+.archive-asset.primary { margin-bottom: 22px; }
+.archive-media {
+  display: block; width: 100%; border-radius: 10px;
+  border: 1px solid #2c5364; background: #0d2f4d;
+}
+.archive-media.primary { border-width: 2px; }
+video.archive-media { max-height: 420px; }
+/* v0.17.1: the sand tiger GIF is 600x1067 portrait — full-width it fills
+   more than the screen. Crop the dead water above the nose (~35% from top)
+   and rotate 90deg into a landscape frame. The values below are tuned for
+   this specific GIF: frame ratio 693/600 matches the cropped+rotated content,
+   img width 86.5% gives exact cover, and the 17.5% shift puts the nose near
+   the frame's right edge. If the source GIF ever changes, re-derive these. */
+.gif-landscape-frame {
+  position: relative; width: 100%; aspect-ratio: 693/600;
+  overflow: hidden; border-radius: 10px; border: 1px solid #2c5364;
+  background: #000;
+}
+/* v0.20.0: genuine detail crop (sawshark rostrum) — background-positioned
+   from the source image; geometry comes from the asset's detailCrop. */
+.detail-crop-frame {
+  width: 100%; overflow: hidden; border-radius: 10px; border: 1px solid #2c5364;
+  background-repeat: no-repeat; background-color: #0a2a3f;
+}
+.gif-landscape-frame img {
+  position: absolute; top: 50%; left: 50%;
+  width: 86.5%; aspect-ratio: 600/1067;
+  transform: translate(-50%,-50%) rotate(90deg) translateY(17.5%);
+}
+.archive-asset figcaption { font-size: 14px; line-height: 1.55; margin: 8px 2px 4px; color: var(--ink); }
+.archive-credit { font-size: 12px; color: var(--ink-dim); margin: 0 2px; line-height: 1.5; }
+.archive-credit a { color: var(--ink-dim); }
+/* v0.20.0: non-commercial policy notice on NC-licensed assets. */
+.archive-nc { font-size: 11px; color: var(--ink-dim); font-style: italic; margin: 2px 2px 0; line-height: 1.4; }
+.archive-label {
+  display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 0.08em;
+  text-transform: uppercase; color: #0d2f4d; background: #ffd166;
+  border-radius: 6px; padding: 3px 9px; margin-bottom: 8px;
+}
+
+/* v0.22.0: logbook filters */
+.logbook-filters {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end;
+  margin-bottom: 12px; padding: 10px 12px;
+  background: var(--bg-soft); border-radius: 12px;
+}
+.filter-label { font-size: 12px; font-weight: 700; display: flex; flex-direction: column; gap: 4px; }
+.filter-select {
+  font-size: 15px; padding: 10px 36px 10px 12px; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+  min-height: 44px; /* dyspraxia-friendly touch target */
+  /* v1.5.2-beta: custom dropdown arrow inside the box, not floating */
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+}
+.logbook-conditions { font-size: 12px; margin-top: 2px; opacity: 0.85; }
+
+/* v0.22.0: pin-gated soft hint */
+.pin-hint {
+  background: #fff8e1; border: 1px solid #ffd166; border-radius: 12px;
+  padding: 10px 14px; margin: 8px 0; font-size: 14px; line-height: 1.5;
+}
+.pin-hint .latin { display: block; font-size: 12px; margin-top: 2px; }
+
+/* v0.22.0: conservation note on collection cards */
+.conservation-note {
+  background: var(--bg-soft); border-left: 3px solid #4caf50;
+  border-radius: 0 8px 8px 0; padding: 8px 12px; margin: 8px 0;
+  font-size: 13px; line-height: 1.55;
+}
+
+/* v0.22.0: What's New screen */
+.whats-new-list { text-align: left; padding-left: 20px; line-height: 1.7; font-size: 14px; }
+.whats-new-list li { margin-bottom: 8px; }
+
+/* v1.1.0-beta: tablet/desktop layouts — all rules inside min-width queries; mobile untouched */
+
+@media (min-width: 768px) {
+  .app { max-width: 700px; padding: 12px 20px 48px; }
+  .finale { max-width: 700px; }
+
+  /* Tab bar: equal-width tabs filling the content column (was centered pills). */
+  .tab { padding: 12px 16px; }
+
+  /* Research: 2-column grid. v1.4.0-beta: open entries stay in their column —
+     expanding must not push neighbors out of their columns. */
+  /* v1.4.15-beta: minmax(0,1fr) so open overlays can never widen a column */
+  .guide-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: start; }
+
+  /* Filter panel: inline instead of bottom sheet */
+  .filter-panel.open-sheet {
+    position: static; border-radius: 14px; max-height: none;
+    margin-bottom: 14px; box-shadow: none;
+  }
+
+  /* Expedition planner: 2x2 grid */
+  #planner.planner-card { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+  #planner.planner-card .primary-button,
+  #planner.planner-card .pace-toggle { grid-column: 1 / -1; }
+
+  /* Collection: 5 columns */
+  .collection-grid { grid-template-columns: repeat(5, 1fr); }
+
+  /* Map legend wraps nicely */
+  .map-legend { display: flex; flex-wrap: wrap; gap: 8px; }
+}
+
+@media (min-width: 1024px) {
+  .app { max-width: 960px; padding: 16px 28px 56px; }
+  .finale { max-width: 960px; }
+
+  /* Tab bar: full-bleed band from the base rule (no max-width constraint);
+     14px keeps 8 equal tabs' labels fitting in one row. */
+  .tab { font-size: 14px; }
+  .dive-scene { top: 106px; }
+
+  /* Research: 3 columns. v1.4.0-beta: open entries stay in their column;
+     body stacks vertically within the cell.
+     v1.7.27-beta: tried 2 columns — the narrow columns made expanded
+     entries very long single-column strips. 2 wider columns keep the
+     same entries but shorter.
+     v1.7.30-beta: back to 3 columns per Avery (iPad acceptance on
+     v1.7.29) — the 2-column grid wasn't the right fix. Instead the
+     expanded dropdown below widens to span two columns, so expanded
+     content gets room without the grid itself losing a column.
+     v1.8.0-beta: Archive joins Research at 3 columns on wide screens.
+     Achievements keeps the 2-column .guide-list rule. */
+  .guide-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #researchList { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  #archiveList { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  /* v1.7.30-beta: expanded Research entries widen to span two columns
+     (2 columns + the 12px gap between them) instead of squeezing into
+     one ~300px column. The body is position:absolute, so it overlays
+     neighbors without pushing the grid around. The base rule caps
+     max-width at 100% — overridden here, or the widening would be
+     clipped back to one column.
+     Last-column entries anchor right (left:auto; right:0) so the
+     dropdown extends left into column 2 instead of overflowing the
+     app container off the right edge of the screen. The :nth-child(3n)
+     count holds because #researchList holds only .guide-row children —
+     the pinned card lives in the separate #pinnedSlot above the grid —
+     so children 3, 6, 9, … land in column 3. Scoped to
+     #researchList so Achievements dropdowns are untouched. */
+  #researchList .guide-row.open .guide-row-body {
+    width: calc(200% + 12px); max-width: none;
+  }
+  #researchList .guide-row:nth-child(3n).open .guide-row-body {
+    left: auto; right: 0;
+  }
+
+  /* v1.8.0-beta: expanded Archive entries widen the same way as
+     Research (two columns, last-column anchors right). The
+     :nth-child(3n) count holds because renderArchive clears
+     #archiveList and appends only .guide-row children — no intro
+     card or empty-state element lives inside the grid. Scoped to
+     #archiveList so Achievements dropdowns are untouched. */
+  #archiveList .guide-row.open .guide-row-body {
+    width: calc(200% + 12px); max-width: none;
+  }
+  #archiveList .guide-row:nth-child(3n).open .guide-row-body {
+    left: auto; right: 0;
+  }
+
+  /* Expedition: side-by-side dive */
+  .dive-view { display: grid; grid-template-columns: 1.2fr 1fr; grid-template-rows: auto auto; gap: 16px; align-items: start; }
+  .dive-scene { height: 260px; grid-column: 1; grid-row: 1; }
+  .dive-log { max-height: 400px; margin-top: 0; grid-column: 2; grid-row: 1 / 3; }
+  .dive-shark img, .dive-shark svg { max-height: 180px; }
+  /* v1.4.0-beta Mira review: action buttons tuck directly under the scene
+     (left column, second row), bottom-aligned via the log spanning both rows.
+     Phone stacked layout untouched. */
+  #diveActions { grid-column: 1; grid-row: 2; }
+
+  /* Collection: 3 columns of horizontal cards (v1.6.1-beta) */
+  .collection-grid { grid-template-columns: repeat(3, 1fr); }
+  .grid-cell { display: flex; align-items: center; gap: 14px; text-align: left; padding: 12px; }
+  .grid-cell .shark-art { flex: 0 0 140px; margin: 0; }
+  .grid-cell-text { min-width: 0; }
+  .grid-cell h3 { font-size: 16px; }
+
+  /* v1.7.27-beta: Collection detail modal goes two-column on wide screens.
+     The 380px single column was a tall narrow strip on iPad landscape /
+     desktop with wasted space on both sides. The Close button sits below
+     the grid, full width. Scoped to #detailOverlay so Tracking / Phone /
+     What's New modals (same .phone class) are untouched. Single-column
+     layout below 1024px is unchanged.
+     v1.7.27 Mira fix: the grid holds wrapper children, not one rule per
+     content block. The per-child version set grid-column only and left
+     grid-row on auto, so sparse auto-placement started column 2 near the
+     last column-1 row and shared grid tracks coupled row heights across
+     unrelated content (gaps when re-sightings/notes were long). Each
+     wrapper flows its own block content from the top, independently.
+     v1.7.31-beta: art moves out of the left column to a full-width row
+     across the top of the modal (large illustration), with identity and
+     record in two columns below it. The old left column ended at the
+     IUCN pill and left a big empty gap beside long record entries;
+     the art row + stats-in-identity balance the columns instead. */
+  #detailOverlay .detail-modal { max-width: 820px; padding-top: 8px; padding-bottom: 8px; }
+  #detailOverlay #detailContent {
+    display: grid; grid-template-columns: 1fr 1.15fr; gap: 0 20px; align-items: start;
+  }
+  #detailOverlay #detailContent > .detail-art { grid-column: 1 / -1; min-width: 0; }
+  /* v1.7.33-beta: trim the vertical space around the art — the modal's
+     own top/bottom padding drops 16px -> 8px and the art's own margins
+     go to zero (base .shark-art is 4px top / 8px bottom). The grid row
+     gap also goes to zero; the column gap stays 20px.
+     NOTE: most of the visible blue above/below the shark is transparent
+     padding baked into the illustration WebPs themselves (nurse: ~34%
+     top / ~32% bottom; varies 0-44% across species, ~10 species at ~0%).
+     CSS alone can't remove that — and a uniform negative-margin / crop
+     would overlap the actual shark on the ~0%-padding species. This
+     trim takes only the real CSS spacing; trimming the asset files is
+     a separate, game-wide decision, not a modal tweak. */
+  #detailOverlay #detailContent > .detail-art .shark-art { margin: 0; }
+  /* Large art across the top: scoped to the detail modal so the
+     Collection grid cells (140px art) and other .shark-art uses are
+     untouched. height:auto keeps the illustration's aspect ratio. */
+  #detailOverlay #detailContent > .detail-art .shark-art img,
+  #detailOverlay #detailContent > .detail-art .shark-art svg { max-width: 600px; }
+  #detailOverlay #detailContent > .detail-identity { grid-column: 1; min-width: 0; }
+  #detailOverlay #detailContent > .detail-record { grid-column: 2; min-width: 0; }
+  /* v2.5.6-beta (Mira review): certificate mode is single-column — the
+     figure and its caption must not be split across the grid columns. */
+  #detailOverlay #detailContent.cert-mode { display: block; }
+  #detailOverlay #detailContent.cert-mode .cert-figure { max-width: 700px; margin: 0 auto; }
+
+  /* Logbook: 2 columns */
+  .logbook-list { grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+
+  /* Archive: cap media width */
+  .archive-asset { max-width: 720px; margin-left: auto; margin-right: auto; }
+
+  /* Typography bumps */
+  .section-head h2 { font-size: 26px; }
+  .research-text { font-size: 15px; }
+}
+
+/* v1.5.10-beta: locked archive list removed — the Archive shows tagged
+   sharks only. (Placeholder/locked styles retired.) */
+
+/* v1.3.0-beta: field notes from "Just watch" encounters */
+.watch-notes-block {
+  background: var(--bg-soft); border-left: 3px solid #7fd4e6;
+  border-radius: 0 8px 8px 0; padding: 8px 12px; margin: 10px 0;
+}
+.watch-notes-block h4 { margin: 0 0 6px; font-size: 14px; }
+.watch-notes-block .track-stops { margin: 0; padding-left: 18px; }
+.watch-notes-block .track-stops li { font-size: 13px; margin-bottom: 4px; }
+/* v1.3.0-beta: archive "still to discover" is inline in v1.2.0; logbook date filter needs no extra CSS */
+
+/* v1.3.1-beta: "Tag along" title language — warm, tappable, emotional */
+.tagalong-link {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  color: #0b2237;
+  background: linear-gradient(135deg, #ffd166, #f4a940);
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  transition: transform 0.15s ease;
+}
+.tagalong-link:hover { transform: scale(1.03); }
+.tagalong-link:active { transform: scale(0.97); }
+@media (prefers-reduced-motion: reduce) {
+  .tagalong-link { transition: none; }
+  .tagalong-link:hover, .tagalong-link:active { transform: none; }
+}
+
+/* v1.4.0-beta Mira review: tag-along fact overlay on the Map */
+#tagAlongFactContent { padding: 6px 2px 12px; }
+.tagalong-fact-card {
+  background: var(--bg-soft); border: 2px solid var(--gold, #ffd166);
+  border-radius: 12px; padding: 14px 16px; margin: 8px 0;
+}
+.tagalong-fact-card .fact-progress {
+  font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--gold, #ffd166); margin-bottom: 8px;
+}
+.tagalong-fact-card .fact-text { font-size: 15px; line-height: 1.6; }
+
+/* v1.7.0-beta: derpy mode toggle — win-unlocked completion award. */
+.derpy-toggle {
+  display: block;
+  margin: 8px auto;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 2px solid #f0a030;
+  background: rgba(240, 160, 48, 0.15);
+  color: #f0c060;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+/* v1.7.17-beta: manual derpy claim fallback button — same trophy-shelf
+   styling family as the derpy toggle. */
+.derpy-claim {
+  display: block;
+  margin: 8px auto;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 2px solid #f0a030;
+  background: rgba(240, 160, 48, 0.35);
+  color: #ffe0a0;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.derpy-toggle.active {
+  background: #f0a030;
+  color: #1a1a2e;
+}
+.derpy-toggle:hover {
+  background: rgba(240, 160, 48, 0.3);
+}
+.derpy-toggle.active:hover {
+  background: #e09020;
+}
+
+/* v2.5.0-beta: hand-painted expedition background image (Avery + Mira).
+   Full-bleed cover, behind everything (ambient life z-index sits above).
+   v2.5.1-beta: object-position 50% 95% — crop comes off the top, only ~5%
+   from the bottom, preserving the low scenery (Avery). */
+.dive-scene .dive-bg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 50% 95%;
+  pointer-events: none; z-index: 0;
+  user-select: none; -webkit-user-drag: none;
+}
+/* v2.5.1-beta: twilight lifted slightly (Avery) */
+.dive-scene .dive-bg.twilight-lift { filter: brightness(1.22) saturate(1.05); }
+/* v2.5.1-beta: deep dark goes midnight black on top (Avery) — the blue at the
+   top shouldn't be there. Black gradient kills the top, faint glow at the
+   bottom (spotlights) shows through. CSS only; master image untouched. */
+.dive-scene .deep-darken {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(to bottom, #000 0%, #000 62%, transparent 100%);
+}
+/* v2.5.1-beta fix (Mira review): marine snow must stay above the deep
+   darkening overlay, not hidden behind it. */
+.dive-scene .snow { z-index: 2; }
+/* v2.4.0-beta: region-specific biome overlays in the dive scene.
+   (Superseded by v2.5.0 background images; rules kept for safety.) */
+.dive-scene .biome-overlay {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+}
+.dive-scene .biome-overlay svg {
+  position: absolute; bottom: 0; left: 0; width: 100%; height: 60%;
+}
+
+/* ================= v2.7.2: the welcome tour, parked =================
+   The card parks in one fixed spot under the tab bar for all ten
+   slides — same place, same size — so nothing jumps between slides.
+   A yellow triangle below the tab bar points at the tab the current
+   slide explains, and the explained tab keeps its spotlight ring
+   while its neighbours dim. The card is a fixed-height flex column:
+   the text scrolls inside it, so the Back/Skip/Next row sits in the
+   same place on every slide, even on short landscape screens. The
+   replay ? button lives in the footer by the save controls; it uses
+   a plain ? glyph (the ❓ emoji rendered small, red, and off-centre
+   in its circle) centred with flex. */
+.tour-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  vertical-align: middle;
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, .35);
+  background: rgba(10, 42, 67, .55); color: var(--ink);
+  font-size: 22px; font-weight: 700; line-height: 1; cursor: pointer;
+}
+.tour-scrim {
+  position: fixed; left: 0; right: 0; bottom: 0; top: 140px;
+  background: rgba(4, 18, 30, .45); z-index: 60;
+}
+.tour-overlay {
+  position: fixed; z-index: 61; top: 150px; left: 8px;
+  width: min(680px, 94vw);
+  /* Pre-JS fallback: JS sizes the card precisely on open. */
+  max-height: calc(100dvh - 12px - env(safe-area-inset-bottom));
+  overflow-y: auto;
+}
+.tour-tab-arrow {
+  position: fixed; z-index: 62; top: 0; left: 0; opacity: 0;
+  width: 0; height: 0; pointer-events: none;
+  border-left: 14px solid transparent; border-right: 14px solid transparent;
+  border-bottom: 18px solid var(--accent);
+  transition: left .25s ease, opacity .2s ease;
+}
+.tour-card {
+  position: relative; box-sizing: border-box;
+  display: flex; flex-direction: column; height: 100%;
+  background: #0d2f4d; color: var(--ink);
+  border: 2px solid var(--accent); border-radius: 14px;
+  padding: 16px 18px 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .45);
+}
+.tour-head { display: flex; align-items: baseline; gap: 10px; }
+.tour-icon { font-size: 26px; }
+.tour-head h3 { margin: 0; font-size: 21px; flex: 1; }
+.tour-count { font-size: 13px; opacity: .75; white-space: nowrap; }
+.tour-text { margin: 8px 0 14px; font-size: 16.5px; line-height: 1.45; flex: 1; min-height: 0; overflow-y: auto; }
+.tour-nav { display: flex; align-items: center; gap: 10px; flex: none; }
+.tour-dots { flex: 1; text-align: center; }
+.tour-dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(255, 255, 255, .3); margin: 0 3px;
+}
+.tour-dot.on { background: var(--accent); }
+.tour-nav button {
+  min-height: 46px; padding: 8px 16px; border-radius: 10px;
+  font-size: 16px; cursor: pointer; font-family: inherit;
+}
+.tour-btn-main { background: var(--accent); color: #17384f; border: none; font-weight: 700; }
+.tour-btn-ghost { background: transparent; color: var(--ink); border: 1px solid rgba(255, 255, 255, .35); }
+.tour-btn-ghost:disabled { opacity: .4; cursor: default; }
+.tabs.tour-on .tab { opacity: .55; }
+.tabs.tour-on .tab.tour-spot {
+  opacity: 1; position: relative;
+  outline: 3px solid var(--accent); outline-offset: 2px;
+  box-shadow: 0 0 18px rgba(255, 209, 102, .55);
+}
+@media (prefers-reduced-motion: reduce) {
+  .tour-tab-arrow { transition: none; }
+}
+/* v2.6.0 (Mira review): on narrow phones the nav row holds three
+   buttons AND ten dots — hide the dots and slim the buttons so
+   nothing wraps or overflows. The "n of 10" count stays visible. */
+@media (max-width: 480px) {
+  .tour-dots { display: none; }
+  .tour-nav button { padding: 8px 10px; font-size: 15px; }
+  .tour-text { font-size: 16px; }
+}
