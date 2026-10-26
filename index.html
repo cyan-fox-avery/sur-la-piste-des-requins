@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#17517e" />
+  <title>Sur la piste des requins — un jeu de recherche sur les requins</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ocean-decor" aria-hidden="true">
+    <div class="surface-shimmer"></div>
+    <video id="sun-video" class="sun-video" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+    <img id="sun-still" class="sun-still" alt="" aria-hidden="true">
+    <div class="bubbles"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+  <div class="build-tag" id="buildTag" title="Version de l'application"></div>
+  <div class="app">
+    <header class="topbar">
+      <img src="assets/logo.png" alt="Logo de Sur la piste des requins" class="site-logo">
+      <div class="topbar-text">
+        <h1>Sur la piste des requins</h1>
+        <p class="subtitle">un jeu de recherche sur les requins</p>
+      </div>
+    </header>
+
+    <nav class="tabs" aria-label="Sections du jeu">
+      <button class="tab active" data-tab="research" type="button"><span class="tab-stack"><span class="tab-icon">📖</span><span class="tab-label">Recherche</span></span></button>
+      <button class="tab" data-tab="expedition" type="button"><span class="tab-stack"><span class="tab-icon">🛥️</span><span class="tab-label">Expédition</span></span></button>
+      <button class="tab" data-tab="collection" type="button"><span class="tab-stack"><span class="tab-icon">🗂️</span><span class="tab-label">Collection</span></span></button>
+      <button class="tab" data-tab="map" type="button"><span class="tab-stack"><span class="tab-icon">🗺️</span><span class="tab-label">Carte</span></span></button>
+      <button class="tab" data-tab="logbook" type="button"><span class="tab-stack"><span class="tab-icon">📓</span><span class="tab-label">Journal de bord</span></span></button>
+      <button class="tab" data-tab="phone" type="button"><span class="tab-stack"><span class="tab-icon">📱<span id="msgBadge" class="phone-badge hidden">0</span></span><span class="tab-label">Téléphone</span></span></button>
+      <button class="tab tab-locked" data-tab="archive" type="button" disabled aria-disabled="true"><span class="tab-stack"><span class="tab-icon">📸</span><span class="tab-label">Archives<span class="tab-badge hidden" aria-label="nouveau média">●</span></span></span></button>
+      <button class="tab" data-tab="achievements" type="button"><span class="tab-stack"><span class="tab-icon">🏆</span><span class="tab-label">Succès</span></span></button>
+    </nav>
+
+    <!-- v2.7.2: the welcome tour. The card parks in one fixed spot
+         under the tab bar for all ten slides; a yellow arrow below
+         the tab bar points at the tab being explained. Shows once on
+         first visit; the ? button by the save controls replays it. -->
+    <div id="tourScrim" class="tour-scrim hidden" aria-hidden="true"></div>
+    <div id="tourOverlay" class="tour-overlay hidden" role="dialog" aria-modal="true" aria-label="How to play — a quick tour">
+      <div class="tour-card">
+        <div class="tour-head">
+          <span id="tourIcon" class="tour-icon" aria-hidden="true"></span>
+          <h3 id="tourTitle"></h3>
+          <span id="tourCount" class="tour-count"></span>
+        </div>
+        <p id="tourText" class="tour-text"></p>
+        <div class="tour-nav">
+          <button id="tourSkip" class="tour-btn-ghost" type="button">Skip tour</button>
+          <span id="tourDots" class="tour-dots" aria-hidden="true"></span>
+          <button id="tourBack" class="tour-btn-ghost" type="button">← Back</button>
+          <button id="tourNext" class="tour-btn-main" type="button">Next →</button>
+        </div>
+      </div>
+    </div>
+    <div id="tourTabArrow" class="tour-tab-arrow" aria-hidden="true"></div>
+
+    <main>
+      <!-- RESEARCH — a true field guide -->
+      <section id="tab-research" class="panel active">
+        <div class="section-head">
+          <h2>Guide de terrain</h2>
+          <p>Study the notes. You'll see the real thing when you tag one.</p>
+        </div>
+        <!-- v0.19.0: field-guide database — search + stacked filters -->
+        <div class="guide-tools">
+          <input id="guideSearch" type="search" class="guide-search"
+            placeholder="Rechercher des requins par nom…" aria-label="Rechercher des requins par nom" autocomplete="off">
+          <button id="filterToggle" class="filter-toggle" type="button" aria-expanded="false" aria-controls="filterPanel">
+            🔍 Filtres <span id="filterCount" class="count-badge hidden">0</span>
+          </button>
+        </div>
+        <div id="activeChips" class="active-chips"></div>
+        <div class="guide-meta">
+          <span id="guideCount" class="latin"></span>
+          <button id="guideClear" class="hidden" type="button">Réinitialiser les filtres</button>
+        </div>
+        <!-- v1.5.17-beta: IUCN badge key -->
+        <p class="iucn-legend" aria-label="Légende des pastilles de la Liste rouge de l'UICN"><span class="status-pill iucn-LC">LC</span> Préoccupation mineure &middot; <span class="status-pill iucn-NT">NT</span> Quasi menacée &middot; <span class="status-pill iucn-VU">VU</span> Vulnerable &middot; <span class="status-pill iucn-EN">EN</span> Endangered &middot; <span class="status-pill iucn-CR">CR</span> En danger critique</p>
+        <div id="filterPanel" class="filter-panel hidden">
+          <div class="sheet-head">
+            <h2>Filters</h2>
+            <button id="sheetClose" class="sheet-close" type="button" aria-label="Fermer les filtres">Done</button>
+          </div>
+          <div class="filter-group" data-group="tagged">
+            <h3>Status</h3>
+            <div class="chip-row" id="filterTagged"></div>
+          </div>
+          <div class="filter-group" data-group="region">
+            <h3>Location</h3>
+            <div class="chip-row" id="filterRegion"></div>
+          </div>
+          <div class="filter-group" data-group="depth">
+            <h3>Depth</h3>
+            <div class="chip-row" id="filterDepth"></div>
+          </div>
+          <div class="filter-group" data-group="method">
+            <h3>Method</h3>
+            <div class="chip-row" id="filterMethod"></div>
+          </div>
+          <div class="filter-group" data-group="bait">
+            <h3>Appât / alimentation</h3>
+            <div class="chip-row" id="filterBait"></div>
+          </div>
+        </div>
+        <div id="pinnedSlot"></div>
+        <div id="researchList" class="guide-list"></div>
+      </section>
+
+      <!-- EXPEDITION -->
+      <section id="tab-expedition" class="panel">
+        <div class="section-head">
+          <h2>Planifier une expédition</h2>
+          <p>Choisis ta région — région, profondeur, appât et méthode. Tes recherches te montrent où chercher : la bonne combinaison attire les bons requins. Pas d'espèce ciblée; c'est la mer qui décide qui se présente.</p>
+        </div>
+        <div id="expeditionPin" class="expedition-pin hidden"></div>
+        <!-- v0.22.0: pin-gated soft hint -->
+        <div id="pinHint" class="pin-hint hidden" aria-live="polite"></div>
+
+        <div id="planner" class="planner-card">
+          <label class="field">
+            <span>Region</span>
+            <select id="regionSelect"></select>
+            <div class="pick-visual" id="regionVisual" aria-hidden="true"></div>
+          </label>
+          <label class="field">
+            <span>Depth</span>
+            <select id="depthSelect"></select>
+            <div class="pick-visual" id="depthVisual" aria-hidden="true"></div>
+          </label>
+          <label class="field">
+            <span>Bait</span>
+            <select id="baitSelect"></select>
+            <div class="pick-visual" id="baitVisual" aria-hidden="true"></div>
+          </label>
+          <label class="field">
+            <span>Method</span>
+            <select id="methodSelect"></select>
+            <div class="pick-visual" id="methodVisual" aria-hidden="true"></div>
+          </label>
+          <label class="field hidden" id="methodOptField">
+            <span id="methodOptLabel">Attractant</span>
+            <select id="methodOptSelect"></select>
+            <div class="pick-visual" id="methodOptVisual" aria-hidden="true"></div>
+          </label>
+          <button id="launchBtn" class="primary-button" type="button">🚀 Lancer l'expédition</button>
+          <label class="pace-toggle">
+            <input type="checkbox" id="quickPace">
+            <span>⚡ Quick pace <span class="latin">— shorter beats between log lines</span></span>
+          </label>
+        </div>
+
+        <div id="diveView" class="dive-view" aria-live="polite">
+          <div id="diveScene" class="dive-scene porthole">
+            <div class="scenery" id="diveScenery"></div>
+            <div class="porthole-waves" aria-hidden="true">
+              <div class="pw-layer pw-far"><div class="pw-orbit"><span class="pw-tile"></span><span class="pw-tile"></span><span class="pw-tile"></span><span class="pw-tile"></span><span class="pw-tile"></span><span class="pw-tile"></span></div></div>
+              <div class="pw-layer pw-mid"><div class="pw-orbit"><span class="pw-tile"></span><span class="pw-tile"></span><span class="pw-tile"></span><span class="pw-tile"></span><span class="pw-tile"></span><span class="pw-tile"></span></div></div>
+              <div class="pw-layer pw-near"><div class="pw-orbit"><span class="pw-tile"></span><span class="pw-tile"></span><span class="pw-tile"></span><span class="pw-tile"></span><span class="pw-tile"></span><span class="pw-tile"></span></div></div>
+            </div>
+            <div class="porthole-spray splash-a" aria-hidden="true"></div>
+            <div class="porthole-spray splash-b" aria-hidden="true"></div>
+            <div id="diveShark" class="dive-shark hidden"></div>
+          </div>
+          <div id="diveLog" class="dive-log"></div>
+          <div id="diveActions" class="dive-actions hidden"></div>
+        </div>
+      </section>
+
+      <!-- COLLECTION -->
+      <section id="tab-collection" class="panel">
+        <div class="section-head">
+          <h2>Carnet de collection officiel</h2>
+          <p id="collectionCountHead" class="collection-count"><strong>0</strong> of <strong>50</strong> species tagged</p>
+          <p>Sélectionne un requin pour ouvrir sa fiche complète — il y a plus dans le carnet que dans les notes de terrain.</p>
+        </div>
+        <div id="trophyShelf"></div>
+        <div id="collectionList" class="collection-grid"></div>
+        <div class="section-head" style="margin-top:18px">
+          <h2>👁️ Observations sur le terrain</h2>
+          <p>Des requins que tu as observés sans les marquer — aperçus, pas capturés. Que des notes de terrain.</p>
+        </div>
+        <div id="sightingsList" class="sightings-list"></div>
+      </section>
+
+      <!-- MAP — the whole tagged fleet on one globe -->
+      <section id="tab-map" class="panel">
+        <div class="section-head">
+          <h2>Carte de suivi</h2>
+          <p>Tous les requins que tu as marqués, quelque part là-bas. Sélectionne un marqueur pour voir qui est qui — active « Suivre ce requin » sur la fiche d'un requin pour tracer son itinéraire complet.</p>
+        </div>
+        <div class="map-toolbar">
+          <button id="mapZoomOut" type="button" aria-label="Zoom arrière">−</button>
+          <button id="mapZoomIn" type="button" aria-label="Zoom avant">+</button>
+          <button id="mapZoomReset" type="button" aria-label="Réinitialiser la vue">⟲</button>
+          <button id="mapCurrentsToggle" type="button" aria-pressed="true">🌊 Courants</button>
+        </div>
+        <div id="worldCarteWrap" class="map-wrap"></div>
+        <div id="mapPopup" class="map-popup hidden"></div>
+        <div id="mapLegend" class="map-legend"></div>
+        <p class="map-credit">Carte imagery: NASA Blue Marble Next Generation (<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>)</p>
+        <p class="map-honesty">Carte illustrative : les positions sont approximatives et certains trajets sont hypothétiques. Il ne s'agit pas de positions satellite en direct. Consulte la fiche de chaque requin pour connaître les données et les hypothèses utilisées.</p>
+      </section>
+
+      <!-- LOGBOOK -->
+      <section id="tab-logbook" class="panel">
+        <div class="section-head">
+          <h2>Journal des expéditions</h2>
+          <p>Un carnet de scientifique — chaque sortie, chaque plan et chaque résultat. Compare tes expéditions : c'est en repérant les tendances que tu trouveras la réponse.</p>
+        </div>
+        <!-- v0.22.0: logbook filters -->
+        <div class="logbook-filters" id="logbookFilters">
+          <label class="filter-label">Outcome
+            <select id="logFilterOutcome" class="filter-select">
+              <option value="all">Toutes les sorties</option>
+              <option value="tagged">Marquages réussis</option>
+              <option value="resighted">Re-sightings</option>
+              <option value="watched">Watched</option>
+              <option value="followed">Followed</option>
+              <option value="missed">Aucun requin</option>
+            </select>
+          </label>
+          <label class="filter-label">Region
+            <select id="logFilterRegion" class="filter-select">
+              <option value="all">Toutes les régions</option>
+            </select>
+          </label>
+          <label class="filter-label">Species
+            <select id="logFilterSpecies" class="filter-select">
+              <option value="all">Toutes les espèces</option>
+            </select>
+          </label>
+          <label class="filter-label">Date
+            <select id="logFilterDate" class="filter-select">
+              <option value="all">Tout l'historique</option>
+              <option value="7d">7 derniers jours</option>
+              <option value="30d">30 derniers jours</option>
+              <option value="1y">365 derniers jours</option>
+            </select>
+          </label>
+          <button type="button" id="logFilterClear" class="secondary-button hidden">Clear</button>
+        </div>
+        <div id="logbookList" class="logbook-list"></div>
+      </section>
+
+      <!-- PHONE -->
+      <section id="tab-phone" class="panel">
+        <div class="phone-screen">
+          <div class="phone-statusbar"><span id="phoneTime">--:--</span><span>📶 🔋</span></div>
+          <div class="phone-contact">
+            <div class="contact-avatar">🦈</div>
+            <div class="contact-meta">
+              <div class="contact-name">Sarah</div>
+              <div class="contact-sub">cousin · resident shark expert</div>
+            </div>
+          </div>
+          <div id="messagesList" class="phone-convo"></div>
+          <div id="sarahAsk" class="sarah-ask hidden">
+            <p>💡 <strong>Ask Sarah:</strong> she might know something about the shark you're researching.</p>
+            <button id="sarahAskBtn" class="secondary-button" type="button"></button>
+          </div>
+          <div class="phone-composer" aria-hidden="true">
+            <span class="composer-field">Message Sarah…</span>
+            <span class="composer-send">➤</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- WILD ARCHIVE — real-world media, unlocked by completing the roster -->
+      <section id="tab-archive" class="panel">
+        <div class="section-head">
+          <h2>Archivess sauvages</h2>
+          <p>Tu connais maintenant ces requins dans le jeu. Découvre-les dans la vraie vie grâce à des photos et des vidéos soigneusement sélectionnées de leurs espèces. Certaines fiches présentent aussi des illustrations historiques ou scientifiques, avec leurs sources.</p>
+        </div>
+        <!-- v1.6.3-beta: Archives search + sort -->
+        <div class="guide-tools">
+          <input id="archiveSearch" type="search" class="guide-search"
+            placeholder="Rechercher parmi tes requins marqués…" aria-label="Rechercher parmi tes requins marqués" autocomplete="off">
+        </div>
+        <div class="chip-row" role="group" aria-label="Trier les archives">
+          <button type="button" class="chip" data-asort="name" aria-pressed="true">Nom A–Z</button>
+          <button type="button" class="chip" data-asort="newest" aria-pressed="false">Plus récents d'abord</button>
+          <button type="button" class="chip" data-asort="oldest" aria-pressed="false">Plus anciens d'abord</button>
+          <button type="button" class="chip" data-asort="iucn" aria-pressed="false">Statut UICN</button>
+        </div>
+        <div id="archiveList" class="guide-list"></div>
+      </section>
+      <section id="tab-achievements" class="panel">
+        <div class="section-head" id="achieveHead">
+          <h2>Succès</h2>
+          <p>0 of 0 unlocked</p>
+        </div>
+        <div id="achieveTrophyShelf"></div>
+        <div id="achieveList" class="guide-list"></div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p>Marque de façon responsable — chaque requin relâché en bonne santé. 🦈</p>
+      <p><button id="resetBtn" class="link-button" type="button">Réinitialiser toute la progression</button></p>
+      <p class="latin">
+        <button id="exportBtn" class="link-button" type="button">💾 Exporter la sauvegarde</button> ·
+        <button id="importBtn" class="link-button" type="button">📂 Importer une sauvegarde</button> ·
+        <button id="tourBtn" class="tour-btn" type="button" aria-label="How to play — replay the tour" title="How to play">?</button>
+        <input id="importFile" type="file" accept=".json,application/json" class="hidden" />
+      </p>
+    </footer>
+  </div>
+
+  <!-- Reset confirmation -->
+  <div id="resetOverlay" class="overlay hidden">
+    <div class="phone">
+      <div class="phone-head">⚠️ Réinitialiser toute la progression ?</div>
+      <div class="cert-body">
+        <p>This erases <strong>everything</strong>: tagged sharks, sightings, the logbook, messages, tracks, and the win state. A clean slate — no bonuses, no prestige, just a restart.</p>
+        <p class="latin">Cela ne peut pas être annulé.</p>
+      </div>
+      <button id="resetConfirm" class="primary-button" type="button" style="background:#c0392b;color:#fff">Oui, tout effacer</button>
+      <button id="resetCancel" class="secondary-button" type="button">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Tagging modal -->
+  <div id="tagOverlay" class="overlay hidden">
+    <div class="phone">
+      <div id="tagForm">
+        <div class="phone-head">🏷️ tag your shark</div>
+        <div id="tagSharkArt" class="tag-art"></div>
+        <div id="tagInfo" class="tag-info"></div>
+        <label class="field">
+          <span>Nickname <em class="opt">(optional — the research ID below stays either way)</em></span>
+          <input id="sharkName" type="text" maxlength="24" placeholder="Nomme ton requin…" />
+        </label>
+        <button id="tagConfirm" class="primary-button" type="button">Add to collection book</button>
+      </div>
+      <div id="healthView" class="hidden">
+        <div class="phone-head">✅ Tag secure</div>
+        <div id="healthArt" class="tag-art"></div>
+        <div id="healthInfo" class="tag-info"></div>
+        <button id="releaseBtn" class="primary-button" type="button">🌊 Release & keep diving</button>
+        <!-- v1.5.8-beta: "return to ship" moved to third — ending the expedition is the last choice. -->
+        <button id="tagAlongBtn" class="tagalong-choice" type="button">🦈 Release &amp; tag along with <span id="tagAlongName">this shark</span> →<br><span class="tagalong-sub">ends this expedition — you won't find more sharks today</span></button>
+        <button id="releaseShipBtn" class="secondary-button" type="button">⛵ Release & return to ship</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Collection detail modal -->
+  <div id="detailOverlay" class="overlay hidden">
+    <div class="phone detail-modal">
+      <!-- v1.7.23-beta: top-right ✕ — the bottom Close button sits below the
+           fold on mobile (long detail content), leaving no visible exit. -->
+      <button id="detailCloseTop" class="modal-close" type="button" aria-label="Fermer les détails">✕</button>
+      <div id="detailContent"></div>
+      <button id="detailClose" class="secondary-button" type="button">Close</button>
+    </div>
+  </div>
+
+  <!-- Tracking modal -->
+  <div id="trackOverlay" class="overlay hidden">
+    <div class="phone">
+      <button id="trackCloseTop" class="modal-close" type="button" aria-label="Fermer le suivi">✕</button>
+      <div id="trackContent"></div>
+      <button id="trackClose" class="secondary-button" type="button">Close</button>
+    </div>
+  </div>
+
+  <!-- v0.22.0: What's New screen -->
+  <div id="whatsNewOverlay" class="overlay hidden">
+    <div class="phone">
+      <button id="whatsNewCloseTop" class="modal-close" type="button" aria-label="Close what's new">✕</button>
+      <div id="whatsNewContent"></div>
+      <button id="whatsNewClose" class="primary-button" type="button">Allons plonger 🤿</button>
+    </div>
+  </div>
+
+  <!-- Win state overlay: content is staged by winStep() in script.js -->
+  <div id="winOverlay" class="overlay hidden"></div>
+  <div id="achieveOverlay" class="overlay hidden"></div>
+  <!-- v1.4.0-beta Mira review: tag-along fact overlay — shows the unlocked
+       insight on the Carte with learned X/3 progression, so the reward is
+       readable even at quick pace. -->
+  <div id="tagAlongOverlay" class="overlay hidden">
+    <div class="phone">
+      <div id="tagAlongFactContent"></div>
+      <button id="tagAlongFactClose" class="primary-button" type="button">Continue following 🧭</button>
+    </div>
+  </div>
+
+  <script src="map-data.js"></script>
+  <script src="art-data.js"></script>
+  <script src="sarah-data.js"></script>
+  <script src="bigday-data.js"></script>
+  <script src="sharks-data.js"></script>
+  <script src="archive-data.js"></script>
+  <script src="archive-ui.js"></script>
+  <script src="achievements-data.js"></script>
+  <script src="game-data.js"></script>
+  <script src="assets/art-loader.js"></script>
+  <script src="script.js"></script>
+  <!-- Avery + Mira + Roman — the ones who built this little ocean. 🦈 -->
+</body>
+</html>
