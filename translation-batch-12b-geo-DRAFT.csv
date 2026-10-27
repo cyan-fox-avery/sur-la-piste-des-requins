@@ -14,8 +14,8 @@ geo-variant,geo-var-megamouth-philippines-5,Surigao Strait north,Nord du détroi
 geo-variant,geo-var-megamouth-philippines-6,"Cagayan de Oro, Mindanao","Cagayan de Oro, Mindanao",Variant start string; both proper names kept.
 geo-variant,geo-var-blue-cornwall-1,Scilly Isles waters,Eaux des îles Scilly,Descriptive rendering.
 geo-variant,geo-var-blue-cornwall-2,Western Approaches,Atterrages occidentaux,Follows Mira's Batch 12 ruling: 'Western Approaches' -> 'atterrages occidentaux' (sixgill-5 deep variant). Flagged for Mira to confirm consistency.
-geo-variant,geo-var-blue-cornwall-3,Celtic Deep,Fosse celtique,À VÉRIFIER : descriptive rendering of a deep-water area; confirm or keep English.
-geo-variant,geo-var-blue-cornwall-4,Southwest Approaches,Atterrages du Sud-Ouest,À VÉRIFIER : parallel to 'atterrages occidentaux'; confirm.
+geo-variant,geo-var-blue-cornwall-3,Celtic Deep,Celtic Deep,Proper name kept per Mira review (2026-10-27): Fosse celtique potentially misleading.
+geo-variant,geo-var-blue-cornwall-4,Southwest Approaches,Southwest Approaches,Proper name kept per Mira review (2026-10-27): Atterrages du Sud-Ouest plausible but unverified.
 geo-variant,geo-var-blue-cornwall-5,"Mount's Bay, Cornwall","Mount's Bay, Cornouailles",Batch 12 kept 'Mount's Bay' as a proper name throughout; only Cornwall translated here. Flagged for Mira to confirm.
 geo-variant,geo-var-smooth-nc-1,Outer Banks shelf,Plateau des Outer Banks,Follows Batch 12 'Outer Banks coastal shelf' -> 'Plateau côtier des Outer Banks'; Outer Banks kept.
 geo-variant,geo-var-smooth-nc-2,Chesapeake Bay mouth,Embouchure de la baie de Chesapeake,Descriptive rendering.
