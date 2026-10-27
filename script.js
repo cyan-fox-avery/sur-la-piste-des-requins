@@ -1043,6 +1043,45 @@ const ARCTIC_UNLOCK_THREAD = [
    player reads goes through geoFr(). Missing labels fall back to English. */
 const GEO_FR = (typeof GEO_LABELS_FR !== "undefined") ? GEO_LABELS_FR : {};
 function geoFr(label) { return GEO_FR[label] || label; }
+/* Centralized French article helpers (Mira build review): species names are
+   masculine except petite roussette (Batch 7 gender map); vowel-initial
+   names take l'/cet. Helpers return article + name combined so elision
+   never leaves a stray space. */
+function frIsFem(name) { return /^petite roussette/i.test(name.trim()); }
+function frIsVowel(name) { return /^[aeiouàâäéèêëîïôöùûü]/i.test(name.trim()); }
+function frLeName(name) { const n = name.trim(); return frIsFem(n) ? "la " + n : frIsVowel(n) ? "l'" + n : "le " + n; }
+function frCeName(name) { const n = name.trim(); return frIsFem(n) ? "cette " + n : frIsVowel(n) ? "cet " + n : "ce " + n; }
+/* Old-save display maps (Batch 9b strategy): stored English strings render
+   in French; anything unmapped falls back to the raw stored string, never blank. */
+const OLD_SAVE_DOING_FR = {
+  "cruising slow along the reef edge": "Longe lentement le bord du récif",
+  "circling lazily in the blue": "Tourne tranquillement en pleine eau",
+  "gliding past without a hurry": "Passe sans se presser",
+  "hunting, focused and silent": "Chasse en silence, tout à sa proie",
+  "drifting with the current": "Se laisse porter par le courant",
+  "patrolling, unhurried and thorough": "Patrouille sans hâte, sans rien laisser passer",
+  "curious — circling back for a second look": "Revient faire un deuxième tour, par curiosité",
+  "feeding, oblivious to the boat": "Se nourrit sans prêter attention au bateau"
+};
+const OLD_SAVE_WATCH_NOTE_FR = {
+  "a nearby ledge offers perfect shelter": "une corniche voisine offre un abri parfait",
+  "the sandy bottom below is undisturbed": "le fond sablonneux en dessous est intact",
+  "small reef fish dart between the coral heads": "de petits poissons de récif filent entre les têtes de corail",
+  "the boat's shadow ripples across the reef": "l'ombre du bateau ondule sur le récif",
+  "a remora is attached near the dorsal fin": "un rémora est accroché près de la nageoire dorsale",
+  "a bait ball shimmers in the distance": "un banc serré de petits poissons scintille au loin",
+  "the current edge is visible as a line of floating debris": "la lisière du courant se voit comme une ligne de débris flottants",
+  "no other sharks in sight — just blue in every direction": "aucun autre requin en vue — juste du bleu dans toutes les directions",
+  "sunlight shafts angle down through the surface": "des rayons de soleil plongent en biais sous la surface",
+  "a school of small fish flashes silver nearby": "un banc de petits poissons étincelle d'argent à proximité",
+  "the boat's hull sounds loud in the quiet blue": "la coque du bateau résonne fort dans le bleu silencieux",
+  "the water temperature drops noticeably here": "la température de l'eau baisse nettement ici",
+  "the tail fin is broad and powerful up close": "la nageoire caudale est large et puissante, vue de près",
+  "marine snow drifts down like slow rain": "de la neige marine descend comme une pluie lente",
+  "bioluminescent flashes blink in the dark below": "des éclairs bioluminescents clignotent dans le noir en dessous",
+  "the dive lights catch particles suspended in the water": "les faisceaux des lampes éclairent des particules en suspension dans l'eau"
+};
+const RESULT_FR = { tagged: "marqué", resighted: "réobservé", followed: "suivi", watched: "observé" };
 
 function mapProj(lat, lon) {
   return [(lon + 180) / 360 * MAP_W, (90 - lat) / 180 * MAP_H];
@@ -3060,7 +3099,7 @@ function doEncounter(species, plan) {
           noteLine = ` 📓 <em>Noté : ${esc(note)}.</em>`;
         }
       }
-      logLine(`👁️ Tu observes le ${species.name} ${entry.doing}. Une belle observation, consignée.${noteLine}`);
+      logLine(`👁️ Tu observes ${frLeName(species.name)} ${entry.doing}. Une belle observation, consignée.${noteLine}`);
       finish();
     });
     actions.appendChild(watchBtn);
@@ -3072,7 +3111,7 @@ function doEncounter(species, plan) {
       const tagBtn = document.createElement("button");
       tagBtn.className = "primary-button";
       tagBtn.type = "button";
-      tagBtn.textContent = `🏷️ Marque le ${species.name}`;
+      tagBtn.textContent = `🏷️ Marque ${frLeName(species.name)}`;
       tagBtn.addEventListener("click", () => {
         actions.classList.add("hidden");
         actions.innerHTML = "";
@@ -3185,13 +3224,13 @@ function doEncounter(species, plan) {
          new fact, so the copy must not promise one. */
       const _obsExhausted = _obsFactTotal > 0 && _obsFactHave >= _obsFactTotal;
       const _obsSub = _obsExhausted
-        ? `étudier ce ${esc(species.name)} — toutes les découvertes apprises (met fin à l'expédition)`
-        : `étudier ce ${esc(species.name)} — peut révéler un fait secret (met fin à l'expédition)`;
+        ? `étudier ${esc(frCeName(species.name))} — toutes les découvertes apprises (met fin à l'expédition)`
+        : `étudier ${esc(frCeName(species.name))} — peut révéler un fait secret (met fin à l'expédition)`;
       observeBtn.innerHTML = `🔬 Observer l'espèce<br><small class="dim">${_obsSub}</small>${_obsFactLine}`;
       const _obsFactLabel = _obsFactTotal ? ` (${_obsFactHave} découvertes sur ${_obsFactTotal} apprises)` : "";
       observeBtn.setAttribute("aria-label", _obsExhausted
-        ? `Observer ce ${species.name} (étude de l'espèce, pas ton requin marqué ; toutes les découvertes sont déjà apprises ; met fin à l'expédition)${_obsFactLabel}`
-        : `Observer ce ${species.name} (étude de l'espèce, pas ton requin marqué ; apprendre un fait nouveau met fin à l'expédition)${_obsFactLabel}`);
+        ? `Observer ${frCeName(species.name)} (étude de l'espèce, pas ton requin marqué ; toutes les découvertes sont déjà apprises ; met fin à l'expédition)${_obsFactLabel}`
+        : `Observer ${frCeName(species.name)} (étude de l'espèce, pas ton requin marqué ; apprendre un fait nouveau met fin à l'expédition)${_obsFactLabel}`);
       observeBtn.addEventListener("click", () => {
         const fact = unlockSecretFact(species.id);
         logTripEncounter(species, "observed");
@@ -3544,7 +3583,7 @@ function renderSightings() {
     div.className = "sighting-entry";
     div.innerHTML = `
       <div class="sighting-name">👁️ ${esc(e.name)}</div>
-      <div class="sighting-detail">${esc(e.doing)} — ${esc(e.location)}, ${esc(e.date)}</div>`;
+      <div class="sighting-detail">${esc(OLD_SAVE_DOING_FR[e.doing] || e.doing)} — ${esc(e.location)}, ${esc(e.date)}</div>`;
     list.appendChild(div);
   });
   if (state.sightings.length > sightingsShown) {
@@ -4039,7 +4078,7 @@ function renderLogbook() {
           const taggedRec = state.tagged[e.speciesId];
           const sameIndividual = !!(e.researchId && taggedRec && taggedRec.researchId === e.researchId);
           const nickBit = (sameIndividual && taggedRec.name) ? ` <span class="dim">· ${esc(taggedRec.name)}</span>` : "";
-          return `${icon} ${esc(e.name)}${nickBit}${idBit} <span class="dim">(${e.result})</span>`;
+          return `${icon} ${esc(e.name)}${nickBit}${idBit} <span class="dim">(${RESULT_FR[e.result] || e.result})</span>`;
         }).join("<br>")
       : `<span class="dim">No sharks today.</span>`;
     div.innerHTML = `
@@ -4383,7 +4422,7 @@ function askSarahAdvice(sid) {
   /* v1.8.3-beta: Ask Sarah is player-initiated — always goes through
      the throttle. */
   pushThread([
-    { who: "me", text: `Je n'y arrive pas — un conseil sur le ${s.name.toLowerCase()} ?` },
+    { who: "me", text: `Je n'y arrive pas — un conseil sur ${frLeName(s.name.toLowerCase())} ?` },
     { who: "them", text: COUSIN_NUDGES[sid] || "La prochaine rencontre viendra. J'ai confiance en toi." },
     { who: "me", text: "Thanks. That's actually really helpful." }
   ], "ask");
@@ -5210,7 +5249,7 @@ function sarahWinThread() {
     { who: "them", text: "Hé. On peut prendre une minute pour savourer ça?" },
     { who: "me", text: "Bien sûr." },
     { who: "them", text: "Au début, ce n'étaient que des noms d'espèces sur une liste. Tu te souviens du premier?" },
-    { who: "me", text: `${firstName} — le ${s.name.toLowerCase()}. Je n'oublierai jamais.` },
+    { who: "me", text: `${firstName} — ${frLeName(s.name.toLowerCase())}. Je n'oublierai jamais.` },
     { who: "them", text: `Et maintenant, tu connais ${n} requins en particulier. Pas des espèces — des individus. Avec des noms, des parcours, et des vies qu'ils vivent encore en ce moment.` },
     { who: "me", text: "Ils nagent encore quelque part." },
     { who: "them", text: "Oui. Tu les as tous trouvés, et tu les as tous remis en liberté. C'est ça, le plus important, non? C'est notre travail." },
@@ -5940,7 +5979,7 @@ function openDetail(id) {
     <div class="watch-notes-block">
       <h4>📓 Notes de terrain prises en observant (${t.notes.length})</h4>
       <ul class="track-stops">
-        ${t.notes.map(n => `<li>👁️ ${esc(n)}</li>`).join("")}
+        ${t.notes.map(n => `<li>👁️ ${esc(OLD_SAVE_WATCH_NOTE_FR[n] || n)}</li>`).join("")}
       </ul>
     </div>` : ""}
     ${(() => {
@@ -6054,7 +6093,7 @@ function openTrack(id) {
     <div class="track-stats">
       <div><strong>${totalKm.toLocaleString()} km</strong><span>parcourus</span></div>
       <div><strong>${days} jours</strong><span>en liberté</span></div>
-      <div><strong>${points.length}</strong><span>locations</span></div>
+      <div><strong>${points.length}</strong><span>lieux</span></div>
     </div>
     <ul class="track-stops">${stops}</ul>
     <p class="track-note">Dernier signal : <strong>${esc(geoFr(last.label))}</strong> · jour ${last.day}<br>
