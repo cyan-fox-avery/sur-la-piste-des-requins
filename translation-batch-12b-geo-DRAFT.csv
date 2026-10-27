@@ -1,0 +1,23 @@
+category,key,english,quebec_french,notes
+geo-variant,geo-var-whale-maldives-1,South Ari Atoll,Atoll Ari Sud,Regional variant whale:maldives area + anchor. Pattern follows Batch 12 'South Malé Atoll' -> 'Atoll Malé Sud'.
+geo-variant,geo-var-whale-maldives-2,Maamigili,Maamigili,"Proper name kept, as in Batch 12."
+geo-variant,geo-var-whale-maldives-3,Dhigurah,Dhigurah,"Proper name kept, as in Batch 12."
+geo-variant,geo-var-whale-maldives-4,Ari Atoll outer reef,Récif externe de l'atoll d'Ari,Descriptive rendering.
+geo-variant,geo-var-whale-maldives-5,Rasdhoo Atoll,Atoll de Rasdhoo,Descriptive rendering.
+geo-variant,geo-var-whale-maldives-6,Baa Atoll (Hanifaru),Atoll de Baa (Hanifaru),Descriptive rendering; Hanifaru kept as proper name.
+geo-variant,geo-var-whale-maldives-7,"South Ari Atoll, Maldives","Atoll Ari Sud, Maldives",Variant start string; follows the area rendering.
+geo-variant,geo-var-megamouth-philippines-1,Cagayan de Oro,Cagayan de Oro,Proper name kept.
+geo-variant,geo-var-megamouth-philippines-2,Visayan Sea,Mer des Visayas,Standard French sea name.
+geo-variant,geo-var-megamouth-philippines-3,Luzon east coast (Aurora),Côte est de Luçon (Aurora),Aurora province kept as proper name.
+geo-variant,geo-var-megamouth-philippines-4,Philippine Sea edge,Bord de la mer des Philippines,Descriptive rendering.
+geo-variant,geo-var-megamouth-philippines-5,Surigao Strait north,Nord du détroit de Surigao,Descriptive rendering.
+geo-variant,geo-var-megamouth-philippines-6,"Cagayan de Oro, Mindanao","Cagayan de Oro, Mindanao",Variant start string; both proper names kept.
+geo-variant,geo-var-blue-cornwall-1,Scilly Isles waters,Eaux des îles Scilly,Descriptive rendering.
+geo-variant,geo-var-blue-cornwall-2,Western Approaches,Atterrages occidentaux,Follows Mira's Batch 12 ruling: 'Western Approaches' -> 'atterrages occidentaux' (sixgill-5 deep variant). Flagged for Mira to confirm consistency.
+geo-variant,geo-var-blue-cornwall-3,Celtic Deep,Celtic Deep,Proper name kept per Mira review (2026-10-27): Fosse celtique potentially misleading.
+geo-variant,geo-var-blue-cornwall-4,Southwest Approaches,Southwest Approaches,Proper name kept per Mira review (2026-10-27): Atterrages du Sud-Ouest plausible but unverified.
+geo-variant,geo-var-blue-cornwall-5,"Mount's Bay, Cornwall","Mount's Bay, Cornouailles",Batch 12 kept 'Mount's Bay' as a proper name throughout; only Cornwall translated here. Flagged for Mira to confirm.
+geo-variant,geo-var-smooth-nc-1,Outer Banks shelf,Plateau des Outer Banks,Follows Batch 12 'Outer Banks coastal shelf' -> 'Plateau côtier des Outer Banks'; Outer Banks kept.
+geo-variant,geo-var-smooth-nc-2,Chesapeake Bay mouth,Embouchure de la baie de Chesapeake,Descriptive rendering.
+geo-variant,geo-var-smooth-nc-3,Mid-Atlantic Bight,Mid-Atlantic Bight,"Proper name kept, as in Batch 12 thresher-2 (shelf edge variant)."
+geo-variant,geo-var-smooth-nc-4,"Cape Hatteras, North Carolina","Cap Hatteras, Caroline du Nord",Variant start string; Hatteras kept as proper name.
