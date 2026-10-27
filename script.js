@@ -1038,6 +1038,11 @@ const ARCTIC_UNLOCK_THREAD = [
 ];
 
 /* World-map + tracking data lives in map-data.js (loaded before this file). */
+/* French display labels (Batch 12): GEO_LABELS_FR maps English place keys to
+   French display labels. Coordinates always use the English key; only what the
+   player reads goes through geoFr(). Missing labels fall back to English. */
+const GEO_FR = (typeof GEO_LABELS_FR !== "undefined") ? GEO_LABELS_FR : {};
+function geoFr(label) { return GEO_FR[label] || label; }
 
 function mapProj(lat, lon) {
   return [(lon + 180) / 360 * MAP_W, (90 - lat) / 180 * MAP_H];
@@ -1189,7 +1194,7 @@ function renderMap() {
   const ids = Object.keys(state.tagged);
   /* v0.11.0: a focus glide re-renders every frame — hiding the popup here
      would eat it on the first animation frame, right after the tap showed
-     it. Skip the hide while a glide is in flight; the popup still hides on
+     it. Passer the hide while a glide is in flight; the popup still hides on
      any later render, exactly as before. */
   if (!mapGlide) pop.classList.add("hidden");
   const z = mapZoom, vb = mapViewBox();
@@ -1312,10 +1317,10 @@ function showMapPopup(sid) {
   pop.innerHTML = `
     <h4>${t.name ? `“${esc(t.name)}”` : esc(t.researchId)}</h4>
     <p class="latin">${esc(s.name)} · ${esc(t.researchId)}</p>
-    <p class="map-meta">📍 Marqué à ${esc(t.location)} · ${esc(t.date)}<br>📡 Dernier point du trajet : ${last ? esc(last.label) : "—"}${t.resightings && t.resightings.length ? `<br>🔁 Réobservé ${t.resightings.length}×` : ""}</p>
+    <p class="map-meta">📍 Marqué à ${esc(t.location)} · ${esc(t.date)}<br>📡 Dernier point du trajet : ${last ? esc(geoFr(last.label)) : "—"}${t.resightings && t.resightings.length ? `<br>🔁 Réobservé ${t.resightings.length}×` : ""}</p>
     ${kindNote ? `<p class="map-kind-note">${kindNote}</p>` : ""}
-    <button class="secondary-button" type="button" id="mapCardBtn">🗂️ Open collection card</button>
-    <button class="secondary-button" type="button" id="mapTrackBtn">📈 View full track</button>`;
+    <button class="secondary-button" type="button" id="mapCardBtn">🗂️ Ouvrir la fiche de collection</button>
+    <button class="secondary-button" type="button" id="mapTrackBtn">📈 Voir l'itinéraire complet</button>`;
   pop.classList.remove("hidden");
   $("mapCardBtn").addEventListener("click", () => openDetail(sid));
   /* v1.8.6-beta: the per-shark track overlay lives here now that the
@@ -1924,7 +1929,7 @@ function renderActiveChips() {
     const x = document.createElement("button");
     x.type = "button";
     x.className = "chip-remove";
-    x.setAttribute("aria-label", `Remove filter: ${label}`);
+    x.setAttribute("aria-label", `Retirer le filtre : ${label}`);
     x.textContent = "×";
     x.addEventListener("click", () => { clear(); renderResearch(); });
     c.appendChild(x);
@@ -2093,16 +2098,16 @@ function renderPinnedCard(list) {
   card.className = "pinned-card" + (s ? "" : " pinned-empty");
   if (!s) {
     card.innerHTML = state.hasPinnedBefore
-      ? `<p class="latin">📌 <em>Pinned sharks appear here. Sarah might know something if you ask her about one.</em></p>`
-      : `<p class="latin">📌 <em>No shark pinned — tap 📌 on any field-guide entry to keep it here while you research.</em><br><span class="dim">Tip: pinning a shark switches on soft logbook hints — when your expedition plan is close for the shark you're researching, your notes will nudge you. Sarah might know something too, if you ask her about it.</span></p>`;
+      ? `<p class="latin">📌 <em>Les requins épinglés apparaissent ici. Sarah en sait peut-être quelque chose, si tu lui demandes.</em></p>`
+      : `<p class="latin">📌 <em>Aucun requin épinglé — touche 📌 sur une fiche du guide de terrain pour le garder ici pendant tes recherches.</em><br><span class="dim">Astuce : épingler un requin active les petits indices du journal de bord — quand ton plan d'expédition est proche pour le requin que tu étudies, tes notes te donneront un coup de pouce. Sarah en sait peut-être quelque chose aussi, si tu lui demandes.</span></p>`;
   } else {
     const done = !!state.tagged[s.id];
     /* v1.4.15-beta: pinned card shows the research description with key clues
        in subtle bold — same font and size, just bold. Never the actual answers. */
     const researchPreview = highlightClues(s);
     card.innerHTML = `
-      <div class="pinned-head"><span>📌 Currently researching</span>
-        <button type="button" class="pin-btn unpin" data-unpin aria-label="Unpin ${s.name}">✕</button>
+      <div class="pinned-head"><span>📌 En cours d'étude</span>
+        <button type="button" class="pin-btn unpin" data-unpin aria-label="Désépingler ${s.name}">✕</button>
       </div>
       <div class="pinned-body">
         <div>
@@ -2220,9 +2225,9 @@ function renderExpeditionPin() {
   /* v1.4.15-beta: show diet as a natural sentence, not the bait answer. */
   const dietKeys = baitList(s);
   const dietText = dietKeys.map(k => DIET_PHRASE[k] || `they eat ${k}`).join("; ");
-  el.innerHTML = `📌 Currently researching: <strong>${s.name}</strong>
+  el.innerHTML = `📌 En cours d'étude : <strong>${s.name}</strong>
     <span class="latin">${regionName} · ${s.depths.map(d => (DEPTHS[d] || {}).name || d).join(", ")} · ${dietText}</span>
-    <br><span class="dim" style="font-size:12px">📓 Pin hints on — your logbook notes nudge you when the plan is close.</span>`;
+    <br><span class="dim" style="font-size:12px">📓 Indices d'épingle activés — tes notes du journal de bord te donnent un coup de pouce quand le plan est proche.</span>`;
 }
 /* v1.4.0-beta: rising z-index so a later-opened overlay always floats
    above earlier ones, regardless of DOM order. */
@@ -2288,7 +2293,7 @@ function renderResearch() {
     fc.classList.toggle("hidden", n === 0);
   }
   const gc = $("guideCount");
-  if (gc) gc.textContent = `Showing ${ordered.length} of ${SHARKS.length} sharks`;
+  if (gc) gc.textContent = `Affichage de ${ordered.length} requins sur ${SHARKS.length}`;
   const clr = $("guideClear");
   if (clr) clr.classList.toggle("hidden", n === 0);
   /* v0.20.0: Mira review fix — the pinned card survives empty-results states;
@@ -2321,17 +2326,17 @@ function renderResearch() {
           <span class="status-pill iucn-${iucnAbbr}" title="Liste rouge de l'UICN : ${s.statusFr || s.status}">${iucnAbbr}</span>
         </button>
         <button type="button" class="pin-btn${isPinned ? " pinned-on" : ""}" data-pin="${s.id}"
-          aria-label="${isPinned ? "Unpin" : "Pin"} ${s.name} as currently researching"
+          aria-label="${isPinned ? "Désépingler" : "Épingler"} ${s.name} comme étude en cours"
           aria-pressed="${isPinned}">📌</button>
       </div>
       <div class="guide-row-body hidden">
-        <button type="button" class="guide-close" aria-label="Close ${s.name} details">\u2715</button>
+        <button type="button" class="guide-close" aria-label="Fermer les détails de ${s.name}">\u2715</button>
         <p class="iucn-full">Liste rouge de l'UICN : <strong>${s.statusFr || s.status}</strong></p>
         ${s.research.split("\n\n").map(p => `<p class="research-text">${highlightResearchClues(s, p)}</p>`).join("")}
         ${done
-          ? `<p class="hook">Tagged ${idLine(state.tagged[s.id])}${state.tagged[s.id].name ? ` as <strong>${esc(state.tagged[s.id].name)}</strong>` : ""} 🎉</p>`
+          ? `<p class="hook">Marqué ${idLine(state.tagged[s.id])}${state.tagged[s.id].name ? ` sous le nom de <strong>${esc(state.tagged[s.id].name)}</strong>` : ""} 🎉</p>`
           : regionLocked
-            ? `<p class="latin">🔒 Our vessel hasn't surveyed these waters yet — tag 10 sharks to unlock them.</p>`
+            ? `<p class="latin">🔒 Notre navire n'a pas encore exploré ces eaux — marque 10 requins pour les débloquer.</p>`
             : ``}
       </div>
     `;
@@ -2398,7 +2403,7 @@ function fillRegions() {
             ? `🔒 ${v.name} — unlocks at 25 tags`
             : id === "arctic"
               ? `🔒 ${v.name} — unlocks at 35 tags`
-              : `🔒 ${v.name} — locked`;
+              : `🔒 ${v.name} — verrouillée`;
       o.textContent = unlockText;
       o.disabled = true;
     } else {
@@ -2938,11 +2943,11 @@ function doEncounter(species, plan) {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     sharkEl.innerHTML =
       `<div class="shark-silhouette" role="button" tabindex="0" ` +
-      `aria-label="Something is out there — tap to reveal">` +
+      `aria-label="Quelque chose est là — touche pour révéler">` +
       `<div class="shark-shadow">` + sharkArtImg(species.id, "illustration", "Mysterious shark silhouette") + `</div>` +
-      `<div class="tap-hint">👆 Tap to reveal</div></div>`;
+      `<div class="tap-hint">👆 Touche pour révéler</div></div>`;
     sharkEl.classList.remove("hidden");
-    logLine(`🦈 <span class="found">Something's out there...</span>`, "found");
+    logLine(`🦈 <span class="found">Quelque chose est là...</span>`, "found");
     const actions = $("diveActions");
     actions.classList.add("hidden");
     actions.innerHTML = "";
@@ -2959,13 +2964,13 @@ function doEncounter(species, plan) {
       /* v1.5.3-beta: reunion vs different-shark presentation. */
       let already;
       if (!existingRec) {
-        already = ` — new to your book!`;
+        already = ` — nouveau dans ton carnet !`;
       } else if (isReunion) {
         const rname = rec.name ? esc(rec.name) : rec.researchId; // v1.8.5-beta: no quotes around nicknames
-        already = ` — wait... that tag looks familiar. It's ${rname}! 🥹`;
+        already = ` — attends... cette balise me dit quelque chose. C'est ${rname} ! 🥹`;
       } else {
-        const oname = existingRec.name ? esc(existingRec.name) : "yours"; // v1.8.5-beta: no quotes around nicknames
-        already = ` — another ${species.name}! This one has no matching tag — not ${oname}.`;
+        const oname = existingRec.name ? esc(existingRec.name) : "le tien"; // v1.8.5-beta: no quotes around nicknames
+        already = ` — un autre ${species.name} ! Celui-ci n'a pas de balise correspondante — ce n'est pas ${oname}.`;
       }
       const showIllustration = () => {
         /* v1.7.14-beta: prominent encounter status badge — the already-in-book
@@ -2980,17 +2985,17 @@ function doEncounter(species, plan) {
              rname stays raw here; esc() is applied in badgeText below. */
           const rname = rec.name ? rec.name : rec.researchId; // v1.8.5-beta: no quotes around nicknames
           badgeClass = "enc-reunion";
-          badgeText = `🥹 YOUR SHARK — ${esc(rname)}`;
+          badgeText = `🥹 TON REQUIN — ${esc(rname)}`;
         } else {
           badgeClass = "enc-other";
-          badgeText = `🦈 ANOTHER ${esc(species.name.toUpperCase())}`;
+          badgeText = `🦈 UN AUTRE ${esc(species.name.toUpperCase())}`;
         }
         sharkEl.innerHTML =
           `<div class="shark-reveal">` +
           sharkArtImg(species.id, "illustration", species.name) +
           `<div class="encounter-badge ${badgeClass}">${badgeText}</div>` +
           `</div>`;
-        logLine(`🦈 <span class="found">Shark! A ${species.name}${already}</span>`, "found");
+        logLine(`🦈 <span class="found">Requin ! ${species.name === "petite roussette" ? "Une" : "Un"} ${species.name}${already}</span>`, "found");
         showEncounterActions();
       };
       if (reducedMotion) {
@@ -3052,10 +3057,10 @@ function doEncounter(species, plan) {
         if (!rec.notes.includes(note)) {
           rec.notes.push(note);
           store.save(state.tagged);
-          noteLine = ` 📓 <em>Noted: ${esc(note)}.</em>`;
+          noteLine = ` 📓 <em>Noté : ${esc(note)}.</em>`;
         }
       }
-      logLine(`👁️ You watch the ${species.name} ${entry.doing}. A good sighting, logged.${noteLine}`);
+      logLine(`👁️ Tu observes le ${species.name} ${entry.doing}. Une belle observation, consignée.${noteLine}`);
       finish();
     });
     actions.appendChild(watchBtn);
@@ -3067,7 +3072,7 @@ function doEncounter(species, plan) {
       const tagBtn = document.createElement("button");
       tagBtn.className = "primary-button";
       tagBtn.type = "button";
-      tagBtn.textContent = `🏷️ Tag the ${species.name}`;
+      tagBtn.textContent = `🏷️ Marque le ${species.name}`;
       tagBtn.addEventListener("click", () => {
         actions.classList.add("hidden");
         actions.innerHTML = "";
@@ -3103,10 +3108,10 @@ function doEncounter(species, plan) {
       /* v1.7.23-beta: show insight progress on the Follow button. */
       const _factTotal = insightPoolFor(species.id).length;
       const _factHave = (state.unlockedFacts[species.id] || []).length;
-      const _factLine = _factTotal ? `<br><small class="dim">(insights: ${_factHave}/${_factTotal})</small>` : "";
-      followBtn.innerHTML = `🧭 Follow ${esc(_followName)}<br><small class="dim">ends this expedition — no more shark encounters today</small>${_factLine}`;
-      const _factLabel = _factTotal ? ` (${_factHave} of ${_factTotal} insights learned)` : "";
-      followBtn.setAttribute("aria-label", `Follow ${_followName} for the rest of this trip (ends expedition)${_factLabel}`);
+      const _factLine = _factTotal ? `<br><small class="dim">(découvertes : ${_factHave}/${_factTotal})</small>` : "";
+      followBtn.innerHTML = `🧭 Suivre ${esc(_followName)}<br><small class="dim">met fin à l'expédition — plus de rencontres avec des requins aujourd'hui</small>${_factLine}`;
+      const _factLabel = _factTotal ? ` (${_factHave} découvertes sur ${_factTotal} apprises)` : "";
+      followBtn.setAttribute("aria-label", `Suivre ${_followName} pour le reste de cette sortie (met fin à l'expédition)${_factLabel}`);
       followBtn.addEventListener("click", () => {
         actions.classList.add("hidden");
         actions.innerHTML = "";
@@ -3173,20 +3178,20 @@ function doEncounter(species, plan) {
          wild shark will get them before committing the expedition. */
       const _obsFactTotal = insightPoolFor(species.id).length;
       const _obsFactHave = (state.unlockedFacts[species.id] || []).length;
-      const _obsFactLine = _obsFactTotal ? `<br><small class="dim">(insights: ${_obsFactHave}/${_obsFactTotal})</small>` : "";
+      const _obsFactLine = _obsFactTotal ? `<br><small class="dim">(découvertes : ${_obsFactHave}/${_obsFactTotal})</small>` : "";
       /* v1.7.25-beta: when all insights are learned, the exhausted
          branch still ends the expedition and shows the "learned all I
          can" popup (same as Follow's exhausted flow) — it reveals no
          new fact, so the copy must not promise one. */
       const _obsExhausted = _obsFactTotal > 0 && _obsFactHave >= _obsFactTotal;
       const _obsSub = _obsExhausted
-        ? `study this ${esc(species.name)} — all insights learned (ends the expedition)`
-        : `study this ${esc(species.name)} — may reveal a secret fact (ends the expedition)`;
-      observeBtn.innerHTML = `🔬 Observe species<br><small class="dim">${_obsSub}</small>${_obsFactLine}`;
-      const _obsFactLabel = _obsFactTotal ? ` (${_obsFactHave} of ${_obsFactTotal} insights learned)` : "";
+        ? `étudier ce ${esc(species.name)} — toutes les découvertes apprises (met fin à l'expédition)`
+        : `étudier ce ${esc(species.name)} — peut révéler un fait secret (met fin à l'expédition)`;
+      observeBtn.innerHTML = `🔬 Observer l'espèce<br><small class="dim">${_obsSub}</small>${_obsFactLine}`;
+      const _obsFactLabel = _obsFactTotal ? ` (${_obsFactHave} découvertes sur ${_obsFactTotal} apprises)` : "";
       observeBtn.setAttribute("aria-label", _obsExhausted
-        ? `Observe this ${species.name} (species study, not your tagged shark; all insights already learned; ends the expedition)${_obsFactLabel}`
-        : `Observe this ${species.name} (species study, not your tagged shark; learning a new fact ends the expedition)${_obsFactLabel}`);
+        ? `Observer ce ${species.name} (étude de l'espèce, pas ton requin marqué ; toutes les découvertes sont déjà apprises ; met fin à l'expédition)${_obsFactLabel}`
+        : `Observer ce ${species.name} (étude de l'espèce, pas ton requin marqué ; apprendre un fait nouveau met fin à l'expédition)${_obsFactLabel}`);
       observeBtn.addEventListener("click", () => {
         const fact = unlockSecretFact(species.id);
         logTripEncounter(species, "observed");
@@ -3203,7 +3208,7 @@ function doEncounter(species, plan) {
           state.pendingTagAlongFact = { speciesId: species.id, fact, exhausted: false, mode: "observe" };
           /* v1.7.8-beta: a new species insight ends the expedition — you're
              spending the rest of the day processing what you learned. */
-          logLine(`🧭 That discovery deserves a full debrief — heading back to the ship to log it properly.`);
+          logLine(`🧭 Cette découverte mérite un vrai compte rendu — retour au navire pour la consigner correctement.`);
           actions.classList.add("hidden");
           actions.innerHTML = "";
           renderAll();
@@ -3218,7 +3223,7 @@ function doEncounter(species, plan) {
              The popup copy (showTagAlongFact) already handles
              exhausted + observe — no new fact is promised. */
           state.pendingTagAlongFact = { speciesId: species.id, fact: null, exhausted: true, mode: "observe" };
-          logLine(`🧭 The study is complete — heading back to the ship to log it properly.`);
+          logLine(`🧭 L'étude est terminée — retour au navire pour la consigner correctement.`);
           actions.classList.add("hidden");
           actions.innerHTML = "";
           renderAll();
@@ -3311,9 +3316,9 @@ async function runExpedition(plan) {
 
   const baitText = plan.bait === "plankton"
     ? "No bait — scanning the water for a plankton bloom…"
-    : `Bait deployed: ${BAITS[plan.bait]}.`;
+    : `Appât déployé : ${BAITS[plan.bait]}.`;
 
-  logLine(`🛥️ <strong>Expedition begun</strong> — the research vessel leaves the harbor.`);
+  logLine(`🛥️ <strong>Expédition commencée</strong> — le navire de recherche quitte le port.`);
   await wait(1700);
   logLine(`🌤️ ${tripLog.conditions}`);
   await wait(1700);
@@ -3324,11 +3329,11 @@ async function runExpedition(plan) {
     ? "No attractant in the water — just the bait doing the talking."
     : plan.method === "aggregation"
       ? "Looking for the feeding aggregation — where the food is, the sharks will be."
-      : `${METHODS.attract.opts[plan.methodOpt]} in the water.`;
+      : `${METHODS.attract.opts[plan.methodOpt]} dans l'eau.`;
   logLine(`🌊 ${methodText}`);
   await wait(1700);
   if (deep) {
-    logLine(`⬇️ The water darkens as you descend. The surface light thins, then lets go.`);
+    logLine(`⬇️ L'eau s'assombrit pendant ta descente. La lumière de surface s'amincit, puis lâche prise.`);
     await wait(2000);
   }
   logLine(`🌊 ${pick(DEPTH_FLAVOUR[plan.depth])}`);
@@ -3349,12 +3354,12 @@ async function runExpedition(plan) {
     if (i > 0) {
       /* v1.4.15-beta: time progresses across the trip — morning, afternoon, evening */
       const timeBeats = [
-        `⏳ The morning wears on…`,
-        `⏳ The afternoon stretches out…`,
-        `⏳ Evening approaches…`
+        `⏳ La matinée s'étire…`,
+        `⏳ L'après-midi s'étire…`,
+        `⏳ Le soir approche…`
       ];
       logLine(deep
-        ? `⏳ The hours slip by. The deep does not hurry, so neither do you.`
+        ? `⏳ Les heures passent. Les profondeurs ne se pressent pas, et toi non plus.`
         : (timeBeats[i - 1] || timeBeats[timeBeats.length - 1]));
       await wait(2000);
     }
@@ -3384,14 +3389,14 @@ async function runExpedition(plan) {
   stopAmbientLife();
   $("diveShark").classList.add("hidden");
   if (endedEarly) {
-    logLine(`⛵ You call it a day and turn for home — a good day on the water.`);
+    logLine(`⛵ Tu termines ta journée et tu rentres — une belle journée sur l'eau.`);
   } else {
-    logLine(`🌅 The light changes. Time to head in — the day is done.`);
+    logLine(`🌅 La lumière change. Il est temps de rentrer — la journée est finie.`);
   }
   await wait(1800);
   if (!sawShark) {
     state.failures += 1;
-    logLine(`<span class="miss">No sharks today. The sea keeps its counsel.</span>`, "miss");
+    logLine(`<span class="miss">Aucun requin aujourd'hui. La mer garde ses secrets.</span>`, "miss");
     await wait(1200);
     /* v0.22.0: failed trips feel like fieldwork — warm, never punishing.
        v0.22.0 Mira review: persist the note so it survives in the logbook. */
@@ -3528,7 +3533,7 @@ function renderSightings() {
   if (!list) return;
   list.innerHTML = "";
   if (!state.sightings.length) {
-    list.innerHTML = `<div class="empty-note">No sightings yet.<br>Watch a shark without tagging it and it'll be logged here. 👁️</div>`;
+    list.innerHTML = `<div class="empty-note">Aucune observation pour l'instant.<br>Observe un requin sans le marquer et ce sera consigné ici. 👁️</div>`;
     return;
   }
   /* v1.8.5-beta: cap the shown sightings — the list grows without bound.
@@ -3546,7 +3551,7 @@ function renderSightings() {
     const more = document.createElement("button");
     more.type = "button";
     more.className = "secondary-button sightings-more";
-    more.textContent = `👁️ Show more sightings (${state.sightings.length - sightingsShown} more)`;
+    more.textContent = `👁️ Afficher plus d'observations (${state.sightings.length - sightingsShown} de plus)`;
     more.addEventListener("click", sightingsShowMore);
     list.appendChild(more);
   }
@@ -3645,7 +3650,7 @@ const RESIGHT_NOTES_EXCITED = [
   "Ce requin revient toujours! Je ne dis pas qu'on est inséparables, mais on est inséparables.",
   "Encore ce requin! On connaît son endroit préféré, et quelle chance!"
 ];
-/* French sex-aware variants (slot numbers are 1-based; male/unknown uses the base array). Slot-first pick is preserved: the slot is chosen, then the variant renders. */
+/* French sex-aware variants (slot numbers are 1-based; mâle/unknown uses the base array). Slot-first pick is preserved: the slot is chosen, then the variant renders. */
 const RESIGHT_LIKES_US_LINE_FEMALE = "Encore elle! Je commence à croire qu'elle nous aime bien.";
 const RESIGHT_REUNION_CLOSERS_FEMALE = {
   "2": "Ah wow, elle est revenue! Je pensais justement à elle.",
@@ -3669,13 +3674,13 @@ const RESIGHT_NOTES_2ND_FEMALE = {
    only runs in unusual histories (an earlier encounter consumed the
    reunion reaction without logging a re-sighting). */
 function resightSarahReactionFor(ordinal, rec) {
-  const female = rec && rec.sex === "female";
+  const femelle = rec && rec.sex === "femelle";
   if (ordinal === 3) return pick(RESIGHT_NOTES_3RD);
   if (ordinal >= 4) return pick(RESIGHT_NOTES_EXCITED);
   if (ordinal === 2) {
     const pool = RESIGHT_NOTES_2ND;
     let idx = Math.floor(Math.random() * pool.length);
-    if (female && RESIGHT_NOTES_2ND_FEMALE[idx + 1]) return RESIGHT_NOTES_2ND_FEMALE[idx + 1];
+    if (femelle && RESIGHT_NOTES_2ND_FEMALE[idx + 1]) return RESIGHT_NOTES_2ND_FEMALE[idx + 1];
     return pool[idx];
   }
   return RESIGHT_GENERIC_CLOSER;
@@ -3716,9 +3721,9 @@ function resightThread(species, rec) {
   const last = rec.resightings[rec.resightings.length - 1];
   const ordinal = rec.resightings.length;
   const thread = [
-    { who: "them", text: `You saw ${label} again? The ${species.name.toLowerCase()}?` },
+    { who: "them", text: `Tu as revu ${label} ? Le ${species.name.toLowerCase()} ?` },
     /* The player's bubble reports the field note only — never Sarah's lines. */
-    { who: "me", text: `${species.name}, off ${last.location}. ${last.note}` },
+    { who: "me", text: `${species.name}, au large de ${last.location}. ${last.note}` },
   ];
   /* v1.7.24-beta Mira review: Sarah's reaction goes in HER bubble.
      2nd+ re-sightings use the tiered pools. The first-reunion closer
@@ -3737,7 +3742,7 @@ function resightThread(species, rec) {
    Pronoun matches the shark's recorded sex; "it" when unknown. */
 function resightFoodReplyFor(sarahLine, rec) {
   if (sarahLine !== RESIGHT_LIKES_US_LINE && sarahLine !== RESIGHT_LIKES_US_LINE_FEMALE) return null;
-  const pron = rec && rec.sex === "female" ? "elle" : rec && rec.sex === "male" ? "lui" : "ce requin";
+  const pron = rec && rec.sex === "femelle" ? "elle" : rec && rec.sex === "mâle" ? "lui" : "ce requin";
   return `Peut-être. Ou peut-être que c'est ${pron} qui sait où trouver à manger.`;
 }
 /* v1.5.3-beta: one-time Sarah reaction to first reunion per species.
@@ -3751,8 +3756,8 @@ function resightFoodReplyFor(sarahLine, rec) {
    non sequitur after any other closer. */
 function reunionReactionThread(name, closer, rec) {
   const thread = [
-    { who: "them", text: `WAIT. You saw ${name} again?!?` },
-    { who: "me", text: `The tag matched — it's really them.` },
+    { who: "them", text: `ATTENDS. Tu as revu ${name} ?!?` },
+    { who: "me", text: `La balise correspond — c'est vraiment le même individu.` },
     { who: "them", text: closer }
   ];
   const foodReply = resightFoodReplyFor(closer, rec);
@@ -3786,7 +3791,7 @@ function maybeReunionReaction(species, rec) {
   let ci = Math.floor(Math.random() * RESIGHT_REUNION_CLOSERS.length);
   if (RESIGHT_REUNION_CLOSERS.length > 1 && ci === lastReunionCloserIdx) ci = (ci + 1) % RESIGHT_REUNION_CLOSERS.length;
   lastReunionCloserIdx = ci;
-  const closerText = (rec && rec.sex === "female" && RESIGHT_REUNION_CLOSERS_FEMALE[ci + 1]) ? RESIGHT_REUNION_CLOSERS_FEMALE[ci + 1] : RESIGHT_REUNION_CLOSERS[ci];
+  const closerText = (rec && rec.sex === "femelle" && RESIGHT_REUNION_CLOSERS_FEMALE[ci + 1]) ? RESIGHT_REUNION_CLOSERS_FEMALE[ci + 1] : RESIGHT_REUNION_CLOSERS[ci];
   if (pushThread(reunionReactionThread(name, closerText, rec))) {
     noteSharkMention(species.id, sightW);
   }
@@ -3994,11 +3999,11 @@ function renderLogbook() {
   const clr = $("logFilterClear");
   if (clr) clr.classList.toggle("hidden", !anyFilter);
   if (!state.logbook.length) {
-    list.innerHTML = `<div class="empty-note">No expeditions logged yet.<br>Every trip lands here — plan, encounters, outcome. 📓</div>`;
+    list.innerHTML = `<div class="empty-note">Aucune expédition consignée pour l'instant.<br>Chaque sortie est consignée ici : plan, rencontres et résultat. 📓</div>`;
     return;
   }
   if (!trips.length) {
-    list.innerHTML = `<div class="empty-note">No trips match those filters.<br>Try clearing something — the ocean is bigger than it looks.</div>`;
+    list.innerHTML = `<div class="empty-note">Aucune sortie ne correspond à ces filtres.<br>Essaie d'en retirer un — l'océan est plus grand qu'il n'y paraît.</div>`;
     return;
   }
   /* v1.8.4-beta: cap the rendered trips — the logbook grows without bound and
@@ -4044,7 +4049,7 @@ function renderLogbook() {
       ${t.fieldNote ? `<div class="logbook-fieldnote latin">🔭 ${esc(t.fieldNote)}</div>` : ""}
       <div class="logbook-enc">${enc}</div>
       ${t.pinHint ? `<div class="logbook-pinhint"><span class="pin-hint-icon">📓</span> <em>${esc(t.pinHint)}</em></div>` : ""}
-      <button type="button" class="repeat-btn" data-repeat>🔁 Repeat this plan</button>`;
+      <button type="button" class="repeat-btn" data-repeat>🔁 Reprendre ce plan</button>`;
     const rb = div.querySelector("[data-repeat]");
     if (rb) rb.addEventListener("click", () => repeatPlan(t));
     list.appendChild(div);
@@ -4053,7 +4058,7 @@ function renderLogbook() {
     const more = document.createElement("button");
     more.type = "button";
     more.className = "secondary-button logbook-more";
-    more.textContent = `📓 Show older trips (${trips.length - logbookShown} more)`;
+    more.textContent = `📓 Afficher les sorties plus anciennes (${trips.length - logbookShown} de plus)`;
     more.addEventListener("click", logbookShowOlder);
     list.appendChild(more);
   }
@@ -4121,7 +4126,7 @@ function updateMsgBadge() {
 function renderMessages() {
   const list = $("messagesList");
   if (!state.messages.length) {
-    list.innerHTML = `<div class="empty-note">No messages yet.<br>Sarah will text you between expeditions. 💬</div>`;
+    list.innerHTML = `<div class="empty-note">Aucun message pour l'instant.<br>Sarah t'écrira entre les expéditions. 💬</div>`;
     return;
   }
   let html = "";
@@ -4200,15 +4205,20 @@ const GENERIC_CHATS = [
 
 /* "a nurse shark" / "an oceanic whitetip" — simple vowel check. */
 function bigDayArticle(name) {
-  return /^[aeiou]/i.test(name.trim()) ? "an" : "a";
+  // French article for the species-list: la for petite roussette (the one
+  // feminine name), l' before a vowel, le otherwise (Batch 7 gender map).
+  const n = name.trim();
+  if (/^petite roussette/i.test(n)) return "la";
+  if (/^[aeiouàâäéèêëîïôöùûü]/i.test(n)) return "l'";
+  return "le";
 }
 
 /* "a nurse shark and a lemon shark" / "a, b, and c" — discovery order. */
 function formatSpeciesList(events) {
-  const parts = events.map(e => `${bigDayArticle(e.speciesName)} ${e.speciesName.toLowerCase()}`);
+  const parts = events.map(e => { const a = bigDayArticle(e.speciesName); return a === "l'" ? a + e.speciesName.toLowerCase() : a + " " + e.speciesName.toLowerCase(); });
   if (parts.length === 1) return parts[0];
-  if (parts.length === 2) return `${parts[0]} and ${parts[1]}`;
-  return parts.slice(0, -1).join(", ") + ", and " + parts[parts.length - 1];
+  if (parts.length === 2) return `${parts[0]} et ${parts[1]}`;
+  return parts.slice(0, -1).join(", ") + ", et " + parts[parts.length - 1];
 }
 
 /* Deal one conversation index from a tier's no-repeat bag. Reshuffles when
@@ -4268,7 +4278,7 @@ function flushPendingCelebrations() {
       const e = events[0];
       pushThread([
         { who: "them", text: e.opener },
-        { who: "me", text: `A ${e.speciesName} — ${e.length} metres, ${e.sex}. Research ID ${e.researchId}.` },
+        { who: "me", text: `${e.speciesName === "petite roussette" ? "Une" : "Un"} ${e.speciesName} — ${e.length} mètres, ${e.sex === "female" ? "femelle" : e.sex === "male" ? "mâle" : e.sex}. Identifiant de recherche ${e.researchId}.` },
         { who: "them", text: e.cheer }
       ]);
       state.lastSingleCheerExp = exp;
@@ -4364,8 +4374,8 @@ function renderSarahAsk() {
   panel.classList.toggle("hidden", !show);
   if (!show) return;
   const btn = $("sarahAskBtn");
-  btn.textContent = `Ask Sarah about the ${s.name}`;
-  btn.setAttribute("aria-label", `Ask Sarah for advice about the ${s.name}`);
+  btn.textContent = `Demander à Sarah au sujet du ${s.name}`;
+  btn.setAttribute("aria-label", `Demander conseil à Sarah au sujet du ${s.name}`);
 }
 function askSarahAdvice(sid) {
   const s = sharkById(sid);
@@ -4373,7 +4383,7 @@ function askSarahAdvice(sid) {
   /* v1.8.3-beta: Ask Sarah is player-initiated — always goes through
      the throttle. */
   pushThread([
-    { who: "me", text: `I'm striking out — any advice on the ${s.name.toLowerCase()}?` },
+    { who: "me", text: `Je n'y arrive pas — un conseil sur le ${s.name.toLowerCase()} ?` },
     { who: "them", text: COUSIN_NUDGES[sid] || "La prochaine rencontre viendra. J'ai confiance en toi." },
     { who: "me", text: "Thanks. That's actually really helpful." }
   ], "ask");
@@ -4428,7 +4438,7 @@ function showNextAchievement() {
   ov.classList.remove("hidden");
   ov.innerHTML = `<div class="phone">
     <div class="cert-trophy" style="font-size:52px; text-align:center">${a.icon}</div>
-    <h2 style="text-align:center; margin:8px 0 2px">Achievement Unlocked!</h2>
+    <h2 style="text-align:center; margin:8px 0 2px">Succès débloqué !</h2>
     <p style="text-align:center; font-weight:800; margin:4px 0">${esc(a.name)}</p>
     <p class="latin" style="text-align:center">${esc(a.description)}</p>
     <button id="achieveClose" class="primary-button" type="button">Sweet!</button>
@@ -4446,7 +4456,7 @@ function renderAchievements() {
   const visible = ACHIEVEMENTS.filter(a => !a.hidden || state.achievements[a.id]);
   const unlockedCount = visible.filter(a => state.achievements[a.id]).length;
   const head = $("achieveHead");
-  if (head) head.innerHTML = `<h2>Achievements</h2><p>${unlockedCount} of ${visible.length} unlocked</p>`;
+  if (head) head.innerHTML = `<h2>Achievements</h2><p>Succès ${unlockedCount} sur ${visible.length} débloqués</p>`;
   /* v1.7.19-beta: the Master Shark Tagger trophy lives here now (moved from
      the Collection trophy shelf). The derpy toggle stays in Collection. */
   const trophyShelf = $("achieveTrophyShelf");
@@ -4460,7 +4470,7 @@ function renderAchievements() {
       t.innerHTML = `
         <div class="cert-trophy">🏆</div>
         <h3>Master Shark Tagger</h3>
-        <p class="latin">Official certificate — tap to view</p>`;
+        <p class="latin">🏆 Certificat officiel de Maître du marquage des requins — touche pour voir</p>`;
       t.addEventListener("click", openCertificate);
       trophyShelf.appendChild(t);
     }
@@ -4518,18 +4528,10 @@ function logTripEncounter(species, result, researchId) {
    so the logbook is the source of truth for lifetime counts. */
 /* v1.2.0-beta Mira review: ordinal words for the tag announcement —
    "the third Nurse Shark you've tagged", not "3 in your collection". */
-function ordinal(n) {
-  const words = ["first","second","third","fourth","fifth","sixth","seventh",
-    "eighth","ninth","tenth","eleventh","twelfth"];
-  if (n >= 1 && n <= words.length) return words[n - 1];
-  // Teen exceptions and the 10-20 range always take "th"
-  const mod100 = n % 100;
-  if (mod100 >= 10 && mod100 <= 20) return n + "th";
-  const mod10 = n % 10;
-  if (mod10 === 1) return n + "st";
-  if (mod10 === 2) return n + "nd";
-  if (mod10 === 3) return n + "rd";
-  return n + "th";
+function ordinal(n, fem) {
+  // French ordinals for the tag-count toast: 1er/1re, otherwise Ne.
+  if (n === 1) return fem ? "1re" : "1er";
+  return n + "e";
 }
 function countSpeciesTags(speciesId) {
   let n = 0;
@@ -4555,7 +4557,7 @@ function openTagging(species, doneCb) {
   state.pendingTag = species;
   state.encounterDone = doneCb || null;
   const length = rand(species.sizeRange[0], species.sizeRange[1]);
-  const sex = Math.random() < 0.5 ? "female" : "male";
+  const sex = Math.random() < 0.5 ? "femelle" : "mâle";
   const researchId = mintResearchId(species);
   state.pendingTag._gen = { length, sex, researchId };
   $("tagForm").classList.remove("hidden");
@@ -4563,9 +4565,9 @@ function openTagging(species, doneCb) {
   $("tagSharkArt").innerHTML = sharkArtImg(species.id, "illustration", species.name);
   $("tagInfo").innerHTML = `
     <strong>${species.name}</strong> <em>(${species.latin})</em><br>
-    🔬 Research ID: <strong>${researchId}</strong> (assigned automatically)<br>
-    📏 ${length} m &nbsp;·&nbsp; ${sex === "female" ? "♀ femelle" : "♂ mâle"}<br>
-    📍 Tagged at: ${REGIONS[state.currentPlan.region].name}<br>
+    🔬 Research ID: <strong>${researchId}</strong> (attribué automatiquement)<br>
+    📏 ${length} m &nbsp;·&nbsp; ${sex === "femelle" ? "♀ femelle" : "♂ mâle"}<br>
+    📍 Marqué à : ${REGIONS[state.currentPlan.region].name}<br>
     📅 ${new Date().toLocaleDateString("fr-CA", { year: "numeric", month: "short", day: "numeric" })}
   `;
   $("sharkName").value = "";
@@ -4606,9 +4608,9 @@ function confirmTag(name) {
      at the small print. First of species vs. Nth individual, loud and clear. */
   const lifetimeTags = countSpeciesTags(s.id);
   if (lifetimeTags <= 1) {
-    logLine(`🎉 <span class="found"><strong>New species!</strong> This is your first ${s.name}!</span>`, "found");
+    logLine(`🎉 <span class="found"><strong>Nouvelle espèce !</strong> C'est ton ${s.name === "petite roussette" ? "première" : "premier"} ${s.name} !</span>`, "found");
   } else {
-    logLine(`🎉 <span class="found"><strong>${s.name} tagged!</strong> That's the ${ordinal(lifetimeTags)} ${s.name} you've tagged!</span>`, "found");
+    logLine(`🎉 <span class="found"><strong>${s.name} ${s.name === "petite roussette" ? "marquée" : "marqué"} !</strong> C'est ${s.name === "petite roussette" ? "la" : "le"} ${ordinal(lifetimeTags, s.name === "petite roussette")} ${s.name} que tu as ${s.name === "petite roussette" ? "marquée" : "marqué"} !</span>`, "found");
   }
   state.pendingTag = null;
   /* v0.18.0: chum tags feed the "Something in the Water" achievement —
@@ -4683,9 +4685,9 @@ function showHealthCheck(s, rec) {
   $("healthArt").innerHTML = sharkArtImg(s.id, "illustration", s.name);
   $("healthInfo").innerHTML = `
     <strong>${s.name}</strong> — ${esc(rec.researchId)}<br>
-    🩺 Health check: ${rec.sex === "female" ? "♀ femelle" : "♂ mâle"}, ${rec.length} m.<br>
-    Tag seated well, swimming strongly, good body condition.<br>
-    <em>Every shark released healthy. 🦈</em>
+    🩺 Bilan de santé : ${rec.sex === "femelle" ? "♀ femelle" : "♂ mâle"}, ${rec.length} m.<br>
+    Balise bien en place, nage vigoureuse, bonne condition physique.<br>
+    <em>Chaque requin est relâché en bonne santé. 🦈</em>
   `;
 }
 
@@ -4705,7 +4707,7 @@ function doRelease(headBack) {
        choice is now the single tag-along path.) */
     const rec = state.tagged[s.id];
     const displayName = (rec && rec.name) || s.name;
-    logLine(`🌊 ${esc(displayName)} is back in the water — tag secure, swimming strong.`);
+    logLine(`🌊 ${esc(displayName)} est de retour dans l'eau — balise bien fixée, nage vigoureuse.`);
   }
   renderAll();
   if (done) done(headBack);
@@ -4816,7 +4818,7 @@ const SECRET_FACTS = {
     "Son marteau a un bord avant lisse et arrondi sans encoche centrale, lui donnant le profil le plus net de tous les requins-marteaux."
   ],
   bonnethead: [
-    "En 2018, des chercheurs ont montré que le requin-marteau tiburo peut digérer les herbes marines dont il se nourrit, en plus de ses proies animales. C'est l'un des rares requins connus capables de tirer de l'énergie des végétaux.",
+    "En 2018, des chercheurs ont montré que le requin-marteau tiburo peut digérer les herbes marines dont il se nourrit, en plus de ses proies animâles. C'est l'un des rares requins connus capables de tirer de l'énergie des végétaux.",
     "Petit parmi les requins-marteaux, le requin-marteau tiburo fréquente les baies et les estuaires peu profonds. Il peut former des groupes de plusieurs dizaines d'individus."
   ],
   bull: [
@@ -4962,13 +4964,13 @@ function doTagAlong() {
   if (s) {
     const rec = state.tagged[s.id];
     const displayName = (rec && rec.name) || s.name;
-    logLine(`🌊 ${esc(displayName)} is back in the water — tag secure, swimming strong.`);
+    logLine(`🌊 ${esc(displayName)} est de retour dans l'eau — balise bien fixée, nage vigoureuse.`);
     /* v1.5.8-beta: the insight lives on the Collection card only — not in the log. */
     const fact = unlockSecretFact(s.id);
     state.pendingTagAlongFact = fact
       ? { speciesId: s.id, fact, exhausted: false }
       : { speciesId: s.id, fact: null, exhausted: true };
-    logLine(`🧭 You're changing course to follow ${esc(displayName)} — no more encounters this trip.`);
+    logLine(`🧭 Tu changes de cap pour suivre ${esc(displayName)} — plus de rencontres pendant cette sortie.`);
   }
   renderAll();
   if (done) done({ tagAlong: s ? s.id : null });
@@ -4986,7 +4988,7 @@ function doFollowTagged(speciesId, doneCb) {
   if (!s) return;
   const rec = state.tagged[speciesId];
   const displayName = (rec && rec.name) || s.name;
-  logLine(`🧭 Following ${esc(displayName)} — tag secure, swimming strong.`);
+  logLine(`🧭 Tu suis ${esc(displayName)} — balise bien fixée, nage vigoureuse.`);
   /* v1.7.22-beta: Following an already-tagged shark counts as a re-sighting.
      Feeds the Pen Pal achievement, the track map, and resight stats — just
      like "📝 Log re-sighting". (Avery: players who always Follow never earned
@@ -5012,7 +5014,7 @@ function doFollowTagged(speciesId, doneCb) {
      the collection record is untouched (no fake re-tag). */
   logTripEncounter(s, "followed", rec ? rec.researchId : null);
   state.followedThisTrip = true;
-  logLine(`🧭 You're changing course to follow ${esc(displayName)} — no more encounters this trip.`);
+  logLine(`🧭 Tu changes de cap pour suivre ${esc(displayName)} — plus de rencontres pendant cette sortie.`);
   /* v1.8.4-beta: no renderAll() here — the expedition is still resolving and
      closeDive() calls renderAll() again right after (before goTab("map") and
      the insight popup). The intermediate render rebuilt every hidden tab
@@ -5054,28 +5056,28 @@ function showTagAlongFact(info) {
   if (info.fact && !info.exhausted) {
     bodyHtml = `
       <div class="tagalong-fact-card">
-        <div class="fact-progress">${isObserve ? "Species insight" : "Tag-along insight"} — learned ${learned}/${total}</div>
+        <div class="fact-progress">${isObserve ? "Découverte sur l'espèce" : "Découverte du suivi"} — ${learned}/${total} apprises</div>
         <div class="fact-text">🔬 ${esc(info.fact)}</div>
       </div>
       <p class="dim">${isObserve
-        ? `Observing this ${esc(displayName)} paid off. ${total - learned > 0
-          ? `Observe ${esc(displayName)} again sometime to learn more.`
-          : `That's everything this species had to teach.`}`
-        : `Following ${esc(displayName)} paid off. ${total - learned > 0
-          ? `Follow ${esc(displayName)} again sometime to learn more.`
-          : `That's everything this shark had to teach.`}`}</p>`;
+        ? `Observer ce ${esc(displayName)} a porté ses fruits. ${total - learned > 0
+          ? `Observe ${esc(displayName)} à nouveau un de ces jours pour en apprendre plus.`
+          : `C'est tout ce que cette espèce avait à enseigner.`}`
+        : `Suivre ${esc(displayName)} a porté ses fruits. ${total - learned > 0
+          ? `Suis ${esc(displayName)} à nouveau un de ces jours pour en apprendre plus.`
+          : `C'est tout ce que ce requin avait à enseigner.`}`}</p>`;
   } else {
     bodyHtml = `
       <div class="tagalong-fact-card">
-        <div class="fact-progress">${isObserve ? "Species insight" : "Tag-along insight"} — ${learned}/${total} learned</div>
-        <div class="fact-text"><em>I've learned all I can — the rest is in the specialists' hands now.</em></div>
+        <div class="fact-progress">${isObserve ? "Découverte sur l'espèce" : "Découverte du suivi"} — ${learned}/${total} apprises</div>
+        <div class="fact-text"><em>J'ai appris tout ce que je pouvais — le reste est entre les mains des spécialistes.</em></div>
       </div>
       <p class="dim">${isObserve
-        ? `${esc(displayName)} still appreciates being studied. 🔬`
-        : `${esc(displayName)} still appreciates the company. 🧭`}</p>`;
+        ? `${esc(displayName)} apprécie toujours qu'on l'étudie. 🔬`
+        : `Tu peux toujours accompagner ${esc(displayName)} dans ses déplacements. 🧭`}</p>`;
   }
   $("tagAlongFactContent").innerHTML = `
-    <h3 style="margin:4px 0 8px">${isObserve ? `🔬 Species insight — ${esc(displayName)}` : `🧭 Tagging along with ${esc(displayName)}`}</h3>
+    <h3 style="margin:4px 0 8px">${isObserve ? `🔬 Découverte sur l'espèce — ${esc(displayName)}` : `🧭 Suivi de ${esc(displayName)}`}</h3>
     ${bodyHtml}`;
   /* v1.7.24-beta Mira review: the close button must not say "Continue
      following" for Observe — the player studied, not followed. */
@@ -5139,11 +5141,11 @@ function showRegionUnlock() {
   const ov = $("winOverlay");
   ov.classList.remove("hidden");
   ov.innerHTML = `<div class="phone">
-    <div class="phone-head">🗺️ New waters surveyed</div>
+    <div class="phone-head">🗺️ Nouvelles eaux explorées</div>
     <div class="cert-body">
       <p><strong>Galápagos Islands</strong> — marine iguanas slip into the water nearby.</p>
       <p><strong>South Africa</strong> — cape fur seals bark on the rocks above.</p>
-      <p class="latin">Ten sharks tagged. The institute trusts you with farther waters now — and Sarah texted you about it. 📱</p>
+      <p class="latin">Dix requins marqués. L'institut te fait maintenant confiance pour des eaux plus lointaines — et Sarah t'a écrit à ce sujet. 📱</p>
     </div>
     <button id="winNext" class="primary-button" type="button">Back to the water</button>
   </div>`;
@@ -5157,10 +5159,10 @@ function showRegionUnlockSingle(regionId, regionName, flavor) {
   const ov = $("winOverlay");
   ov.classList.remove("hidden");
   ov.innerHTML = `<div class="phone">
-    <div class="phone-head">🗺️ New waters surveyed</div>
+    <div class="phone-head">🗺️ Nouvelles eaux explorées</div>
     <div class="cert-body">
       <p><strong>${regionName}</strong> — ${flavor}</p>
-      <p class="latin">The institute trusts you with farther waters now — and Sarah texted you about it. 📱</p>
+      <p class="latin">L'institut te fait maintenant confiance pour des eaux plus lointaines — et Sarah t'a écrit à ce sujet. 📱</p>
     </div>
     <button id="winNext" class="primary-button" type="button">Back to the water</button>
   </div>`;
@@ -5174,7 +5176,7 @@ function winThread() {
   const n = SHARKS.length;
   return [
     { who: "them", text: "Tu as réussi. Tu les as tous marqués." },
-    { who: "me", text: `${n} for ${n}. Couldn't have done it without my research assistant.` },
+    { who: "me", text: `${n} pour ${n}. Je n'aurais jamais pu y arriver sans mon assistant de recherche.` },
     { who: "them", text: "Je vais dire à tout le monde que mon cousin est un véritable chercheur spécialiste des requins. C'est la plus belle journée." },
     { who: "me", text: "Une des plus belles de ma vie aussi. 🦈" }
   ];
@@ -5208,8 +5210,8 @@ function sarahWinThread() {
     { who: "them", text: "Hé. On peut prendre une minute pour savourer ça?" },
     { who: "me", text: "Bien sûr." },
     { who: "them", text: "Au début, ce n'étaient que des noms d'espèces sur une liste. Tu te souviens du premier?" },
-    { who: "me", text: `${firstName} — the ${s.name.toLowerCase()}. I'll never forget.` },
-    { who: "them", text: `And now you know ${n} individual sharks. Not species — individuals. With names, and tracks, and lives they're still living right now.` },
+    { who: "me", text: `${firstName} — le ${s.name.toLowerCase()}. Je n'oublierai jamais.` },
+    { who: "them", text: `Et maintenant, tu connais ${n} requins en particulier. Pas des espèces — des individus. Avec des noms, des parcours, et des vies qu'ils vivent encore en ce moment.` },
     { who: "me", text: "Ils nagent encore quelque part." },
     { who: "them", text: "Oui. Tu les as tous trouvés, et tu les as tous remis en liberté. C'est ça, le plus important, non? C'est notre travail." },
     { who: "me", text: "Le plus beau métier du monde." },
@@ -5264,10 +5266,10 @@ function winStep(n) {
       ${certFigureHTML()}
       <p class="latin" style="text-align:center; margin:6px 0 0">Write your name on the line — that's what makes it yours.</p>
       ${certNameBoxHTML()}
-      <p class="cert-sig" style="text-align:center">Awarded with salt on it. 🦈</p>
+      <p class="cert-sig" style="text-align:center">Décerné avec une pincée de sel marin. 🦈</p>
       <div class="cert-actions">
-        <button id="certGrow" class="cert-action-btn" type="button" aria-pressed="false">🔍 Make it bigger</button>
-        <button id="certSave" class="cert-action-btn" type="button">📥 Save / share certificate</button>
+        <button id="certGrow" class="cert-action-btn" type="button" aria-pressed="false">🔍 Agrandir</button>
+        <button id="certSave" class="cert-action-btn" type="button">📥 Enregistrer / partager le certificat</button>
       </div>
       <button id="winNext" class="primary-button" type="button">Continue</button>`, "cert-phone");
     wireCertName();
@@ -5291,9 +5293,9 @@ function winStep(n) {
     /* Beat 2: the phone buzzes — Sarah has something to say. */
     pushThread(sarahWinThread().map(m => ({ ...m })));
     box(`
-      <div class="phone-head buzz-phone">📱 Your phone buzzes…</div>
+      <div class="phone-head buzz-phone">📱 Ton téléphone vibre…</div>
       <div class="phone-thread win-thread"></div>
-      <p class="latin" style="text-align:center; margin:0">Saved in 📱 Phone.</p>
+      <p class="latin" style="text-align:center; margin:0">Enregistré dans 📱 Téléphone.</p>
       <button id="winNext" class="primary-button" type="button">Continue</button>`);
     const th = ov.querySelector(".win-thread");
     sarahWinThread().forEach(m => {
@@ -5317,9 +5319,9 @@ function winStep(n) {
     box(`
       <div class="ack-card" style="margin-top:0">
         <p class="eyebrow">ACKNOWLEDGEMENTS</p>
-        <p class="ack-name">For <span>Sarah</span></p>
-        <p>who finished Rockhound at 1:26 AM and loves sharks. 🦈</p>
-        <p style="margin-top:8px">🖼️ Your Wild Archive is complete — every species you tagged, face to face with the real animal.</p>
+        <p class="ack-name">Pour <span>Sarah</span></p>
+        <p>qui a terminé Cherche-cailloux à 1 h 26 et qui adore les requins. 🦈</p>
+        <p style="margin-top:8px">🖼️ Tes Archives sauvages sont complètes — chaque espèce que tu as marquée, face à face avec le vrai animal.</p>
       </div>
       <button id="winNext" class="primary-button" type="button">Continue</button>`);
     $("winNext").addEventListener("click", () => winStep(5));
@@ -5329,15 +5331,15 @@ function winStep(n) {
     pushThread(DERPY_AWARD_THREAD.map(m => ({ ...m })));
     box(`
       <div style="font-size:52px; text-align:center">\uD83E\uDD88</div>
-      <h2 style="text-align:center; margin:8px 0 2px">A gift from Sarah</h2>
-      <p class="latin" style="text-align:center">The original derpy sharks — unlocked!</p>
+      <h2 style="text-align:center; margin:8px 0 2px">🎁 Un cadeau de Sarah</h2>
+      <p class="latin" style="text-align:center">Les requins zinzins originaux — débloqués !</p>
       <div class="cert-body">
-        <p>Before the institute sent the real illustrations, these little derpy sharks were the whole game. Sarah saved every single one.</p>
-        <p style="margin-top:8px">\uD83C\uDFA8 <strong>Derpy mode</strong> is now available — toggle it in your collection book to see all ${SHARKS.length} sharks in their original derpy glory.</p>
+        <p>Avant que l'institut n'envoie les vraies illustrations, ces petits requins zinzins étaient tout le jeu. Sarah les a tous gardés.</p>
+        <p style="margin-top:8px">\uD83C\uDFA8 Le mode zinzin est maintenant disponible — active-le dans ton carnet de collection pour voir les ${SHARKS.length} requins dans leur gloire zinzin originale.</p>
       </div>
       <div class="phone-thread win-thread" style="margin-top:8px"></div>
       <p class="latin" style="text-align:center; margin:0">Saved in \uD83D\uDCF1 Phone.</p>
-      <button id="winNext" class="primary-button" type="button">Back to the collection book</button>`);
+      <button id="winNext" class="primary-button" type="button">Retour au carnet de collection</button>`);
     const th5 = ov.querySelector(".win-thread");
     DERPY_AWARD_THREAD.forEach(m => {
       const b = document.createElement("div");
@@ -5386,7 +5388,7 @@ function winMapFinale() {
       <p class="latin" style="text-align:center; margin:0 0 8px" id="finaleCaption"></p>
       <div class="finale-map" id="finaleMap"></div>
       <div style="display:flex; gap:8px; justify-content:center; margin-top:10px">
-        <button id="finaleSkip" class="secondary-button" type="button">Skip</button>
+        <button id="finalePasser" class="secondary-button" type="button">Passer</button>
         <button id="finaleNext" class="primary-button hidden" type="button">Continue</button>
       </div>
     </div>`;
@@ -5442,7 +5444,7 @@ function winMapFinale() {
     clearInterval(timer);
     revealed = n;
     renderRevealed(n);
-    $("finaleSkip").classList.add("hidden");
+    $("finalePasser").classList.add("hidden");
     $("finaleNext").classList.remove("hidden");
   };
   const timer = setInterval(() => {
@@ -5450,7 +5452,7 @@ function winMapFinale() {
     if (revealed >= n) { finish(); return; } // finish() renders the final state once
     renderRevealed(revealed);
   }, 650);
-  $("finaleSkip").addEventListener("click", finish);
+  $("finalePasser").addEventListener("click", finish);
   $("finaleNext").addEventListener("click", () => winStep(4));
 }
 
@@ -5630,7 +5632,7 @@ function renderCollection() {
     cb.type = "button";
     cb.className = "derpy-claim";
     cb.setAttribute("aria-label", "Réclamer ta récompense des requins zinzins");
-    cb.innerHTML = `\uD83C\uDF81 Claim your derpy award`;
+    cb.innerHTML = `\uD83C\uDF81 Réclamer ton prix zinzin`;
     cb.addEventListener("click", () => {
       /* v1.7.19-beta Mira review: only re-render on a successful claim, and
          render Achievements too — the relocated trophy appears immediately
@@ -5651,7 +5653,7 @@ function renderCollection() {
     d.className = "derpy-toggle" + (state.derpyMode ? " active" : "");
     d.setAttribute("aria-pressed", state.derpyMode ? "true" : "false");
     d.setAttribute("aria-label", "Activer ou désactiver le mode zinzin");
-    d.innerHTML = `\uD83E\uDD88 Derpy mode: ${state.derpyMode ? "activé" : "désactivé"}`;
+    d.innerHTML = `\uD83E\uDD88 Mode zinzin : ${state.derpyMode ? "activé" : "désactivé"}`;
     d.addEventListener("click", () => {
       state.derpyMode = !state.derpyMode;
       try { localStorage.setItem("tyi-derpy-mode", state.derpyMode ? "1" : "0"); } catch {}
@@ -5662,7 +5664,7 @@ function renderCollection() {
   }
 
   if (!ids.length && !state.won) {
-    list.innerHTML = `<div class="empty-note">No sharks tagged yet.<br>Do your research, then get out there. 🦈</div>`;
+    list.innerHTML = `<div class="empty-note">Aucun requin marqué pour l'instant.<br>Fais tes recherches, puis lance-toi. 🦈</div>`;
     return;
   }
   SHARKS.filter(s => state.tagged[s.id]).forEach(s => {
@@ -5679,7 +5681,7 @@ function renderCollection() {
     const _insightsComplete = _pool.length > 0 && _pool.every((_, i) => _unlocked.includes(i));
     cell.className = "grid-cell" + (_insightsComplete ? " insights-complete" : "");
     if (_insightsComplete) cell.title = "Toutes les découvertes obtenues — 100 %";
-    cell.setAttribute("aria-label", `Open details for ${t.name ? esc(t.name) : esc(t.researchId)} ${s.name}${_insightsComplete ? " — all insights discovered" : ""}`);
+    cell.setAttribute("aria-label", `Ouvrir les détails de ${t.name ? esc(t.name) : esc(t.researchId)} ${s.name}${_insightsComplete ? " — toutes les découvertes faites" : ""}`);
     cell.innerHTML = `
       <div class="shark-art">${sharkArtImg(s.id, "illustration", s.name)}</div>
       <div class="grid-cell-text">
@@ -5793,7 +5795,7 @@ function exportCertificate() {
 function certActionsHTML() {
   return `
     <div class="cert-actions">
-      <button id="certSave" class="cert-action-btn" type="button">📥 Save / share certificate</button>
+      <button id="certSave" class="cert-action-btn" type="button">📥 Enregistrer / partager le certificat</button>
     </div>`;
 }
 
@@ -5860,8 +5862,8 @@ function wireCertName() {
    the box stays in view, and the name appears on the line as typed. */
 function certNameBoxHTML() {
   return `
-    <label class="cert-name-box">Your name
-      <input id="certNameBox" type="text" maxlength="40" autocomplete="off" placeholder="Your name">
+    <label class="cert-name-box">Ton nom
+      <input id="certNameBox" type="text" maxlength="40" autocomplete="off" placeholder="Ton nom">
     </label>`;
 }
 
@@ -5873,7 +5875,7 @@ function openCertificate() {
   c.innerHTML = certFigureHTML() +
     certNameBoxHTML() +
     certActionsHTML() + `
-    <p class="cert-sig" style="text-align:center">Awarded with salt on it. 🦈</p>`;
+    <p class="cert-sig" style="text-align:center">Décerné avec une pincée de sel marin. 🦈</p>`;
   /* Unhide BEFORE wiring (Mira review): under display:none the name
      field has zero width and the shrink-to-fit would skip, leaving a
      persisted long name unfitted until the first keystroke. */
@@ -5895,7 +5897,7 @@ function openDetail(id) {
     ${t.name ? `<div class="given-name">“${esc(t.name)}”</div>` : ""}
     <div class="detail-name-row">
       ${idLine(t)}
-      <button id="renameBtn" class="mini-button" type="button">✏️ ${t.name ? "Rename" : "Add nickname"}</button>
+      <button id="renameBtn" class="mini-button" type="button">✏️ ${t.name ? "Renommer" : "Ajouter un surnom"}</button>
     </div>
     <div id="renameForm" class="hidden">
       <input id="renameInput" type="text" maxlength="24" value="${esc(t.name)}" placeholder="Nomme ton requin…" />
@@ -5908,7 +5910,7 @@ function openDetail(id) {
     <p class="latin detail-scientific">${s.latin}</p>
     <span class="status-pill">IUCN: ${s.status}</span>
     <p class="book-stats">
-      📏 ${t.length} m · ${t.sex === "female" ? "♀ femelle" : "♂ mâle"}<br>
+      📏 ${t.length} m · ${t.sex === "femelle" ? "♀ femelle" : "♂ mâle"}<br>
       📍 Marqué à ${esc(t.location)}<br>
       📅 ${esc(t.date)}
     </p>
@@ -5926,17 +5928,17 @@ function openDetail(id) {
       const older = t.resightings.slice(0, -VISIBLE);
       const li = r => `<li>📍 ${esc(r.date)} — ${esc(r.location)}<br><span class="dim">${esc(r.note)}</span></li>`;
       return `<div class="resight-block">
-      <h4>🔁 Re-sightings (${total})</h4>
+      <h4>🔁 Réobservations (${total})</h4>
       ${older.length ? `<ul id="resightOlder" class="track-stops hidden">${older.map(li).join("")}</ul>` : ""}
       <ul class="track-stops">${recent.map(li).join("")}</ul>
-      ${older.length ? `<button id="resightMore" class="mini-button" type="button" aria-expanded="false">Show all (${total})</button>` : ""}
+      ${older.length ? `<button id="resightMore" class="mini-button" type="button" aria-expanded="false">Tout afficher (${total})</button>` : ""}
     </div>`;
     })()}
     </div>
     <div class="detail-record">
     ${t.notes && t.notes.length ? `
     <div class="watch-notes-block">
-      <h4>📓 Field notes from watching (${t.notes.length})</h4>
+      <h4>📓 Notes de terrain prises en observant (${t.notes.length})</h4>
       <ul class="track-stops">
         ${t.notes.map(n => `<li>👁️ ${esc(n)}</li>`).join("")}
       </ul>
@@ -5951,13 +5953,13 @@ function openDetail(id) {
       const pool = insightPoolFor(id);
       const shown = unlocked.map(i => pool[i]).filter(Boolean);
       return `<div class="secret-facts-block">
-        <h4>🔬 Tag-along insights (${shown.length}/${pool.length})</h4>
+        <h4>🔬 Découvertes du suivi (${shown.length}/${pool.length})</h4>
         ${shown.length ? `<ul class="track-stops">
           ${shown.map(f => `<li>🔬 ${esc(f)}</li>`).join("")}
         </ul>` : ""}
       </div>`;
     })()}
-    ${s.conservation ? `<p class="conservation-note">🌊 <strong>Conservation:</strong> ${s.conservation}</p>` : ""}
+    ${s.conservation ? `<p class="conservation-note">🌊 <strong>Conservation :</strong> ${s.conservation}</p>` : ""}
     </div>
   `;
   $("detailOverlay").classList.remove("hidden");
@@ -5978,7 +5980,7 @@ function openDetail(id) {
     resightMore.addEventListener("click", () => {
       resightsExpanded = !resightsExpanded;
       $("resightOlder").classList.toggle("hidden", !resightsExpanded);
-      resightMore.textContent = resightsExpanded ? "Afficher moins" : `Show all (${t.resightings.length})`;
+      resightMore.textContent = resightsExpanded ? "Afficher moins" : `Tout afficher (${t.resightings.length})`;
       resightMore.setAttribute("aria-expanded", String(resightsExpanded));
     });
   }
@@ -6038,24 +6040,24 @@ function openTrack(id) {
   }).join("");
   const last = points[points.length - 1];
   const stops = points.map((p, i) =>
-    `<li>${i === 0 ? "📍" : "▫️"} Day ${p.day} — ${esc(p.label)}${p.km ? ` <span class="dim">(+${p.km.toLocaleString()} km)</span>` : ""}</li>`
+    `<li>${i === 0 ? "📍" : "▫️"} Jour ${p.day} — ${esc(geoFr(p.label))}${p.km ? ` <span class="dim">(+${p.km.toLocaleString()} km)</span>` : ""}</li>`
   ).join("");
   const title = t.name ? `“${esc(t.name)}”` : esc(t.researchId);
   $("trackContent").innerHTML = `
-    <div class="phone-head">📍 Tracking ${title} <span class="research-id">${esc(t.researchId)}</span></div>
-    <svg viewBox="0 0 ${W} ${H}" class="track-map" role="img" aria-label="Migration track map">
+    <div class="phone-head">📍 Suivi de ${title} <span class="research-id">${esc(t.researchId)}</span></div>
+    <svg viewBox="0 0 ${W} ${H}" class="track-map" role="img" aria-label="Carte de l'itinéraire de migration">
       <rect x="0" y="0" width="${W}" height="${H}" rx="12" fill="#0a1c30"/>
       ${[0.25, 0.5, 0.75].map(f => `<line x1="0" y1="${H * f}" x2="${W}" y2="${H * f}" stroke="#16405f" stroke-width="1" stroke-dasharray="4 6"/>`).join("")}
       <path d="${pathD}" fill="none" stroke="#4fd1c5" stroke-width="2.5" stroke-dasharray="7 5" opacity="0.85"/>
       ${dots}
     </svg>
     <div class="track-stats">
-      <div><strong>${totalKm.toLocaleString()} km</strong><span>travelled</span></div>
-      <div><strong>${days} days</strong><span>at liberty</span></div>
+      <div><strong>${totalKm.toLocaleString()} km</strong><span>parcourus</span></div>
+      <div><strong>${days} jours</strong><span>en liberté</span></div>
       <div><strong>${points.length}</strong><span>locations</span></div>
     </div>
     <ul class="track-stops">${stops}</ul>
-    <p class="track-note">Last ping: <strong>${esc(last.label)}</strong> · day ${last.day}<br>
+    <p class="track-note">Dernier signal : <strong>${esc(geoFr(last.label))}</strong> · jour ${last.day}<br>
     <span class="dim">${esc(tr.hypothetical ? "Scénario de déplacement hypothétique — cet itinéraire illustre un déplacement plausible à longue distance pour une espèce migratrice, pas une reconstitution du trajet de cet individu." : tr.kind === "archival" ? "Scénario de déplacement illustratif fondé sur l'habitat. Ces positions ne sont pas des détections réelles de cet individu." + (s.id === "sawshark" ? " (Pop-up satellite archival tags have been deployed on common sawsharks off Tasmania — Burke et al. 2020.)" : "") : (TRACK_KIND_NOTES[tr.kind] || TRACK_KIND_NOTES.satellite))}</span></p>
   `;
   $("trackOverlay").classList.remove("hidden");
@@ -6729,14 +6731,14 @@ setInterval(tickPhoneClock, 30000);
 /* v1.4.0: living caustics — each ribbon reappears at a new horizontal
    position after its lifecycle completes. The reposition fires on
    animationiteration, while the ribbon is in its invisible tail, so the
-   jump is never seen. Skipped under prefers-reduced-motion (CSS already
+   jump is never seen. Passerped under prefers-reduced-motion (CSS already
    freezes the ribbons there). */
 /* v1.4.1: sun-ray caustics — each ray gets a fresh fan angle after its
    lifecycle completes, so rays keep fanning from the sun point at new
    angles. Fires on animationiteration, while the ray is in its invisible
    tail, so the jump is never seen. Each ray keeps its own lane (home angle
    from CSS) with a small jitter, so the fan stays spread across the screen.
-   Skipped under prefers-reduced-motion (CSS freezes the rays there).
+   Passerped under prefers-reduced-motion (CSS freezes the rays there).
    v1.4.17: restored after the v1.4.16 conic fan broke iPad layout. */
 (function initCaustics() {
   if (typeof window.matchMedia === 'function' &&
@@ -7060,7 +7062,7 @@ function closeTour() {
    mid-dialog. */
 function tourTrapFocus(e) {
   if (!tourOpenNow || e.key !== "Tab") return;
-  var btns = [$("tourSkip"), $("tourBack"), $("tourNext")].filter(function(b) {
+  var btns = [$("tourPasser"), $("tourBack"), $("tourNext")].filter(function(b) {
     return b && !b.disabled && !b.classList.contains("hidden");
   });
   if (!btns.length) return;
@@ -7085,7 +7087,7 @@ function showTourSlide(i) {
   $("tourCount").textContent = (tourIdx + 1) + " of " + TOUR_SLIDES.length;
   $("tourBack").disabled = tourIdx === 0;
   $("tourNext").textContent = tourIdx === TOUR_SLIDES.length - 1 ? "Start playing 🦈" : "Next →";
-  var skip = $("tourSkip");
+  var skip = $("tourPasser");
   if (tourIdx === TOUR_SLIDES.length - 1) skip.classList.add("hidden");
   else skip.classList.remove("hidden");
   var dots = $("tourDots");
@@ -7161,7 +7163,7 @@ function positionTour() {
 $("tourBtn").addEventListener("click", openTour);
 $("tourNext").addEventListener("click", tourAdvance);
 $("tourBack").addEventListener("click", tourBack);
-$("tourSkip").addEventListener("click", closeTour);
+$("tourPasser").addEventListener("click", closeTour);
 window.addEventListener("resize", positionTour);
 /* Reposition the tab arrow if the page scrolls under the open tour
    (belt and braces beside the body scroll lock). */
