@@ -3,3 +3,7 @@
 - index.html: lang fr, French title/subtitle/logo alt, 68 distinct static strings replaced (74 occurrences).
 - Remaining English in script.js (by design or gap): ambient pools DEPTH_FLAVOUR/SIGHTINGS/CREATURE_ART labels (draft Batch 11 in progress, separate agent), status full names only as IUCN_ABBR code keys, "Tagged" handled contextually (Marqués filter / Marqué single), game-data.js + archive-ui.js not yet assembled (REGIONS/BAITS/METHODS labels, Archive chrome, trimmed string), art-data.js aria-labels, map-data.js geo labels, 5 new achievements + nameIdeas (small batches pending).
 - NOT playable yet: index.html references game-data.js, archive-ui.js, art-data.js, map-data.js which are not on the build branch in French form. Do not deploy.
+
+## map-data.js assembled (2026-10-27)
+- English TRACK_ENVELOPES + MAP_COORDS (378 keys) copied verbatim; Batch 12 adds GEO_LABELS_FR (295 labels) applied ONLY at display boundaries (GEO_LABELS_FR[label] || label). Seeded genTrack identical for all 54 envelopes, 0 random-fallback hops.
+- GAP: Batch 12 covered the 50 base envelopes only; 4 regional-variant envelopes (whale:maldives, megamouth:philippines, blue:cornwall, smooth:north-carolina) leave 22 distinct display strings without French labels — they fall back to English until a reviewed supplement lands. Display wiring in script.js still to do (track-modal + map labels via GEO_LABELS_FR).
