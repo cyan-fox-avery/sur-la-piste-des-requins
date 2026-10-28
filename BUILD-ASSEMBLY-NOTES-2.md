@@ -1,0 +1,16 @@
+# script.js + index.html assembly (2026-10-25, WIP, unreviewed)
+- script.js generated from English v2.7.15 by key + literal replacement: 207 key applications + 230 literal replacements, node --check passes. VERSION v1.0.0; WHATS_NEW empty (dialog suppressed); dates fr-CA (7 sites); resight pools French with female variant maps + slot-first selection; food reply accepts either closer variant with French pron mapping (elle/lui/ce requin).
+- index.html: lang fr, French title/subtitle/logo alt, 68 distinct static strings replaced (74 occurrences).
+- Remaining English in script.js (by design or gap): ambient pools DEPTH_FLAVOUR/SIGHTINGS/CREATURE_ART labels (draft Batch 11 in progress, separate agent), status full names only as IUCN_ABBR code keys, "Tagged" handled contextually (Marqués filter / Marqué single), game-data.js + archive-ui.js not yet assembled (REGIONS/BAITS/METHODS labels, Archive chrome, trimmed string), art-data.js aria-labels, map-data.js geo labels, 5 new achievements + nameIdeas (small batches pending).
+- NOT playable yet: index.html references game-data.js, archive-ui.js, art-data.js, map-data.js which are not on the build branch in French form. Do not deploy.
+
+## map-data.js assembled (2026-10-27)
+- English TRACK_ENVELOPES + MAP_COORDS (378 keys) copied verbatim; Batch 12 adds GEO_LABELS_FR (295 labels) applied ONLY at display boundaries (GEO_LABELS_FR[label] || label). Seeded genTrack identical for all 54 envelopes, 0 random-fallback hops.
+- GAP: Batch 12 covered the 50 base envelopes only; 4 regional-variant envelopes (whale:maldives, megamouth:philippines, blue:cornwall, smooth:north-carolina) leave 22 distinct display strings without French labels — they fall back to English until a reviewed supplement lands. Display wiring in script.js still to do (track-modal + map labels via GEO_LABELS_FR).
+
+## Batch 13 folded into script.js + display wiring (2026-10-27)
+- 102/138 templates applied by automated literal swap; rest by targeted manual fixes (split-markup empties, ternary pin aria, conditional tag line, split stats). node --check passes; no Batch 13 English fragments remain (2 hits are code identifiers/comments).
+- Display wiring: geoFr() helper (GEO_LABELS_FR[label] || label) applied at map-meta latest ping, track stops, track-note last ping; track stats travelled/at liberty translated. Coordinate lookups still use English keys.
+- Grammar helpers: ordinal() -> French 1er/1re/Ne (single call site); bigDayArticle() -> le/la/l' (petite roussette feminine, vowel elision, joiner spacing); sex codes mapped to femelle/mâle in the collection identity line; yours fallback -> le tien; formatSpeciesList joiners -> et; Derpy -> Mode zinzin; premier/première + marqué/mar­quée agreement for petite roussette in toasts.
+- No-ops (already French): collection track buttons, insight-header-3, and-1 joiner. Win-list row needs no change (FR identical to EN pattern).
+- Leftover player-facing English strings NOT in any workbook (future mini-batch, not invented): track-stat "locations", "Migration track map" aria-label, Achievements panel <h2>, "ACKNOWLEDGEMENTS" eyebrow, "Write your name on the line" cert line, "Saved in Phone" line, NEW SPECIES badge caps.
